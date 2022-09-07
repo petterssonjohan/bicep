@@ -1,8 +1,14 @@
+@description('storage account name')
+param storage_account_name string = 'st${uniqueString(resourceGroup().name)}'
+
+@description('storage account location')
+param location string = 'west europe' //north eu
+
 module storageModule '../../modules/storages.bicep' = {
   name: 'storageDeploy'
   params: {
-    storage_account_name: 'a'
-    location: 'west europe'
+    storage_account_name: storage_account_name
+    location: location
   }
 }
 

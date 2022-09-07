@@ -1,8 +1,11 @@
-@description('storage account name')
-param storage_account_name string = 'st${uniqueString(resourceGroup().name)}'
+// @description('storage account name')
+// param storage_account_name string = 'st${uniqueString(resourceGroup().name)}'
 
-@description('storage account location')
-param location string = 'west europe' //north eu
+// @description('storage account location')
+// param location string = 'west europe' //north eu
+
+param storage_account_name string
+param location string
 
 //Create a storage account
 resource storageaccount 'Microsoft.Storage/storageAccounts@2021-02-01' = {
