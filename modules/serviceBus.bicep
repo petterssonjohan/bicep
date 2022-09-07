@@ -9,7 +9,7 @@
 //     tier: 'Basic'
 //   }
 //   properties: {
-//     disableLocalAuth: false
+//     disableLocalAuth: falseasdasd
 //     zoneRedundant: false
 //   }
 // }
