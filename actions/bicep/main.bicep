@@ -1,10 +1,8 @@
-// @description('storage account name')
-// param storage_account_name string = 'st${uniqueString(resourceGroup().name)}'
+@description('storage account name')
+param namePrefix string = 'st${uniqueString(resourceGroup().name)}'
 
 @description('storage account location')
 param location string = 'west europe' //north eu
-
-param namePrefix string = 'bicepdev'
 
 module storageModule '../../modules/storages.bicep' = {
   name: 'storageDeploy'
