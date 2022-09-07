@@ -17,9 +17,11 @@ resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2021-12-01' = {
   ]
   name: '${namePrefix}-event'
   properties: {
+
     destination: {
       properties: {
         resourceId: '/subscriptions/${'bf558742-a412-4a60-88c4-733121e9580f'}/resourceGroups/${'deni-ra'}/providers/Microsoft.Storage/storageaccounts/${namePrefix}' //'${serviceBusId}/queues/${namePrefix}-queue'
+        queueName: 'default'
       }
       endpointType: 'StorageQueue'
     }
@@ -30,6 +32,7 @@ resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2021-12-01' = {
       ]
       enableAdvancedFilteringOnArrays: false
     }
+
     eventDeliverySchema: 'EventGridSchema'
     retryPolicy: {
       maxDeliveryAttempts: 30
