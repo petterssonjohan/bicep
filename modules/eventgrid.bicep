@@ -20,7 +20,7 @@ resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2021-12-01' = {
 
     destination: {
       properties: {
-        resourceId: '/subscriptions/${'bf558742-a412-4a60-88c4-733121e9580f'}/resourceGroups/${'deni-ra'}/providers/Microsoft.Storage/storageaccounts/${namePrefix}' //'${serviceBusId}/queues/${namePrefix}-queue'
+        resourceId: '/subscriptions/bf558742-a412-4a60-88c4-733121e9580f/resourceGroups/deni-ra/providers/Microsoft.Storage/storageaccounts/${namePrefix}'
         queueName: 'default'
       }
       endpointType: 'StorageQueue'
