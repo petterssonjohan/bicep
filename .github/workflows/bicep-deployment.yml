@@ -33,8 +33,6 @@ jobs:
 
       - name: "deploy storage account bicep"
         working-directory: "${{github.workspace}}/actions/bicep"
-      #  run: |
-      #    az deployment group create --what-if --resource-group deni-ra --template-file './main.bicep' --parameters @parameters.json
          run: |
           az deployment sub create -f ./main.bicep --parameters @parameters.json
 
@@ -57,7 +55,5 @@ jobs:
 
       - name: "deploy storage account bicep"
         working-directory: "${{github.workspace}}/actions/bicep"
-    #    run: |
-    #      az deployment group create --resource-group deni-ra --template-file './main.bicep' --parameters @parameters.json
          run: |
            az deployment sub create -f ./main.bicep --parameters @parameters.json
