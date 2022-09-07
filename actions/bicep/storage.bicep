@@ -13,9 +13,20 @@ resource storageaccount 'Microsoft.Storage/storageAccounts@2021-02-01' = {
     minimumTlsVersion: 'TLS1_2'
   }
   sku: {
-    name: 'Premium_LRS'
+    name: 'Standard_LRS'
   }
 }
+
+// Create a storage blob container for service data and for device context
+var containers = [ 'servicedata', 'devicecontext' ]
+resource storageContainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = [for container in containers: {
+  name: '${storage_account_name}/default/${container}'
+  properties: {
+    publicAccess: 'None'
+    metadata: {}
+  }
+  dependsOn: [ storageaccount ]
+}]
 
 //Create a lifecycle management rule for that storage account
 resource management_policies 'Microsoft.Storage/storageAccounts/managementPolicies@2019-06-01' = {
@@ -55,16 +66,5 @@ resource management_policies 'Microsoft.Storage/storageAccounts/managementPolici
   }
   parent: storageaccount
 }
-
-// Create a storage blob container for service data and for device context
-var containers = [ 'servicedata', 'devicecontext' ]
-resource storageContainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = [for container in containers: {
-  name: '${storage_account_name}/default/${container}'
-  properties: {
-    publicAccess: 'None'
-    metadata: {}
-  }
-  dependsOn: [ storageaccount ]
-}]
 
 output result string = 'Done!'
