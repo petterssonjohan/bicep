@@ -57,7 +57,7 @@ resource management_policies 'Microsoft.Storage/storageAccounts/managementPolici
 }
 
 // Create a storage blob container for service data and for device context
-var containers = [ 'SERVICEDATA', 'DEVICECONTEXT' ]
+var containers = [ 'servicedata', 'devicecontext' ]
 resource storageContainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = [for container in containers: {
   name: '${storage_account_name}/default/${container}'
   properties: {
