@@ -19,7 +19,7 @@ module storageModule '../../modules/storages.bicep' = {
   scope: rg
 }
 
-// module serviceBus '../../modules/serviceBus.bicep' = {
+// amodule serviceBus '../../modules/serviceBus.bicep' = {
 //   name: 'serviceBusDeploy'
 //   params: {
 //     location: location
