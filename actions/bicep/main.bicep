@@ -1,8 +1,14 @@
 @description('storage account name')
-param namePrefix string = 'st${uniqueString(resourceGroup().name)}'
+param namePrefix string = 'st'
 
 @description('storage account location')
 param location string = 'west europe' //north eu
+
+targetScope = 'subscription'
+resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+  name: 'rg-${namePrefix}'
+  location: location
+}
 
 module storageModule '../../modules/storages.bicep' = {
   name: 'storageDeploy'
@@ -10,6 +16,7 @@ module storageModule '../../modules/storages.bicep' = {
     namePrefix: namePrefix
     location: location
   }
+  scope: rg
 }
 
 // module serviceBus '../../modules/serviceBus.bicep' = {
@@ -27,4 +34,5 @@ module eventGrid '../../modules/eventgrid.bicep' = {
     namePrefix: namePrefix
     blobSourceId: storageModule.outputs.storageAccountId
   }
+  scope: rg
 }

@@ -2,7 +2,7 @@ param namePrefix string
 param location string
 param blobSourceId string
 
-resource eventTopic 'Microsoft.EventGrid/systemTopics@2021-12-01' = {
+resource eventTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
   name: '${namePrefix}-topic'
   location: location
   properties: {
@@ -11,7 +11,7 @@ resource eventTopic 'Microsoft.EventGrid/systemTopics@2021-12-01' = {
   }
 }
 
-resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2021-12-01' = {
+resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' = {
   dependsOn: [
     eventTopic
   ]

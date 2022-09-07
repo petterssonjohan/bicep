@@ -2,7 +2,7 @@ param location string
 param namePrefix string
 
 //Create a storage account
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-02-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   name: namePrefix
   location: location
   kind: 'StorageV2'
@@ -16,7 +16,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-02-01' = {
 
 // Create a storage blob container for service data and for device context
 var containers = [ 'servicedata', 'devicecontext' ]
-resource storageContainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = [for container in containers: {
+resource storageContainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-09-01' = [for container in containers: {
   name: '${namePrefix}/default/${container}'
   properties: {
     publicAccess: 'None'
@@ -26,7 +26,7 @@ resource storageContainers 'Microsoft.Storage/storageAccounts/blobServices/conta
 }]
 
 //Create a lifecycle management rule for that storage account
-resource management_policies 'Microsoft.Storage/storageAccounts/managementPolicies@2019-06-01' = {
+resource management_policies 'Microsoft.Storage/storageAccounts/managementPolicies@2021-09-01' = {
   name: 'default'
   properties: {
     policy: {
