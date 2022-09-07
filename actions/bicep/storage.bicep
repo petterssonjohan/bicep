@@ -15,3 +15,14 @@ resource storageaccount 'Microsoft.Storage/storageAccounts@2021-02-01' = {
     name: 'Premium_LRS'
   }
 }
+
+param containerName string = 'container1'
+
+// Create container
+resource containers 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = {
+  name: '${storage_account_name}/default/${containerName}'
+  properties: {
+    publicAccess: 'None'
+    metadata: {}
+  }
+}
