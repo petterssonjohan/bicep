@@ -27,12 +27,12 @@ module storageModule '../../modules/storages.bicep' = {
 //   }
 // }
 
-module eventGrid '../../modules/eventgrid.bicep' = {
-  name: 'eventGridDeploy'
-  params: {
-    location: location
-    namePrefix: namePrefix
-    blobSourceId: storageModule.outputs.storageAccountId
-  }
-  scope: rg
-}
+// module eventGrid '../../modules/eventgrid.bicep' = {
+//   name: 'eventGridDeploy'
+//   params: {
+//     location: location
+//     namePrefix: namePrefix
+//     blobSourceId: storageModule.outputs.storageAccountId
+//   }
+//   scope: rg
+// }
