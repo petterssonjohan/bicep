@@ -92,35 +92,35 @@ param endpoint string = 'https://www.example.com'
 resource topicEvent 'Microsoft.EventGrid/systemTopics/eventSubscriptions@2022-06-15' = {
   name: eventSubName
   parent: systemTopic
-  properties: {
-    destination: {
-      properties: {
-        endpointUrl: endpoint
-      }
-      endpointType: 'WebHook'
-    }
-    filter: {
-      includedEventTypes: [
-        'Microsoft.Storage.BlobCreated'
-        'Microsoft.Storage.BlobDeleted'
-      ]
-    }
-  }
   // properties: {
   //   destination: {
   //     properties: {
-  //       resourceId: '/subscriptions/bf558742-a412-4a60-88c4-733121e9580f/resourceGroups/rg-st12123123123/providers/Microsoft.Storage/storageAccounts/${storageAccount.name}'
-  //       queueName: 'default'
+  //       endpointUrl: endpoint
   //     }
-  //     endpointType: 'StorageQueue'
+  //     endpointType: 'WebHook'
   //   }
   //   filter: {
-  //     subjectBeginsWith: '/blobServices/default/containers/servicedata'
   //     includedEventTypes: [
   //       'Microsoft.Storage.BlobCreated'
+  //       'Microsoft.Storage.BlobDeleted'
   //     ]
   //   }
   // }
+  properties: {
+    destination: {
+      properties: {
+        resourceId: '/subscriptions/bf558742-a412-4a60-88c4-733121e9580f/resourceGroups/rg-st12123123123/providers/Microsoft.EventGrid/systemTopics/mystoragesystemtopic'
+        queueName: 'default'
+      }
+      endpointType: 'StorageQueue'
+    }
+    filter: {
+      subjectBeginsWith: '/blobServices/default/containers/servicedata'
+      includedEventTypes: [
+        'Microsoft.Storage.BlobCreated'
+      ]
+    }
+  }
 }
 
 output storageAccountId string = storageAccount.id
