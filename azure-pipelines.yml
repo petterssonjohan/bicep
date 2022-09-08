@@ -9,7 +9,7 @@ variables:
   azureServiceConnection: "scarm"
   resourceGroupName: "exampleRG"
   location: "westeurope"
-  templateFile: "main.bicep"
+  templateFile: "./main.bicep"
 pool:
   vmImage: $(vmImageName)
 
