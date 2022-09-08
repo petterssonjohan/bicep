@@ -12,6 +12,10 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   sku: {
     name: 'Standard_LRS'
   }
+  tags: {
+    'BUSINESS-AREA': 'SPT'
+    'RUNTIME-ENVIRONMENT': 'test' //ENVIRONMENT_TYPE
+  }
 }
 
 // Create a storage blob container for service data and for device context

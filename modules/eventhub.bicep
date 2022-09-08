@@ -11,6 +11,10 @@ resource ehNamespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' = {
   properties: {
     zoneRedundant: true
   }
+  tags: {
+    'BUSINESS-AREA': 'SPT'
+    'RUNTIME-ENVIRONMENT': 'test' //ENVIRONMENT_TYPE
+  }
 }
 
 resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-01-01-preview' = {

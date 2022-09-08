@@ -12,6 +12,10 @@ resource systemTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
     source: storageAccountId
     topicType: 'Microsoft.Storage.StorageAccounts'
   }
+  tags: {
+    'BUSINESS-AREA': 'SPT'
+    'RUNTIME-ENVIRONMENT': 'test' //ENVIRONMENT_TYPE
+  }
 }
 
 resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' = {
