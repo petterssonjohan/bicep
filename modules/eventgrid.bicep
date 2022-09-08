@@ -16,6 +16,7 @@ resource systemTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
 
 resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' = {
   name: eventSubName
+  scope: systemTopic
   properties: {
     destination: {
       properties: {
