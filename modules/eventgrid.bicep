@@ -4,6 +4,7 @@ param storageAccountId string
 param eventSubName string
 param resourceGroup string
 param storageAccountName string
+param storageAccount resource 'Microsoft.Storage/storageAccounts@2021-09-01'
 
 resource systemTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
   name: systemTopicName
@@ -16,7 +17,7 @@ resource systemTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
 
 resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' = {
   name: eventSubName
-  scope: systemTopic
+  scope: storageAccount
   properties: {
     destination: {
       properties: {

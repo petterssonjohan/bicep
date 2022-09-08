@@ -73,3 +73,4 @@ resource storage_queues 'Microsoft.Storage/storageAccounts/queueServices@2021-09
 
 output storageAccountId string = storageAccount.id
 output storageAccountName string = storageAccount.name
+output storageAccount resource = storageAccount
