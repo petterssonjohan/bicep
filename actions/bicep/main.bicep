@@ -2,7 +2,7 @@
 param namePrefix string = 'st'
 
 @description('storage account location')
-param location string = 'west europe' //north eu
+param location string = 'west europe'
 
 targetScope = 'subscription'
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
