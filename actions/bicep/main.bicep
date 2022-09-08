@@ -8,10 +8,22 @@ targetScope = 'subscription'
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: 'rg-${namePrefix}'
   location: location
+  tags: {
+
+  }
 }
 
 module storageAccount 'sa/storage-account.bicep' = {
   name: 'storageAccount'
+  scope: rg
+  params: {
+    location: location
+    namePrefix: namePrefix
+  }
+}
+
+module redis 'redis/redis.bicep' = {
+  name: 'redisCache'
   scope: rg
   params: {
     location: location
