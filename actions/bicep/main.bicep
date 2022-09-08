@@ -40,6 +40,7 @@ module eventGrid '../../modules/eventgrid.bicep' = {
     storageAccountId: storageModule.outputs.storageAccountId
     eventSubName: eventSubName
     storageAccountName: storageModule.outputs.storageAccountName
+    resourceGroupName: rg.name
   }
   scope: rg
 }
