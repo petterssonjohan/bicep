@@ -87,7 +87,7 @@ resource systemTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
 }
 
 @description('Provide the URL for the WebHook to receive events. Create your own endpoint for events.')
-param endpoint string = 'https://'
+param endpoint string = 'https://www.example.com'
 
 resource topicEvent 'Microsoft.EventGrid/systemTopics/eventSubscriptions@2022-06-15' = {
   name: eventSubName
