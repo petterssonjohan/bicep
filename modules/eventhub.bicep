@@ -1,7 +1,7 @@
 param location string
 
 resource ehNamespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' = {
-  name: 'EventhubNamespace'
+  name: 'eventhubnamespace01923843'
   location: location
   sku: {
     name: 'Standard'
