@@ -10,37 +10,46 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module storageModule '../../modules/storages.bicep' = {
-  name: 'storageDeploy'
+module storageAccount 'sa/storage-account.bicep' = {
+  name: 'storageAccount'
+  scope: rg
   params: {
+    location: location
     namePrefix: namePrefix
-    location: location
   }
-  scope: rg
 }
 
-@description('Provide a name for the system topic.')
-param systemTopicName string = 'mystoragesystemtopic'
+// module storageModule '../../modules/storages.bicep' = {
+//   name: 'storageDeploy'
+//   params: {
+//     namePrefix: namePrefix
+//     location: location
+//   }
+//   scope: rg
+// }
 
-@description('Provide a name for the Event Grid subscription.')
-param eventSubName string = 'subToStorage'
-module eventGrid '../../modules/eventgrid.bicep' = {
-  name: 'eventGridDeploy'
-  params: {
-    location: location
-    systemTopicName: systemTopicName
-    storageAccountId: storageModule.outputs.storageAccountId
-    eventSubName: eventSubName
-    storageAccountName: storageModule.outputs.storageAccountName
-    resourceGroupName: rg.name
-  }
-  scope: rg
-}
+// @description('Provide a name for the system topic.')
+// param systemTopicName string = 'mystoragesystemtopic'
 
-module eventHub '../../modules/eventhub.bicep' = {
-  name: 'eventHubDeploy'
-  params: {
-    location: location
-  }
-  scope: rg
-}
+// @description('Provide a name for the Event Grid subscription.')
+// param eventSubName string = 'subToStorage'
+// module eventGrid '../../modules/eventgrid.bicep' = {
+//   name: 'eventGridDeploy'
+//   params: {
+//     location: location
+//     systemTopicName: systemTopicName
+//     storageAccountId: storageModule.outputs.storageAccountId
+//     eventSubName: eventSubName
+//     storageAccountName: storageModule.outputs.storageAccountName
+//     resourceGroupName: rg.name
+//   }
+//   scope: rg
+// }
+
+// module eventHub '../../modules/eventhub.bicep' = {
+//   name: 'eventHubDeploy'
+//   params: {
+//     location: location
+//   }
+//   scope: rg
+// }
