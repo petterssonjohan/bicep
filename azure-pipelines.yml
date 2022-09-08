@@ -13,6 +13,11 @@ pool:
   vmImage: $(vmImageName)
 
 steps:
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)'
+    artifact: 'artifact'
+    publishLocation: 'pipeline'
 - task: DownloadBuildArtifacts@0
   inputs:
     buildType: 'current'
