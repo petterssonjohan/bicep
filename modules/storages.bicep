@@ -71,6 +71,41 @@ resource storage_queues 'Microsoft.Storage/storageAccounts/queueServices@2021-09
   }
 }
 
+@description('Provide a name for the system topic.')
+param systemTopicName string = 'mystoragesystemtopic'
+
+@description('Provide a name for the Event Grid subscription.')
+param eventSubName string = 'subToStorage'
+
+resource systemTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
+  name: systemTopicName
+  location: location
+  properties: {
+    source: storageAccount.id
+    topicType: 'Microsoft.Storage.StorageAccounts'
+  }
+}
+
+resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' = {
+  name: eventSubName
+  scope: storageAccount
+  properties: {
+    destination: {
+      properties: {
+        resourceId: '/subscriptions/bf558742-a412-4a60-88c4-733121e9580f/resourceGroups/rg-st12123123123/providers/Microsoft.Storage/storageAccounts/${storageAccount.name}'
+        queueName: 'default'
+      }
+      endpointType: 'StorageQueue'
+    }
+    filter: {
+      subjectBeginsWith: '/blobServices/default/containers/servicedata'
+      includedEventTypes: [
+        'Microsoft.Storage.BlobCreated'
+      ]
+    }
+  }
+}
+
 output storageAccountId string = storageAccount.id
 output storageAccountName string = storageAccount.name
-output storageAccount resource = storageAccount
+//output storageAccount resource = storageAccount

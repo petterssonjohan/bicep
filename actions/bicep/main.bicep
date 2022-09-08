@@ -26,21 +26,21 @@ module storageModule '../../modules/storages.bicep' = {
 //     namePrefix: namePrefix
 //   }
 // }
-@description('Provide a name for the system topic.')
-param systemTopicName string = 'mystoragesystemtopic'
+// @description('Provide a name for the system topic.')
+// param systemTopicName string = 'mystoragesystemtopic'
 
-@description('Provide a name for the Event Grid subscription.')
-param eventSubName string = 'subToStorage'
-module eventGrid '../../modules/eventgrid.bicep' = {
-  name: 'eventGridDeploy'
-  params: {
-    location: location
-    systemTopicName: systemTopicName
-    storageAccountId: storageModule.outputs.storageAccountId
-    eventSubName: eventSubName
-    resourceGroup: 'rg-${namePrefix}'
-    storageAccountName: storageModule.outputs.storageAccountName
-    storageAccount: storageModule.outputs.storageAccount
-  }
-  scope: rg
-}
+// @description('Provide a name for the Event Grid subscription.')
+// param eventSubName string = 'subToStorage'
+// module eventGrid '../../modules/eventgrid.bicep' = {
+//   name: 'eventGridDeploy'
+//   params: {
+//     location: location
+//     systemTopicName: systemTopicName
+//     storageAccountId: storageModule.outputs.storageAccountId
+//     eventSubName: eventSubName
+//     resourceGroup: 'rg-${namePrefix}'
+//     storageAccountName: storageModule.outputs.storageAccountName
+//     storageAccount: storageModule.outputs.storageAccount
+//   }
+//   scope: rg
+// }
