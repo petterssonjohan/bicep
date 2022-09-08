@@ -13,11 +13,17 @@ pool:
   vmImage: $(vmImageName)
 
 steps:
-  - task: AzureCLI@2
-    inputs:
-      azureSubscription: $(azureServiceConnection)
-      scriptType: bash
-      scriptLocation: inlineScript
-      inlineScript: |
-        az --version
-        az deployment sub create -f $(Agent.BuildDirectory)/bicep/actions/bicep/main.bicep --location westeurope --parameters @parameters.json
+- task: DownloadBuildArtifacts@0
+  inputs:
+    buildType: 'current'
+    downloadType: 'single'
+    artifactName: 'artifact'
+    downloadPath: '$(System.ArtifactsDirectory)'
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: $(azureServiceConnection)
+    scriptType: bash
+    scriptLocation: inlineScript
+    inlineScript: |
+      az --version
+      az deployment sub create -f $(System.ArtifactsDirectory)/bicep/actions/bicep/main.bicep --location westeurope --parameters @parameters.json
