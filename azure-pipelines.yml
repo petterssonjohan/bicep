@@ -5,11 +5,10 @@ name: Deploy Bicep files
 
 variables:
   vmImageName: "ubuntu-latest"
-
   azureServiceConnection: "scarm"
-  resourceGroupName: "exampleRG"
-  location: "westeurope"
-  templateFile: "$(Build.ArtifactStagingDirectory)/bicep/actions/bicep/main.bicep"
+  resourceGroupName: "rg-stzmx"
+  location: "west europe"
+  templateFile: "main.bicep"
 pool:
   vmImage: $(vmImageName)
 
@@ -21,4 +20,4 @@ steps:
       scriptLocation: inlineScript
       inlineScript: |
         az --version
-        az deployment sub create -f ./main.bicep --location westeurope --parameters @parameters.json
+        az deployment sub create -f $(Agent.BuildDirectory)/bicep/actions/bicep/main.bicep --location westeurope --parameters @parameters.json
