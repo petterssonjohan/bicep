@@ -70,6 +70,10 @@ resource storage_queues 'Microsoft.Storage/storageAccounts/queueServices@2021-09
   properties: {
   }
 }
+resource storage_queue 'Microsoft.Storage/storageAccounts/queueServices/queues@2021-09-01' = {
+  name: 'default'
+  parent: storage_queues
+}
 
 @description('Provide a name for the system topic.')
 param systemTopicName string = 'mystoragesystemtopic'
