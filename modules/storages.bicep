@@ -109,7 +109,7 @@ resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' = {
   properties: {
     destination: {
       properties: {
-        resourceId: '/subscriptions/bf558742-a412-4a60-88c4-733121e9580f/resourceGroups/rg-st12123123123/providers/Microsoft.EventGrid/systemTopics/mystoragesystemtopic'
+        resourceId: '/subscriptions/bf558742-a412-4a60-88c4-733121e9580f/resourceGroups/rg-st12123123123/providers/Microsoft.Storage/storageAccounts/${storageAccount.name}'
         queueName: 'default'
       }
       endpointType: 'StorageQueue'
