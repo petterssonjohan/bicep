@@ -75,57 +75,42 @@ resource storage_queue 'Microsoft.Storage/storageAccounts/queueServices/queues@2
   parent: storage_queues
 }
 
-@description('Provide a name for the system topic.')
-param systemTopicName string = 'mystoragesystemtopic'
+// @description('Provide a name for the system topic.')
+// param systemTopicName string = 'mystoragesystemtopic'
 
-@description('Provide a name for the Event Grid subscription.')
-param eventSubName string = 'subToStorage'
+// @description('Provide a name for the Event Grid subscription.')
+// param eventSubName string = 'subToStorage'
 
-resource systemTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
-  name: systemTopicName
-  location: location
-  properties: {
-    source: storageAccount.id
-    topicType: 'Microsoft.Storage.StorageAccounts'
-  }
-}
+// resource systemTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
+//   name: systemTopicName
+//   location: location
+//   properties: {
+//     source: storageAccount.id
+//     topicType: 'Microsoft.Storage.StorageAccounts'
+//   }
+// }
 
-@description('Provide the URL for the WebHook to receive events. Create your own endpoint for events.')
-param endpoint string = 'https://www.example.com'
+// @description('Provide the URL for the WebHook to receive events. Create your own endpoint for events.')
+// param endpoint string = 'https://www.example.com'
 
-resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' = {
-  name: eventSubName
-  //parent: systemTopic
-  // properties: {
-  //   destination: {
-  //     properties: {
-  //       endpointUrl: endpoint
-  //     }
-  //     endpointType: 'WebHook'
-  //   }
-  //   filter: {
-  //     includedEventTypes: [
-  //       'Microsoft.Storage.BlobCreated'
-  //       'Microsoft.Storage.BlobDeleted'
-  //     ]
-  //   }
-  // }
-  properties: {
-    destination: {
-      properties: {
-        resourceId: '/subscriptions/bf558742-a412-4a60-88c4-733121e9580f/resourceGroups/rg-st12123123123/providers/Microsoft.Storage/storageAccounts/${storageAccount.name}'
-        queueName: 'default'
-      }
-      endpointType: 'StorageQueue'
-    }
-    filter: {
-      subjectBeginsWith: '/blobServices/default/containers/servicedata'
-      includedEventTypes: [
-        'Microsoft.Storage.BlobCreated'
-      ]
-    }
-  }
-}
+// resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' = {
+//   name: eventSubName
+//   properties: {
+//     destination: {
+//       properties: {
+//         resourceId: '/subscriptions/bf558742-a412-4a60-88c4-733121e9580f/resourceGroups/rg-st12123123123/providers/Microsoft.Storage/storageAccounts/${storageAccount.name}'
+//         queueName: 'default'
+//       }
+//       endpointType: 'StorageQueue'
+//     }
+//     filter: {
+//       subjectBeginsWith: '/blobServices/default/containers/servicedata'
+//       includedEventTypes: [
+//         'Microsoft.Storage.BlobCreated'
+//       ]
+//     }
+//   }
+// }
 
 output storageAccountId string = storageAccount.id
 output storageAccountName string = storageAccount.name
