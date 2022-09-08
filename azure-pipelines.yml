@@ -6,7 +6,7 @@ name: Deploy Bicep files
 variables:
   vmImageName: "ubuntu-latest"
 
-  azureServiceConnection: "scname"
+  azureServiceConnection: "scarm"
   resourceGroupName: "exampleRG"
   location: "westeurope"
   templateFile: "main.bicep"
