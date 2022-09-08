@@ -31,6 +31,11 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_SPN_CREDENTIAL }}
 
+      - name: Set Environment Variables
+        uses: tw3lveparsecs/github-actions-setvars@v0.1
+        with:
+          envFilePath: "${{github.workspace}}/.env"
+
       - name: "deploy storage account bicep"
         working-directory: "${{github.workspace}}/actions/bicep"
         run: |
@@ -52,6 +57,11 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_SPN_CREDENTIAL }}
+
+      - name: Set Environment Variables
+        uses: tw3lveparsecs/github-actions-setvars@v0.1
+        with:
+          envFilePath: "${{github.workspace}}/.env"
 
       - name: "deploy storage account bicep"
         working-directory: "${{github.workspace}}/actions/bicep"
