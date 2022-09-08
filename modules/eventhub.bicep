@@ -26,7 +26,7 @@ resource eventHubAccessPolicyListen 'Microsoft.EventHub/namespaces/authorization
   name: 'asa-servicedataproc-listen'
   parent: ehNamespace
   properties: {
-    rights: [ 'listen ' ]
+    rights: [ 'Listen' ]
   }
 }
 
@@ -34,7 +34,7 @@ resource eventHubAccessPolicySend 'Microsoft.EventHub/namespaces/authorizationRu
   name: 'af-data-servicedataproc-send'
   parent: ehNamespace
   properties: {
-    rights: [ 'send ' ]
+    rights: [ 'Send' ]
   }
 }
 
