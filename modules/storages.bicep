@@ -67,6 +67,9 @@ resource management_policies 'Microsoft.Storage/storageAccounts/managementPolici
 resource storage_queues 'Microsoft.Storage/storageAccounts/queueServices@2021-09-01' = {
   name: 'default'
   parent: storageAccount
+  properties: {
+  }
 }
 
 output storageAccountId string = storageAccount.id
+output storageAccountName string = storageAccount.name

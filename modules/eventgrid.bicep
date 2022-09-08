@@ -1,26 +1,25 @@
-param namePrefix string
+param systemTopicName string
 param location string
-param blobSourceId string
+param storageAccountId string
+param eventSubName string
+param resourceGroup string
+param storageAccountName string
 
-resource eventTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
-  name: '${namePrefix}-topic'
+resource systemTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
+  name: systemTopicName
   location: location
   properties: {
-    source: blobSourceId
+    source: storageAccountId
     topicType: 'Microsoft.Storage.StorageAccounts'
   }
 }
 
 resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' = {
-  dependsOn: [
-    eventTopic
-  ]
-  name: '${namePrefix}-event'
+  name: eventSubName
   properties: {
-
     destination: {
       properties: {
-        resourceId: '/subscriptions/bf558742-a412-4a60-88c4-733121e9580f/resourceGroups/rg-${namePrefix}/providers/Microsoft.Storage/storageaccounts/${namePrefix}'
+        resourceId: '/subscriptions/bf558742-a412-4a60-88c4-733121e9580f/resourceGroups/${resourceGroup}/providers/Microsoft.Storage/storageaccounts/${storageAccountName}'
         queueName: 'default'
       }
       endpointType: 'StorageQueue'
@@ -30,13 +29,6 @@ resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' = {
       includedEventTypes: [
         'Microsoft.Storage.BlobCreated'
       ]
-      enableAdvancedFilteringOnArrays: false
-    }
-
-    eventDeliverySchema: 'EventGridSchema'
-    retryPolicy: {
-      maxDeliveryAttempts: 30
-      eventTimeToLiveInMinutes: 1440
     }
   }
 }
