@@ -3,11 +3,23 @@ param location string
 resource ehNamespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' = {
   name: 'EventhubNamespace'
   location: location
+  sku: {
+    name: 'Standard'
+    tier: 'Standard'
+    capacity: 1
+  }
+  properties: {
+    zoneRedundant: true
+  }
 }
 
 resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-01-01-preview' = {
   name: 'eventhub'
   parent: ehNamespace
+  properties: {
+    messageRetentionInDays: 7
+    partitionCount: 2
+  }
 }
 
 resource eventHubAccessPolicyListen 'Microsoft.EventHub/namespaces/authorizationRules@2022-01-01-preview' = {
