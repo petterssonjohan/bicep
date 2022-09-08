@@ -19,14 +19,6 @@ module storageModule '../../modules/storages.bicep' = {
   scope: rg
 }
 
-// amodule serviceBus '../../modules/serviceBus.bicep' = {
-//   name: 'serviceBusDeploy'
-//   params: {
-//     location: location
-//     namePrefix: namePrefix
-//   }
-// }
-
 @description('Provide a name for the system topic.')
 param systemTopicName string = 'mystoragesystemtopic'
 
@@ -41,6 +33,14 @@ module eventGrid '../../modules/eventgrid.bicep' = {
     eventSubName: eventSubName
     storageAccountName: storageModule.outputs.storageAccountName
     resourceGroupName: rg.name
+  }
+  scope: rg
+}
+
+module eventHub '../../modules/eventhub.bicep' = {
+  name: 'eventHubDeploy'
+  params: {
+    location: location
   }
   scope: rg
 }
