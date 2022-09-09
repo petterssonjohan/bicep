@@ -17,3 +17,5 @@ resource servicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
     'RUNTIME-ENVIRONMENT': 'test' //ENVIRONMENT_TYPE
   }
 }
+output hostingPlanId string = servicePlan.id
+output hostingPlan object = servicePlan

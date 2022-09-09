@@ -28,6 +28,8 @@ module redis 'redis/redis.bicep' = {
   params: {
     location: location
     namePrefix: namePrefix
+    dmsResourceGroup: 'dmsResourceGroup'
+    dmsSubscriptionID: 'bf558742-a412-4a60-88c4-733121e9580f'
   }
 }
 

@@ -11,7 +11,6 @@ module storageModule '../../../modules/storages.bicep' = {
 
 @description('Provide a name for the system topic.')
 param systemTopicName string = 'mystoragesystemtopic'
-
 @description('Provide a name for the Event Grid subscription.')
 param eventSubName string = 'subToStorage'
 module eventGrid '../../../modules/eventgrid.bicep' = {

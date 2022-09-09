@@ -1,7 +1,10 @@
 param namePrefix string
 param location string
 
-module reditModule '../../../modules/redis.bicep' = {
+param dmsResourceGroup string
+param dmsSubscriptionID string
+
+module redisModule '../../../modules/redis.bicep' = {
   name: 'redisDeploy'
   params: {
     namePrefix: namePrefix
@@ -15,4 +18,33 @@ module servicePlanModule '../../../modules/serviceplan.bicep' = {
     namePrefix: namePrefix
     location: location
   }
+}
+
+module subnetForDeviceContextWithNat '../../../modules/subnet.bicep' = {
+  name: 'subnetDeploy'
+  params: {
+    namePrefix: namePrefix
+    location: location
+  }
+  scope: resourceGroup(dmsSubscriptionID, dmsResourceGroup)
+}
+
+module deviceContextFunction '../../../modules/azure-function-devicecontext.bicep' = {
+  name: 'deviceContextFunction'
+  params: {
+    hostingPlanId: servicePlanModule.outputs.hostingPlanId
+    location: location
+    namePrefix: namePrefix
+  }
+  dependsOn: [ servicePlanModule ]
+}
+
+module serviceDataFunction '../../../modules/azure-function-servicedata.bicep' = {
+  name: 'serviceDataFunction'
+  params: {
+    hostingPlanId: servicePlanModule.outputs.hostingPlanId
+    location: location
+    namePrefix: namePrefix
+  }
+  dependsOn: [ servicePlanModule ]
 }
