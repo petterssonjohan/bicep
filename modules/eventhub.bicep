@@ -1,7 +1,8 @@
 param location string
+param namePrefix string
 
 resource ehNamespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' = {
-  name: 'eventhubnamespace01923843'
+  name: '${namePrefix}-eventhub-namespace'
   location: location
   sku: {
     name: 'Standard'
@@ -20,7 +21,7 @@ resource ehNamespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' = {
 }
 
 resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-01-01-preview' = {
-  name: 'eventhub'
+  name: '${namePrefix}-eventhub'
   parent: ehNamespace
   properties: {
     messageRetentionInDays: 7
@@ -29,7 +30,7 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-01-01-preview' =
 }
 
 resource eventHubAccessPolicyListen 'Microsoft.EventHub/namespaces/authorizationRules@2022-01-01-preview' = {
-  name: 'asa-servicedataproc-listen'
+  name: '${namePrefix}-asa-servicedataproc-listen'
   parent: ehNamespace
   properties: {
     rights: [ 'Listen' ]
@@ -37,7 +38,7 @@ resource eventHubAccessPolicyListen 'Microsoft.EventHub/namespaces/authorization
 }
 
 resource eventHubAccessPolicySend 'Microsoft.EventHub/namespaces/authorizationRules@2022-01-01-preview' = {
-  name: 'af-data-servicedataproc-send'
+  name: '${namePrefix}-af-data-servicedataproc-send'
   parent: ehNamespace
   properties: {
     rights: [ 'Send' ]
@@ -45,6 +46,6 @@ resource eventHubAccessPolicySend 'Microsoft.EventHub/namespaces/authorizationRu
 }
 
 resource eventHubConsumerGroup 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2022-01-01-preview' = {
-  name: 'evhcg-asa-customer-fanout'
+  name: '${namePrefix}-evhcg-asa-customer-fanout'
   parent: eventHub
 }

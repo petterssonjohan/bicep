@@ -33,3 +33,5 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
     'RUNTIME-ENVIRONMENT': 'test' //ENVIRONMENT_TYPE
   }
 }
+
+//Function to Subnet configuration missing below..?

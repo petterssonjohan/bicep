@@ -3,7 +3,7 @@ param namePrefix string
 
 //Create a storage account
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
-  name: namePrefix
+  name: '${namePrefix}-storageaccount'
   location: location
   kind: 'StorageV2'
   properties: {
@@ -76,7 +76,7 @@ resource storage_queues 'Microsoft.Storage/storageAccounts/queueServices@2021-09
   }
 }
 resource storage_queue 'Microsoft.Storage/storageAccounts/queueServices/queues@2021-09-01' = {
-  name: 'default'
+  name: '${namePrefix}-queue'
   parent: storage_queues
 }
 

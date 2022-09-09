@@ -1,12 +1,11 @@
-param systemTopicName string
 param location string
 param storageAccountId string
 param storageAccountName string
-param eventSubName string
 param resourceGroupName string
+param namePrefix string
 
 resource systemTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
-  name: systemTopicName
+  name: '${namePrefix}-systemtopic'
   location: location
   properties: {
     source: storageAccountId
@@ -19,7 +18,7 @@ resource systemTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
 }
 
 resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' = {
-  name: eventSubName
+  name: '${namePrefix}-eventsubscription'
   properties: {
     destination: {
       properties: {

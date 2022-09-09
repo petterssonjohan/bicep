@@ -8,7 +8,7 @@ targetScope = 'subscription'
 
 /* Will Create a new Resource Group */
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-  name: 'rg-${namePrefix}'
+  name: '${namePrefix}-rg'
   location: location
   tags: {
 
