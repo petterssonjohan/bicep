@@ -10,6 +10,8 @@ resource ehNamespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' = {
   }
   properties: {
     zoneRedundant: true
+    isAutoInflateEnabled: true
+    maximumThroughputUnits: 20
   }
   tags: {
     'BUSINESS-AREA': 'SPT'

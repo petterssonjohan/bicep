@@ -17,6 +17,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
     'RUNTIME-ENVIRONMENT': 'test' //ENVIRONMENT_TYPE
   }
 }
+var azStorageAccountPrimaryAccessKey = listKeys(storageAccount.id, storageAccount.apiVersion).keys[0].value
 
 // Create a storage blob container for service data and for device context
 var containers = [ 'servicedata', 'devicecontext' ]
@@ -81,3 +82,4 @@ resource storage_queue 'Microsoft.Storage/storageAccounts/queueServices/queues@2
 
 output storageAccountId string = storageAccount.id
 output storageAccountName string = storageAccount.name
+output azStorageAccountPrimaryAccessKey string = azStorageAccountPrimaryAccessKey

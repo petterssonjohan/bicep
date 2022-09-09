@@ -1,8 +1,8 @@
 param namePrefix string
 param location string
 
-module redisModule '../../../modules/redis.bicep' = {
-  name: 'redisDeploy'
+module subnetForDeviceContextWithNat '../../../modules/subnet.bicep' = {
+  name: 'subnetDeploy'
   params: {
     namePrefix: namePrefix
     location: location

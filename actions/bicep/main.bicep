@@ -5,6 +5,8 @@ param namePrefix string = 'st'
 param location string = 'west europe'
 
 targetScope = 'subscription'
+
+/* Will Create a new Resource Group */
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: 'rg-${namePrefix}'
   location: location
@@ -13,6 +15,7 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   }
 }
 
+/* Will Create Storage Account, Containers, Policies, Queue Service, Event Grid and EventHub */
 module storageAccount 'sa/storage-account.bicep' = {
   name: 'storageAccount'
   scope: rg
@@ -22,48 +25,56 @@ module storageAccount 'sa/storage-account.bicep' = {
   }
 }
 
+/* Will Create System Topic, Event Subscription, EventHub with Access Policies and Consumer Group  */
+module events 'events/events.bicep' = {
+  name: 'events'
+  scope: rg
+  params: {
+    location: location
+    namePrefix: namePrefix
+    storageAccountId: storageAccount.outputs.storageAccountId
+    storageAccountName: storageAccount.outputs.storageAccountName
+  }
+}
+
+/* Will Create Redis Cache */
 module redis 'redis/redis.bicep' = {
   name: 'redisCache'
   scope: rg
   params: {
     location: location
     namePrefix: namePrefix
-    dmsResourceGroup: 'dmsResourceGroup'
-    dmsSubscriptionID: 'bf558742-a412-4a60-88c4-733121e9580f'
   }
 }
 
-// module storageModule '../../modules/storages.bicep' = {
-//   name: 'storageDeploy'
-//   params: {
-//     namePrefix: namePrefix
-//     location: location
-//   }
-//   scope: rg
-// }
+/* Will Create a Service Plan, used by for example the functions created later in this document */
+module servicePlan 'serviceplan/serviceplan.bicep' = {
+  name: 'servicePlan'
+  scope: rg
+  params: {
+    location: location
+    namePrefix: namePrefix
+  }
+}
 
-// @description('Provide a name for the system topic.')
-// param systemTopicName string = 'mystoragesystemtopic'
+/* Will Create VNet and Nat instances, using expected pre-existing resource group at target subscriptionId in Azure
+ie; differ from other resources in the newly created resource group.  */
+module network 'vnet/network.bicep' = {
+  name: 'network'
+  scope: resourceGroup('bf558742-a412-4a60-88c4-733121e9580f', 'dmsResourceGroup')
+  params: {
+    location: location
+    namePrefix: namePrefix
+  }
+}
 
-// @description('Provide a name for the Event Grid subscription.')
-// param eventSubName string = 'subToStorage'
-// module eventGrid '../../modules/eventgrid.bicep' = {
-//   name: 'eventGridDeploy'
-//   params: {
-//     location: location
-//     systemTopicName: systemTopicName
-//     storageAccountId: storageModule.outputs.storageAccountId
-//     eventSubName: eventSubName
-//     storageAccountName: storageModule.outputs.storageAccountName
-//     resourceGroupName: rg.name
-//   }
-//   scope: rg
-// }
-
-// module eventHub '../../modules/eventhub.bicep' = {
-//   name: 'eventHubDeploy'
-//   params: {
-//     location: location
-//   }
-//   scope: rg
-// }
+/* Will Create Functions hosted by the service plan */
+module functions 'functions/azure-functions.bicep' = {
+  name: 'functions'
+  scope: rg
+  params: {
+    location: location
+    namePrefix: namePrefix
+    hostingPlanId: servicePlan.outputs.hostingPlanId
+  }
+}

@@ -8,26 +8,5 @@ module storageModule '../../../modules/storages.bicep' = {
     location: location
   }
 }
-
-@description('Provide a name for the system topic.')
-param systemTopicName string = 'mystoragesystemtopic'
-@description('Provide a name for the Event Grid subscription.')
-param eventSubName string = 'subToStorage'
-module eventGrid '../../../modules/eventgrid.bicep' = {
-  name: 'eventGridDeploy'
-  params: {
-    location: location
-    systemTopicName: systemTopicName
-    storageAccountId: storageModule.outputs.storageAccountId
-    eventSubName: eventSubName
-    storageAccountName: storageModule.outputs.storageAccountName
-    resourceGroupName: 'rg-${namePrefix}'
-  }
-}
-
-module eventHub '../../../modules/eventhub.bicep' = {
-  name: 'eventHubDeploy'
-  params: {
-    location: location
-  }
-}
+output storageAccountId string = storageModule.outputs.storageAccountId
+output storageAccountName string = storageModule.outputs.storageAccountName

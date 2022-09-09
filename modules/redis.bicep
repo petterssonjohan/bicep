@@ -1,7 +1,7 @@
 param namePrefix string
 param location string
 
-resource redisMo 'Microsoft.Cache/redis@2020-06-01' = {
+resource redisCache 'Microsoft.Cache/redis@2020-06-01' = {
   name: '${namePrefix}-redis-tEsT'
   location: location
   tags: {
