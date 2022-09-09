@@ -22,7 +22,7 @@ var azStorageAccountPrimaryAccessKey = listKeys(storageAccount.id, storageAccoun
 // Create a storage blob container for service data and for device context
 var containers = [ 'servicedata', 'devicecontext' ]
 resource storageContainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-09-01' = [for container in containers: {
-  name: '${namePrefix}/default/${container}'
+  name: '${namePrefix}storage/default/${container}'
   properties: {
     publicAccess: 'None'
     metadata: {}

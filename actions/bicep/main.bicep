@@ -10,9 +10,6 @@ targetScope = 'subscription'
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: '${namePrefix}-rg'
   location: location
-  tags: {
-
-  }
 }
 
 /* Will Create Storage Account, Containers, Policies, Queue Service, Event Grid and EventHub */
