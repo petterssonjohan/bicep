@@ -3,7 +3,7 @@ param namePrefix string
 
 //Create a storage account
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
-  name: '${namePrefix}-storage'
+  name: '${namePrefix}storage'
   location: location
   kind: 'StorageV2'
   properties: {
