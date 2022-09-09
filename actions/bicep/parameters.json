@@ -7,9 +7,6 @@
       },
       "location": {
         "value": "west europe"
-      },
-      "tags": {
-        "value": "BUSINESS-AREA=SPT RUNTIME-ENVIRONMENT=test"
       }
     }
   }
