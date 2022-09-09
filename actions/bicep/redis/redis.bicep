@@ -8,3 +8,11 @@ module reditModule '../../../modules/redis.bicep' = {
     location: location
   }
 }
+
+module servicePlanModule '../../../modules/serviceplan.bicep' = {
+  name: 'servicePlanDeploy'
+  params: {
+    namePrefix: namePrefix
+    location: location
+  }
+}
