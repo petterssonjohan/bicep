@@ -9,7 +9,7 @@ module eventGrid '../../../modules/eventgrid.bicep' = {
     location: location
     storageAccountId: storageAccountId
     storageAccountName: storageAccountName
-    resourceGroupName: 'rg-${namePrefix}'
+    resourceGroupName: '${namePrefix}-rg'
     namePrefix: namePrefix
   }
 }
