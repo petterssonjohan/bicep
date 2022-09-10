@@ -22,7 +22,8 @@ resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' = {
   properties: {
     destination: {
       properties: {
-        resourceId: '/subscriptions/bf558742-a412-4a60-88c4-733121e9580f/resourceGroups/${resourceGroupName}/providers/Microsoft.Storage/storageAccounts/${storageAccountName}'
+        //resourceId: '/subscriptions/bf558742-a412-4a60-88c4-733121e9580f/resourceGroups/${resourceGroupName}/providers/Microsoft.Storage/storageAccounts/${storageAccountName}'
+        resourceId: '/subscriptions/bf558742-a412-4a60-88c4-733121e9580f/resourceGroups/ctress-rg/providers/Microsoft.Storage/storageAccounts/ctressstorage'
         queueName: 'default'
       }
       endpointType: 'StorageQueue'
