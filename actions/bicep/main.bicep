@@ -1,3 +1,6 @@
+@description('Subscription ID in Azure')
+param subscriptionId string
+
 @description('storage account name')
 param namePrefix string = 'st'
 
@@ -29,7 +32,7 @@ module events 'events/events.bicep' = {
   params: {
     location: location
     namePrefix: namePrefix
-    storageAccountId: storageAccount.outputs.storageAccountId
+    subscriptionId: subscriptionId
     storageAccountName: storageAccount.outputs.storageAccountName
   }
 }
@@ -58,7 +61,7 @@ module servicePlan 'serviceplan/serviceplan.bicep' = {
 ie; differ from other resources in the newly created resource group.  */
 module network 'vnet/network.bicep' = {
   name: 'network'
-  scope: resourceGroup('bf558742-a412-4a60-88c4-733121e9580f', 'dmsResourceGroup')
+  scope: resourceGroup(subscriptionId, 'dmsResourceGroup')
   params: {
     location: location
     namePrefix: namePrefix

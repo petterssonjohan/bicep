@@ -1,10 +1,10 @@
-param location string
+//param location string
 param namePrefix string
 
-param storageAccountId string
+//param storageAccountId string
 param storageAccountName string
 param resourceGroupName string
-
+param subscriptionId string
 // resource systemTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
 //   name: '${namePrefix}-systemtopic'
 //   location: location
@@ -23,7 +23,7 @@ resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' = {
   properties: {
     destination: {
       properties: {
-        resourceId: '/subscriptions/bf558742-a412-4a60-88c4-733121e9580f/resourceGroups/${resourceGroupName}/providers/Microsoft.Storage/storageAccounts/${storageAccountName}'
+        resourceId: '/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.Storage/storageAccounts/${storageAccountName}'
         queueName: '${namePrefix}-queue'
       }
       endpointType: 'StorageQueue'
