@@ -5,18 +5,18 @@ param storageAccountId string
 param storageAccountName string
 param resourceGroupName string
 
-resource systemTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
-  name: '${namePrefix}-systemtopic'
-  location: location
-  properties: {
-    source: storageAccountId
-    topicType: 'Microsoft.Storage.StorageAccounts'
-  }
-  tags: {
-    'BUSINESS-AREA': 'SPT'
-    'RUNTIME-ENVIRONMENT': 'test' //ENVIRONMENT_TYPE
-  }
-}
+// resource systemTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
+//   name: '${namePrefix}-systemtopic'
+//   location: location
+//   properties: {
+//     source: storageAccountId
+//     topicType: 'Microsoft.Storage.StorageAccounts'
+//   }
+//   tags: {
+//     'BUSINESS-AREA': 'SPT'
+//     'RUNTIME-ENVIRONMENT': 'test' //ENVIRONMENT_TYPE
+//   }
+// }
 
 resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' = {
   name: '${namePrefix}-eventsubscription'
