@@ -18,21 +18,21 @@ resource systemTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
   }
 }
 
-resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' = {
-  name: '${namePrefix}-eventsubscription'
-  properties: {
-    destination: {
-      properties: {
-        resourceId: '/subscriptions/bf558742-a412-4a60-88c4-733121e9580f/resourceGroups/${resourceGroupName}/providers/Microsoft.Storage/storageAccounts/${storageAccountName}'
-        queueName: 'default'
-      }
-      endpointType: 'StorageQueue'
-    }
-    filter: {
-      subjectBeginsWith: '/blobServices/default/containers/servicedata'
-      includedEventTypes: [
-        'Microsoft.Storage.BlobCreated'
-      ]
-    }
-  }
-}
+// resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' = {
+//   name: '${namePrefix}-eventsubscription'
+//   properties: {
+//     destination: {
+//       properties: {
+//         resourceId: '/subscriptions/bf558742-a412-4a60-88c4-733121e9580f/resourceGroups/${resourceGroupName}/providers/Microsoft.Storage/storageAccounts/${storageAccountName}'
+//         queueName: 'default'
+//       }
+//       endpointType: 'StorageQueue'
+//     }
+//     filter: {
+//       subjectBeginsWith: '/blobServices/default/containers/servicedata'
+//       includedEventTypes: [
+//         'Microsoft.Storage.BlobCreated'
+//       ]
+//     }
+//   }
+// }
