@@ -1,8 +1,9 @@
 param location string
+param namePrefix string
+
 param storageAccountId string
 param storageAccountName string
 param resourceGroupName string
-param namePrefix string
 
 resource systemTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
   name: '${namePrefix}-systemtopic'
@@ -27,11 +28,11 @@ resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' = {
       }
       endpointType: 'StorageQueue'
     }
-    // filter: {
-    //   subjectBeginsWith: '/blobServices/default/containers/servicedata'
-    //   includedEventTypes: [
-    //     'Microsoft.Storage.BlobCreated'
-    //   ]
-    // }
+    filter: {
+      subjectBeginsWith: '/blobServices/default/containers/servicedata'
+      includedEventTypes: [
+        'Microsoft.Storage.BlobCreated'
+      ]
+    }
   }
 }
