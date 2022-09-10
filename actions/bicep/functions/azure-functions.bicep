@@ -3,7 +3,7 @@ param location string
 param hostingPlanId string
 
 module deviceContextFunction '../../../modules/azure-function-devicecontext.bicep' = {
-  name: 'deviceContextFunction'
+  name: '${namePrefix}-func-devicecontext-deploy'
   params: {
     hostingPlanId: hostingPlanId
     location: location
@@ -12,7 +12,7 @@ module deviceContextFunction '../../../modules/azure-function-devicecontext.bice
 }
 
 module serviceDataFunction '../../../modules/azure-function-servicedata.bicep' = {
-  name: 'serviceDataFunction'
+  name: '${namePrefix}-func-servicedata-deploy'
   params: {
     hostingPlanId: hostingPlanId
     location: location

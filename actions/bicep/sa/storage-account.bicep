@@ -2,7 +2,7 @@ param namePrefix string
 param location string
 
 module storageModule '../../../modules/storages.bicep' = {
-  name: 'storageDeploy'
+  name: '${namePrefix}-storage-deploy'
   params: {
     namePrefix: namePrefix
     location: location

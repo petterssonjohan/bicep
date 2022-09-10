@@ -3,7 +3,7 @@ param location string
 param storageAccountName string
 param subscriptionId string
 module eventGrid '../../../modules/eventgrid.bicep' = {
-  name: 'eventGridDeploy'
+  name: '${namePrefix}-eventgrid-deploy'
   params: {
     subscriptionId: subscriptionId
     storageAccountName: storageAccountName
@@ -13,7 +13,7 @@ module eventGrid '../../../modules/eventgrid.bicep' = {
 }
 
 module eventHub '../../../modules/eventhub.bicep' = {
-  name: 'eventHubDeploy'
+  name: '${namePrefix}-eventhub-deploy'
   params: {
     location: location
     namePrefix: namePrefix

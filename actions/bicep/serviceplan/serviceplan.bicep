@@ -2,7 +2,7 @@ param namePrefix string
 param location string
 
 module servicePlanModule '../../../modules/serviceplan.bicep' = {
-  name: 'servicePlanDeploy'
+  name: '${namePrefix}-serviceplan-deploy'
   params: {
     namePrefix: namePrefix
     location: location
