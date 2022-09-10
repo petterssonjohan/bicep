@@ -2,7 +2,7 @@
 param subscriptionId string
 
 @description('storage account name')
-param namePrefix string = 'st'
+param namePrefix string = 'prefix'
 
 @description('storage account location')
 param location string = 'west europe'

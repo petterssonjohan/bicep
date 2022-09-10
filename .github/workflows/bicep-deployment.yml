@@ -39,7 +39,7 @@ jobs:
       - name: "deploy storage account bicep"
         working-directory: "${{github.workspace}}/actions/bicep"
         run: |
-          az deployment sub create --what-if -f ./main.bicep --parameters @parameters.json
+          az deployment sub create --what-if -f ./main.bicep --location westeurope --parameters @parameters.json
 
   bicep_deployment:
     name: bicep deployment
@@ -66,4 +66,4 @@ jobs:
       - name: "deploy storage account bicep"
         working-directory: "${{github.workspace}}/actions/bicep"
         run: |
-          az deployment sub create -f ./main.bicep --parameters @parameters.json
+          az deployment sub create -f ./main.bicep --location westeurope --parameters @parameters.json
