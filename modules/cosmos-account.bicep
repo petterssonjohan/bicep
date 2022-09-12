@@ -55,7 +55,7 @@ resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/container
       }
     }
     resource: {
-      id: 'data-serial-${namePrefix}'
+      id: 'data-${namePrefix}'
       partitionKey: {
         paths: [
           '/Serial'
