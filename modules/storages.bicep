@@ -1,5 +1,6 @@
 param location string
 param namePrefix string
+param tags object
 
 //Create a storage account
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
@@ -12,10 +13,12 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   sku: {
     name: 'Standard_LRS'
   }
-  tags: {
-    'BUSINESS-AREA': 'SPT'
-    'RUNTIME-ENVIRONMENT': 'test' //ENVIRONMENT_TYPE
-  }
+  tags: tags
+  //tags: {
+
+  //'BUSINESS-AREA': 'SPT'
+  //'RUNTIME-ENVIRONMENT': 'test' //ENVIRONMENT_TYPE
+  //}
 }
 var azStorageAccountPrimaryAccessKey = listKeys(storageAccount.id, storageAccount.apiVersion).keys[0].value
 

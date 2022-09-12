@@ -7,6 +7,9 @@ param namePrefix string = 'prefix'
 @description('storage account location')
 param location string = 'west europe'
 
+@description('tags')
+param tags object
+
 targetScope = 'subscription'
 
 /* Will Create a new Resource Group */
@@ -22,6 +25,7 @@ module storageAccount 'sa/storage-account.bicep' = {
   params: {
     location: location
     namePrefix: namePrefix
+    tags: tags
   }
 }
 
