@@ -3,7 +3,7 @@ param namePrefix string
 param tags object
 
 resource ehNamespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' = {
-  name: '${namePrefix}-eventhub-namespace'
+  name: 'spt-weu-evhns-servicedataproc-${namePrefix}-${tags['RUNTIME-ENVIRONMENT']}'
   location: location
   sku: {
     name: 'Standard'
@@ -19,7 +19,7 @@ resource ehNamespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' = {
 }
 
 resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-01-01-preview' = {
-  name: '${namePrefix}-eventhub'
+  name: 'spt-weu-evh-servicedataproc-${namePrefix}-${tags['RUNTIME-ENVIRONMENT']}'
   parent: ehNamespace
   properties: {
     messageRetentionInDays: 7
@@ -28,7 +28,7 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-01-01-preview' =
 }
 
 resource eventHubAccessPolicyListen 'Microsoft.EventHub/namespaces/authorizationRules@2022-01-01-preview' = {
-  name: '${namePrefix}-asa-servicedataproc-listen'
+  name: 'asa-servicedataproc-listen-${namePrefix}'
   parent: ehNamespace
   properties: {
     rights: [ 'Listen' ]
@@ -36,7 +36,7 @@ resource eventHubAccessPolicyListen 'Microsoft.EventHub/namespaces/authorization
 }
 
 resource eventHubAccessPolicySend 'Microsoft.EventHub/namespaces/authorizationRules@2022-01-01-preview' = {
-  name: '${namePrefix}-af-data-servicedataproc-send'
+  name: 'af-data-servicedataproc-send-${namePrefix}'
   parent: ehNamespace
   properties: {
     rights: [ 'Send' ]
@@ -44,6 +44,6 @@ resource eventHubAccessPolicySend 'Microsoft.EventHub/namespaces/authorizationRu
 }
 
 resource eventHubConsumerGroup 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2022-01-01-preview' = {
-  name: '${namePrefix}-evhcg-asa-customer-fanout'
+  name: 'evhcg-asa-customer-fanout-${namePrefix}'
   parent: eventHub
 }

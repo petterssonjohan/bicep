@@ -4,7 +4,7 @@ param tags object
 
 //Create a storage account
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
-  name: '${namePrefix}storage'
+  name: 'sptweusasvcdataproc${namePrefix}${tags['RUNTIME-ENVIRONMENT']}'
   location: location
   kind: 'StorageV2'
   properties: {
@@ -20,7 +20,7 @@ var azStorageAccountPrimaryAccessKey = listKeys(storageAccount.id, storageAccoun
 // Create a storage blob container for service data and for device context
 var containers = [ 'servicedata', 'devicecontext' ]
 resource storageContainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-09-01' = [for container in containers: {
-  name: '${namePrefix}storage/default/${container}'
+  name: 'sptweusasvcdataproc${namePrefix}${tags['RUNTIME-ENVIRONMENT']}storage/default/${container}'
   properties: {
     publicAccess: 'None'
     metadata: {}
@@ -74,7 +74,7 @@ resource storage_queues 'Microsoft.Storage/storageAccounts/queueServices@2021-09
   }
 }
 resource storage_queue 'Microsoft.Storage/storageAccounts/queueServices/queues@2021-09-01' = {
-  name: '${namePrefix}-queue'
+  name: 'logs-uploaded-${namePrefix}'
   parent: storage_queues
 }
 

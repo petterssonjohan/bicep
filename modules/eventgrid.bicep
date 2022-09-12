@@ -5,26 +5,15 @@ param namePrefix string
 param storageAccountName string
 param resourceGroupName string
 param subscriptionId string
-// resource systemTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
-//   name: '${namePrefix}-systemtopic'
-//   location: location
-//   properties: {
-//     source: storageAccountId
-//     topicType: 'Microsoft.Storage.StorageAccounts'
-//   }
-//   tags: {
-//     'BUSINESS-AREA': 'SPT'
-//     'RUNTIME-ENVIRONMENT': 'test' //ENVIRONMENT_TYPE
-//   }
-// }
+param tags object
 
 resource topicEvent 'Microsoft.EventGrid/eventSubscriptions@2022-06-15' = {
-  name: '${namePrefix}-eventsubscription'
+  name: 'spt-weu-evgs-svcdataproc-${namePrefix}-${tags['RUNTIME-ENVIRONMENT']}'
   properties: {
     destination: {
       properties: {
         resourceId: '/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.Storage/storageAccounts/${storageAccountName}'
-        queueName: '${namePrefix}-queue'
+        queueName: 'logs-uploaded-${namePrefix}'
       }
       endpointType: 'StorageQueue'
     }

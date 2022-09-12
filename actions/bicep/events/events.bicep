@@ -11,6 +11,7 @@ module eventGrid '../../../modules/eventgrid.bicep' = {
     storageAccountName: storageAccountName
     resourceGroupName: '${namePrefix}-rg'
     namePrefix: namePrefix
+    tags: tags
   }
 }
 

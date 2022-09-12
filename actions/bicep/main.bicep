@@ -14,7 +14,7 @@ targetScope = 'subscription'
 
 /* Will Create a new Resource Group */
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-  name: '${namePrefix}-rg'
+  name: 'spt-weu-rg-servicedataproc-${namePrefix}-${tags['RUNTIME-ENVIRONMENT']}'
   location: location
 }
 
@@ -72,6 +72,7 @@ module network 'vnet/network.bicep' = {
   params: {
     location: location
     namePrefix: namePrefix
+    tags: tags
   }
 }
 

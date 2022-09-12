@@ -1,8 +1,9 @@
 param namePrefix string
 param location string
+param tags object
 
 resource natGatewayIPname 'Microsoft.Network/publicIPAddresses@2020-11-01' = {
-  name: '${namePrefix}-net-publicipaddress'
+  name: 'net-publicipaddress-${namePrefix}'
   location: location
   sku: {
     name: 'Standard'
@@ -17,7 +18,7 @@ resource natGatewayIPname 'Microsoft.Network/publicIPAddresses@2020-11-01' = {
 }
 
 resource natgateway 'Microsoft.Network/natGateways@2021-05-01' = {
-  name: '${namePrefix}-net-natgateway'
+  name: 'dms-weu-natg-${tags['RUNTIME-ENVIRONMENT']}'
   location: location
   sku: {
     name: 'Standard'
@@ -34,7 +35,7 @@ resource natgateway 'Microsoft.Network/natGateways@2021-05-01' = {
 
 /* Other Resource Group */
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2019-11-01' = {
-  name: '${namePrefix}-dms-weu-vnet-test'
+  name: 'dms-weu-vnet-${tags['RUNTIME-ENVIRONMENT']}'
   location: location
   properties: {
     addressSpace: {
@@ -44,7 +45,7 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2019-11-01' = {
     }
     subnets: [
       {
-        name: '${namePrefix}-weu-subnet-servicedataproc-test'
+        name: 'spt-weu-subnet-servicedataproc-${namePrefix}-${tags['RUNTIME-ENVIRONMENT']}'
         properties: {
           addressPrefix: '10.44.21.0/24'
           natGateway: {
