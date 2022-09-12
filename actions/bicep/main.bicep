@@ -7,7 +7,7 @@ param namePrefix string = 'ctrss'
 @description('Location for resources')
 param location string = 'west europe'
 
-@description('Tags for certain resources')
+@description('Tags for resources')
 param tags object
 
 @description('VNET Target Resource Group')
@@ -87,6 +87,16 @@ module functions 'functions/azure-functions.bicep' = {
     location: location
     namePrefix: namePrefix
     hostingPlanId: servicePlan.outputs.hostingPlanId
+    tags: tags
+  }
+}
+
+module cosmosDb 'cosmos/cosmos.bicep' = {
+  name: 'cosmos'
+  scope: rg
+  params: {
+    location: location
+    namePrefix: namePrefix
     tags: tags
   }
 }
