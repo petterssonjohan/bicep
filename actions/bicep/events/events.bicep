@@ -9,7 +9,7 @@ module eventGrid '../../../modules/eventgrid.bicep' = {
   params: {
     subscriptionId: subscriptionId
     storageAccountName: storageAccountName
-    resourceGroupName: '${namePrefix}-rg'
+    resourceGroupName: 'spt-weu-rg-servicedataproc-${namePrefix}-${tags['RUNTIME-ENVIRONMENT']}'
     namePrefix: namePrefix
     tags: tags
   }
