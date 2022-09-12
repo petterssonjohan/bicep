@@ -10,6 +10,9 @@ param location string = 'west europe'
 @description('Tags for certain resources')
 param tags object
 
+@description('VNET Target Resource Group')
+param vnetResourceGroup string
+
 targetScope = 'subscription'
 
 /* Will Create a new Resource Group */
@@ -68,7 +71,7 @@ module servicePlan 'serviceplan/serviceplan.bicep' = {
 ie; differ from other resources in the newly created resource group.  */
 module network 'vnet/network.bicep' = {
   name: 'network'
-  scope: resourceGroup(subscriptionId, 'dmsResourceGroup')
+  scope: resourceGroup(subscriptionId, vnetResourceGroup)
   params: {
     location: location
     namePrefix: namePrefix

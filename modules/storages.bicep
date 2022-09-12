@@ -20,7 +20,7 @@ var azStorageAccountPrimaryAccessKey = listKeys(storageAccount.id, storageAccoun
 // Create a storage blob container for service data and for device context
 var containers = [ 'servicedata', 'devicecontext' ]
 resource storageContainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-09-01' = [for container in containers: {
-  name: 'sptweusasvcdataproc${namePrefix}${tags['RUNTIME-ENVIRONMENT']}storage/default/${container}'
+  name: 'sptweusasvcdataproc${namePrefix}${tags['RUNTIME-ENVIRONMENT']}/default/${container}'
   properties: {
     publicAccess: 'None'
     metadata: {}
