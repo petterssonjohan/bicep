@@ -1,6 +1,7 @@
 param namePrefix string
 param location string
 param hostingPlanId string
+param tags object
 
 resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
   name: '${namePrefix}-spt-weu-af-data-servicedataproc-test'
@@ -27,10 +28,7 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
     }
     httpsOnly: true
   }
-  tags: {
-    'BUSINESS-AREA': 'SPT'
-    'RUNTIME-ENVIRONMENT': 'test' //ENVIRONMENT_TYPE
-  }
+  tags: tags
   dependsOn: [
     // hostingPlan
     // storageAccount

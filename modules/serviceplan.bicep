@@ -1,5 +1,6 @@
 param namePrefix string
 param location string
+param tags object
 
 resource servicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
   name: '${namePrefix}-serviceplan'
@@ -12,10 +13,7 @@ resource servicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
     name: 'f1'
   }
   kind: 'linux'
-  tags: {
-    'BUSINESS-AREA': 'SPT'
-    'RUNTIME-ENVIRONMENT': 'test' //ENVIRONMENT_TYPE
-  }
+  tags: tags
 }
 output hostingPlanId string = servicePlan.id
 output hostingPlan object = servicePlan

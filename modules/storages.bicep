@@ -14,11 +14,6 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
     name: 'Standard_LRS'
   }
   tags: tags
-  //tags: {
-
-  //'BUSINESS-AREA': 'SPT'
-  //'RUNTIME-ENVIRONMENT': 'test' //ENVIRONMENT_TYPE
-  //}
 }
 var azStorageAccountPrimaryAccessKey = listKeys(storageAccount.id, storageAccount.apiVersion).keys[0].value
 

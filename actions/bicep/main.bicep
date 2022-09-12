@@ -1,13 +1,13 @@
 @description('Subscription ID in Azure')
 param subscriptionId string
 
-@description('storage account name')
-param namePrefix string = 'prefix'
+@description('Name prefix for resources')
+param namePrefix string = 'ctrss'
 
-@description('storage account location')
+@description('Location for resources')
 param location string = 'west europe'
 
-@description('tags')
+@description('Tags for certain resources')
 param tags object
 
 targetScope = 'subscription'
@@ -38,6 +38,7 @@ module events 'events/events.bicep' = {
     namePrefix: namePrefix
     subscriptionId: subscriptionId
     storageAccountName: storageAccount.outputs.storageAccountName
+    tags: tags
   }
 }
 
@@ -48,6 +49,7 @@ module redis 'redis/redis.bicep' = {
   params: {
     location: location
     namePrefix: namePrefix
+    tags: tags
   }
 }
 
@@ -58,6 +60,7 @@ module servicePlan 'serviceplan/serviceplan.bicep' = {
   params: {
     location: location
     namePrefix: namePrefix
+    tags: tags
   }
 }
 
@@ -80,5 +83,6 @@ module functions 'functions/azure-functions.bicep' = {
     location: location
     namePrefix: namePrefix
     hostingPlanId: servicePlan.outputs.hostingPlanId
+    tags: tags
   }
 }

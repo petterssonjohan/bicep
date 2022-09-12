@@ -1,5 +1,6 @@
 param location string
 param namePrefix string
+param tags object
 
 resource ehNamespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' = {
   name: '${namePrefix}-eventhub-namespace'
@@ -14,10 +15,7 @@ resource ehNamespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' = {
     isAutoInflateEnabled: true
     maximumThroughputUnits: 20
   }
-  tags: {
-    'BUSINESS-AREA': 'SPT'
-    'RUNTIME-ENVIRONMENT': 'test' //ENVIRONMENT_TYPE
-  }
+  tags: tags
 }
 
 resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-01-01-preview' = {

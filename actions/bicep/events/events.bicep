@@ -2,6 +2,8 @@ param namePrefix string
 param location string
 param storageAccountName string
 param subscriptionId string
+param tags object
+
 module eventGrid '../../../modules/eventgrid.bicep' = {
   name: '${namePrefix}-eventgrid-deploy'
   params: {
@@ -17,5 +19,6 @@ module eventHub '../../../modules/eventhub.bicep' = {
   params: {
     location: location
     namePrefix: namePrefix
+    tags: tags
   }
 }
