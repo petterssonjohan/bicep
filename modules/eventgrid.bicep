@@ -7,7 +7,7 @@ param resourceGroupName string
 param subscriptionId string
 param tags object
 
-resource eventTopic 'Microsoft.EventGrid/systemTopics@2021-12-01' = {
+resource eventTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
   name: 'spt-weu-egt-svcdataproc-logs-uploaded-${namePrefix}-${tags['RUNTIME-ENVIRONMENT']}'
   location: location
   properties: {
@@ -16,7 +16,7 @@ resource eventTopic 'Microsoft.EventGrid/systemTopics@2021-12-01' = {
   }
 }
 
-resource topicEvent 'Microsoft.EventGrid/systemTopics/eventSubscriptions@2021-12-01' = {
+resource topicEvent 'Microsoft.EventGrid/systemTopics/eventSubscriptions@2022-06-15' = {
   name: 'spt-weu-evgs-svcdataproc-${namePrefix}-${tags['RUNTIME-ENVIRONMENT']}'
   parent: eventTopic
   properties: {
