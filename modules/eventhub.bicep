@@ -27,17 +27,17 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-01-01-preview' =
   }
 }
 
-resource eventHubAccessPolicyListen 'Microsoft.EventHub/namespaces/authorizationRules@2022-01-01-preview' = {
+resource eventHubAccessPolicyListen 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2022-01-01-preview' = {
   name: 'asa-servicedataproc-listen-${namePrefix}'
-  parent: ehNamespace
+  parent: eventHub
   properties: {
     rights: [ 'Listen' ]
   }
 }
 
-resource eventHubAccessPolicySend 'Microsoft.EventHub/namespaces/authorizationRules@2022-01-01-preview' = {
+resource eventHubAccessPolicySend 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2022-01-01-preview' = {
   name: 'af-data-servicedataproc-send-${namePrefix}'
-  parent: ehNamespace
+  parent: eventHub
   properties: {
     rights: [ 'Send' ]
   }
@@ -48,4 +48,4 @@ resource eventHubConsumerGroup 'Microsoft.EventHub/namespaces/eventhubs/consumer
   parent: eventHub
 }
 
-output EVENTHUB_ACCESS_POLICY_KEY string = eventHubAccessPolicyListen.listKeys(eventHubAccessPolicyListen.id).keys[0].value
+output EVENTHUB_ACCESS_POLICY_KEY string = 'eventHubAccessPolicyListen.listKeys(eventHubAccessPolicyListen.id).keys[0].value'
