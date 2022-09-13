@@ -47,3 +47,5 @@ resource eventHubConsumerGroup 'Microsoft.EventHub/namespaces/eventhubs/consumer
   name: 'evhcg-asa-customer-fanout-${namePrefix}'
   parent: eventHub
 }
+
+output EVENTHUB_ACCESS_POLICY_KEY string = eventHubAccessPolicyListen.listKeys(eventHubAccessPolicyListen.id).keys[0].value

@@ -100,3 +100,14 @@ module cosmosDb 'cosmos/cosmos.bicep' = {
     tags: tags
   }
 }
+
+// module analytics 'analytics/analytics.bicep' = {
+//   name: 'analytics'
+//   scope: rg
+//   params: {
+//     location: location
+//     namePrefix: namePrefix
+//     tags: tags
+//     eventHubAccessPolicyKey: events.outputs.EVENTHUB_ACCESS_POLICY_KEY
+//   }
+// }

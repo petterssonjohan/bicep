@@ -23,3 +23,6 @@ module eventHub '../../../modules/eventhub.bicep' = {
     tags: tags
   }
 }
+
+//no secrets should be passed..
+output EVENTHUB_ACCESS_POLICY_KEY string = eventHub.outputs.EVENTHUB_ACCESS_POLICY_KEY
