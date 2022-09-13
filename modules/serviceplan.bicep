@@ -2,7 +2,7 @@ param namePrefix string
 param location string
 param tags object
 
-resource servicePlan 'Microsoft.Web/serverfarms@2020-06-01' = {
+resource servicePlan 'Microsoft.Web/serverfarms@2022-03-01' = {
   name: 'spt-weu-sp-servicedataproc-${namePrefix}-${tags['RUNTIME-ENVIRONMENT']}'
   location: location
   properties: {

@@ -14,6 +14,7 @@ resource eventTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
     source: blobSourceId
     topicType: 'Microsoft.Storage.StorageAccounts'
   }
+  tags: tags
 }
 
 resource topicEvent 'Microsoft.EventGrid/systemTopics/eventSubscriptions@2022-06-15' = {

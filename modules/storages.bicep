@@ -3,7 +3,7 @@ param namePrefix string
 param tags object
 
 //Create a storage account
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
   name: 'sptweusasvcdataproc${namePrefix}${tags['RUNTIME-ENVIRONMENT']}'
   location: location
   kind: 'StorageV2'
@@ -19,7 +19,7 @@ var azStorageAccountPrimaryAccessKey = listKeys(storageAccount.id, storageAccoun
 
 // Create a storage blob container for service data and for device context
 var containers = [ 'servicedata', 'devicecontext' ]
-resource storageContainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-09-01' = [for container in containers: {
+resource storageContainers 'Microsoft.Storage/storageAccounts/blobServices/containers@2022-05-01' = [for container in containers: {
   name: 'sptweusasvcdataproc${namePrefix}${tags['RUNTIME-ENVIRONMENT']}/default/${container}'
   properties: {
     publicAccess: 'None'
@@ -29,7 +29,7 @@ resource storageContainers 'Microsoft.Storage/storageAccounts/blobServices/conta
 }]
 
 //Create a lifecycle management rule for that storage account
-resource management_policies 'Microsoft.Storage/storageAccounts/managementPolicies@2021-09-01' = {
+resource management_policies 'Microsoft.Storage/storageAccounts/managementPolicies@2022-05-01' = {
   name: 'default'
   properties: {
     policy: {
@@ -67,13 +67,13 @@ resource management_policies 'Microsoft.Storage/storageAccounts/managementPolici
   parent: storageAccount
 }
 
-resource storage_queues 'Microsoft.Storage/storageAccounts/queueServices@2021-09-01' = {
+resource storage_queues 'Microsoft.Storage/storageAccounts/queueServices@2022-05-01' = {
   name: 'default'
   parent: storageAccount
   properties: {
   }
 }
-resource storage_queue 'Microsoft.Storage/storageAccounts/queueServices/queues@2021-09-01' = {
+resource storage_queue 'Microsoft.Storage/storageAccounts/queueServices/queues@2022-05-01' = {
   name: 'logs-uploaded-${namePrefix}'
   parent: storage_queues
 }

@@ -17,7 +17,7 @@ resource natGatewayIPname 'Microsoft.Network/publicIPAddresses@2020-11-01' = {
   }
 }
 
-resource natgateway 'Microsoft.Network/natGateways@2021-05-01' = {
+resource natgateway 'Microsoft.Network/natGateways@2022-01-01' = {
   name: 'dms-weu-natg-${tags['RUNTIME-ENVIRONMENT']}'
   location: location
   sku: {
@@ -34,7 +34,7 @@ resource natgateway 'Microsoft.Network/natGateways@2021-05-01' = {
 }
 
 /* Other Resource Group */
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2019-11-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2022-01-01' = {
   name: 'dms-weu-vnet-${tags['RUNTIME-ENVIRONMENT']}'
   location: location
   properties: {

@@ -3,7 +3,7 @@ param location string
 param hostingPlanId string
 param tags object
 
-resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
+resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
   name: 'spt-weu-af-context-servicedataproc-${namePrefix}-${tags['RUNTIME-ENVIRONMENT']}'
   location: location
   kind: 'functionapp'
