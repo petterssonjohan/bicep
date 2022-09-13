@@ -10,5 +10,6 @@ module storageModule '../../../modules/storages.bicep' = {
     tags: tags
   }
 }
+
 output storageAccountId string = storageModule.outputs.storageAccountId
 output storageAccountName string = storageModule.outputs.storageAccountName
