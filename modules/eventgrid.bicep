@@ -35,6 +35,5 @@ resource topicEvent 'Microsoft.EventGrid/systemTopics/eventSubscriptions@2021-12
       ]
       subjectBeginsWith: '/blobServices/default/containers/servicedata'
     }
-    eventDeliverySchema: 'EventGridSchema'
   }
 }
