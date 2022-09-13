@@ -3,7 +3,7 @@ param location string
 param storageAccountName string
 param subscriptionId string
 param tags object
-
+param storageAccountId string
 module eventGrid '../../../modules/eventgrid.bicep' = {
   name: '${namePrefix}-eventgrid-deploy'
   params: {
@@ -12,6 +12,8 @@ module eventGrid '../../../modules/eventgrid.bicep' = {
     resourceGroupName: 'spt-weu-rg-servicedataproc-${namePrefix}-${tags['RUNTIME-ENVIRONMENT']}'
     namePrefix: namePrefix
     tags: tags
+    location: location
+    blobSourceId: storageAccountId
   }
 }
 

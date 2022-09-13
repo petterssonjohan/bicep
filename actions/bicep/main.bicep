@@ -42,6 +42,7 @@ module events 'events/events.bicep' = {
     subscriptionId: subscriptionId
     storageAccountName: storageAccount.outputs.storageAccountName
     tags: tags
+    storageAccountId: storageAccount.outputs.storageAccountId
   }
 }
 
