@@ -41,7 +41,7 @@ var blobContainers = [
   }
 ]
 
-var storageBlobDataContributorRoleId = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
+var storageBlobDataContributorRoleId = 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
 var storageAccountName = '${businessArea}${loc}sa${serviceName}${tags['RUNTIME-ENVIRONMENT']}'
 
 module storageAccount '../../modules/storageaccount.bicep' = {
