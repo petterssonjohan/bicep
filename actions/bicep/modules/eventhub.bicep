@@ -13,8 +13,8 @@ resource ehNamespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' = {
   sku: sku
   properties: {
     zoneRedundant: true
-    isAutoInflateEnabled: tags['RUNTIME-ENVIRONMENT'] == 'dev' ? false : true
-    maximumThroughputUnits: tags['RUNTIME-ENVIRONMENT'] == 'dev' ? 0 : 20
+    isAutoInflateEnabled: true
+    maximumThroughputUnits: 20
   }
   tags: tags
 }
@@ -23,7 +23,7 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-01-01-preview' =
   name: name
   parent: ehNamespace
   properties: {
-    messageRetentionInDays: tags['RUNTIME-ENVIRONMENT'] == 'dev' ? 1 : 7
+    messageRetentionInDays: 7
     partitionCount: 2
   }
 }
@@ -45,6 +45,6 @@ resource eventHubAccessPolicySend 'Microsoft.EventHub/namespaces/eventhubs/autho
 }
 
 resource eventHubConsumerGroup 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2022-01-01-preview' = {
-  name: tags['RUNTIME-ENVIRONMENT'] == 'dev' ? '$Default' : consumerGroupName
+  name: consumerGroupName
   parent: eventHub
 }
