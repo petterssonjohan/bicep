@@ -35,16 +35,15 @@ resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2022-05-01'
 }
 
 //Describe role assignments
-// resource storageRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for roleAssignment in roleAssignments: {
-//   scope: storageAccount
-//   name: guid(storageAccount.id, roleAssignment.principalId, roleAssignment.roleId)
-//   properties: {
-//     principalId: roleAssignment.principalId
-//     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', roleAssignment.roleId)
-//     principalType: (contains(roleAssignment, 'principalType')) ? roleAssignment.principalType : 'ServicePrincipal'
-//   }
-// }
-//]
+resource storageRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for roleAssignment in roleAssignments: {
+  scope: storageAccount
+  name: guid(storageAccount.id, roleAssignment.principalId, roleAssignment.roleId)
+  properties: {
+    principalId: roleAssignment.principalId
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', roleAssignment.roleId)
+    principalType: (contains(roleAssignment, 'principalType')) ? roleAssignment.principalType : 'ServicePrincipal'
+  }
+}]
 
 //Create a lifecycle management rule for that storage account
 resource management_policies 'Microsoft.Storage/storageAccounts/managementPolicies@2022-05-01' = {
