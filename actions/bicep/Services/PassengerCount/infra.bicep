@@ -144,8 +144,8 @@ module eventHub '../../modules/eventhub.bicep' = {
     authorizationSendRuleName: 'af-data-${serviceName}-send'
     consumerGroupName: 'evhcg-asa-customer-fanout-${serviceName}'
     sku: {
-      name: tags['RUNTIME-ENVIRONMENT'] == 'prod' ? 'Standard' : 'Basic'
-      tier: tags['RUNTIME-ENVIRONMENT'] == 'prod' ? 'Standard' : 'Basic'
+      name: tags['RUNTIME-ENVIRONMENT'] == 'dev' ? 'Basic' : 'Standard'
+      tier: tags['RUNTIME-ENVIRONMENT'] == 'dev' ? 'Basic' : 'Standard'
       capacity: 1
     }
   }
