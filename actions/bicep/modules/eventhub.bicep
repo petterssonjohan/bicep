@@ -45,6 +45,6 @@ resource eventHubAccessPolicySend 'Microsoft.EventHub/namespaces/eventhubs/autho
 }
 
 resource eventHubConsumerGroup 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2022-01-01-preview' = {
-  name: consumerGroupName
+  name: tags['RUNTIME-ENVIRONMENT'] == 'dev' ? '$Default' : consumerGroupName
   parent: eventHub
 }
