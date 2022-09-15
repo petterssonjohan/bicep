@@ -25,14 +25,14 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-var serviceDataName = 'service-data'
+var serviceDataName = 'servicedata'
 
 @description('Provide unique identifier for release')
 param releaseId string = newGuid()
 
 var blobContainers = [
   {
-    name: 'device-context'
+    name: 'devicecontext'
     enablePublicAccess: false
   }
   {
@@ -88,7 +88,7 @@ module storageAccount '../../modules/storageaccount.bicep' = {
                   'blockBlob', 'appendBlob'
                 ]
                 prefixMatch: [
-                  '${serviceDataName}/'
+                  'servicedata/'
                 ]
               }
             }
@@ -100,59 +100,59 @@ module storageAccount '../../modules/storageaccount.bicep' = {
 }
 
 /* Event Grid */
-module eventGrid '../../modules/eventgrid.bicep' = {
-  name: 'eventGrid-${releaseId}'
-  scope: rg
-  params: {
-    serviceName: serviceName
-    systemTopicName: '${businessArea}-${loc}-egt-${serviceName}-logs-uploaded-${tags['RUNTIME-ENVIRONMENT']}'
-    eventSubscriptionName: '${businessArea}-${loc}-evgs-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
-    tags: tags
-    location: location
-    topicEventProperties: {
-      destination: {
-        endpointType: 'StorageQueue'
-        properties: {
-          resourceId: '/subscriptions/${subscriptionId}/resourceGroups/${rg.name}/providers/Microsoft.Storage/storageAccounts/${storageAccountName}'
-          queueName: 'logs-uploaded-${serviceName}'
-          queueMessageTimeToLiveInSeconds: 604800
-        }
+// module eventGrid '../../modules/eventgrid.bicep' = {
+//   name: 'eventGrid-${releaseId}'
+//   scope: rg
+//   params: {
+//     serviceName: serviceName
+//     systemTopicName: '${businessArea}-${loc}-egt-${serviceName}-logs-uploaded-${tags['RUNTIME-ENVIRONMENT']}'
+//     eventSubscriptionName: '${businessArea}-${loc}-evgs-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
+//     tags: tags
+//     location: location
+//     topicEventProperties: {
+//       destination: {
+//         endpointType: 'StorageQueue'
+//         properties: {
+//           resourceId: '/subscriptions/${subscriptionId}/resourceGroups/${rg.name}/providers/Microsoft.Storage/storageAccounts/${storageAccountName}'
+//           queueName: 'logs-uploaded-${serviceName}'
+//           queueMessageTimeToLiveInSeconds: 604800
+//         }
 
-      }
-      filter: {
-        includedEventTypes: [
-          'Microsoft.Storage.BlobCreated'
-        ]
-        subjectBeginsWith: '/blobServices/default/containers/${serviceDataName}'
-      }
-    }
-  }
-}
+//       }
+//       filter: {
+//         includedEventTypes: [
+//           'Microsoft.Storage.BlobCreated'
+//         ]
+//         subjectBeginsWith: '/blobServices/default/containers/${serviceDataName}'
+//       }
+//     }
+//   }
+// }
 
-/* Event Hub */
-module eventHub '../../modules/eventhub.bicep' = {
-  name: 'eventHub-${releaseId}'
-  scope: rg
-  params: {
-    location: location
-    name: '${businessArea}-${loc}-evh-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
-    namespaceName: '${businessArea}-${loc}-evhns-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
-    tags: tags
-    authorizationListenRuleName: 'asa-${serviceName}-listen'
-    authorizationSendRuleName: 'af-data-${serviceName}-send'
-    consumerGroupName: 'evhcg-asa-customer-fanout-${serviceName}'
-  }
-}
+// /* Event Hub */
+// module eventHub '../../modules/eventhub.bicep' = {
+//   name: 'eventHub-${releaseId}'
+//   scope: rg
+//   params: {
+//     location: location
+//     name: '${businessArea}-${loc}-evh-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
+//     namespaceName: '${businessArea}-${loc}-evhns-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
+//     tags: tags
+//     authorizationListenRuleName: 'asa-${serviceName}-listen'
+//     authorizationSendRuleName: 'af-data-${serviceName}-send'
+//     consumerGroupName: 'evhcg-asa-customer-fanout-${serviceName}'
+//   }
+// }
 
-module redis '../../modules/redis.bicep' = {
-  name: 'redis-${releaseId}'
-  scope: rg
-  params: {
-    location: location
-    name: '${businessArea}-${loc}-redis-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
-    tags: tags
-  }
-}
+// module redis '../../modules/redis.bicep' = {
+//   name: 'redis-${releaseId}'
+//   scope: rg
+//   params: {
+//     location: location
+//     name: '${businessArea}-${loc}-redis-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
+//     tags: tags
+//   }
+// }
 
 module appService '../../modules/appservice.bicep' = {
   scope: rg
@@ -199,44 +199,44 @@ module serviceDataFunction '../../modules/function-servicedata.bicep' = {
   }
 }
 
-module cosmosAccount '../../modules/cosmos.bicep' = {
-  name: 'cosmos-${releaseId}'
-  scope: rg
-  params: {
-    accountName: '${businessArea}-${loc}-cosmos-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
-    databaseName: '${serviceDataName}-${serviceName}'
-    location: location
-    containerName: 'data-${serviceName}'
-    tags: tags
-    containerProperties: {
-      options: {
-        autoscaleSettings: {
-          maxThroughput: 4000
-        }
-      }
-      resource: {
-        id: 'data-${serviceName}'
-        partitionKey: {
-          paths: [
-            '/Serial'
-          ]
-          kind: 'Hash'
-        }
-        indexingPolicy: {
-          indexingMode: 'consistent'
-          includedPaths: [
-            {
-              path: '/*'
-            }
-          ]
-          excludedPaths: [
-            {
-              path: '/_etag/?'
-            }
-          ]
-        }
-        defaultTtl: 2592000
-      }
-    }
-  }
-}
+// module cosmosAccount '../../modules/cosmos.bicep' = {
+//   name: 'cosmos-${releaseId}'
+//   scope: rg
+//   params: {
+//     accountName: '${businessArea}-${loc}-cosmos-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
+//     databaseName: '${serviceDataName}-${serviceName}'
+//     location: location
+//     containerName: 'data-${serviceName}'
+//     tags: tags
+//     containerProperties: {
+//       options: {
+//         autoscaleSettings: {
+//           maxThroughput: 4000
+//         }
+//       }
+//       resource: {
+//         id: 'data-${serviceName}'
+//         partitionKey: {
+//           paths: [
+//             '/Serial'
+//           ]
+//           kind: 'Hash'
+//         }
+//         indexingPolicy: {
+//           indexingMode: 'consistent'
+//           includedPaths: [
+//             {
+//               path: '/*'
+//             }
+//           ]
+//           excludedPaths: [
+//             {
+//               path: '/_etag/?'
+//             }
+//           ]
+//         }
+//         defaultTtl: 2592000
+//       }
+//     }
+//   }
+// }
