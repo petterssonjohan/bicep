@@ -13,7 +13,7 @@ resource ehNamespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' = {
   sku: sku
   properties: {
     zoneRedundant: true
-    isAutoInflateEnabled: true
+    isAutoInflateEnabled: tags['RUNTIME-ENVIRONMENT'] == 'prod' ? true : false
     maximumThroughputUnits: 20
   }
   tags: tags

@@ -43,7 +43,13 @@ var blobContainers = [
   }
 ]
 
-var storageBlobDataContributorRoleId = 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
+resource storageBlobdataOwner 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' existing = {
+  scope: subscription()
+  name: 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
+}
+
+var storageBlobDataOwnerRoleId = storageBlobdataOwner.id
+
 var storageAccountName = '${businessArea}${loc}sa${serviceName}${tags['RUNTIME-ENVIRONMENT']}'
 
 module storageAccount '../../modules/storageaccount.bicep' = {
@@ -58,11 +64,11 @@ module storageAccount '../../modules/storageaccount.bicep' = {
     roleAssignments: [
       {
         principalId: deviceContextFunction.outputs.deviceContextPrincipalId
-        roleId: storageBlobDataContributorRoleId
+        roleId: storageBlobDataOwnerRoleId
       }
       {
         principalId: serviceDataFunction.outputs.serviceDataPrincipalId
-        roleId: storageBlobDataContributorRoleId
+        roleId: storageBlobDataOwnerRoleId
       }
     ]
     managementPolicies: {
@@ -144,8 +150,8 @@ module eventHub '../../modules/eventhub.bicep' = {
     authorizationSendRuleName: 'af-data-${serviceName}-send'
     consumerGroupName: 'evhcg-asa-customer-fanout-${serviceName}'
     sku: {
-      name: 'Basic'
-      tier: 'Basic'
+      name: tags['RUNTIME-ENVIRONMENT'] == 'prod' ? 'Standard' : 'Basic'
+      tier: tags['RUNTIME-ENVIRONMENT'] == 'prod' ? 'Standard' : 'Basic'
       capacity: 1
     }
   }
