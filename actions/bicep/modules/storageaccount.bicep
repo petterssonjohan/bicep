@@ -20,13 +20,18 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
   tags: tags
 }
 
-resource blob 'Microsoft.Storage/storageAccounts/blobServices/containers@2022-05-01' = [for container in blobContainers: {
-  name: '${name}/default/${container.name}'
-  properties: {
-    publicAccess: (container.enablePublicAccess) ? 'Container' : 'None'
-    metadata: container.metaData
-  }
-}]
+//Describe blob service and containers
+resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2022-05-01' = {
+  name: 'default'
+  parent: storageAccount
+  resource containers 'containers' = [for container in blobContainers: {
+    name: container.name
+    properties: {
+      publicAccess: (container.enablePublicAccess) ? 'Container' : 'None'
+      metadata: container.metaData
+    }
+  }]
+}
 
 //Describe role assignments
 resource storageRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for roleAssignment in roleAssignments: {
@@ -40,7 +45,7 @@ resource storageRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-
 }]
 
 //Create a lifecycle management rule for that storage account
-resource management_policies 'Microsoft.Storage/storageAccounts/managementPolicies@2022-05-01' = if (any(blobContainers)) {
+resource management_policies 'Microsoft.Storage/storageAccounts/managementPolicies@2022-05-01' = {
   name: 'default'
   properties: managementPolicies
   parent: storageAccount
