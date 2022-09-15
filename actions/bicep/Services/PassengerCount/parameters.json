@@ -1,0 +1,22 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "serviceName": {
+        "value": "apc"
+      },
+      "subscriptionId": {
+        "value": "bf558742-a412-4a60-88c4-733121e9580f"
+      },
+      "vnetResourceGroup": {
+        "value": "dmsResourceGroup"
+      },
+      "tags": {
+        "value": 
+          {
+            "BUSINESS-AREA": "SPT",
+            "RUNTIME-ENVIRONMENT": "dev"
+          }
+      }
+    }
+  }

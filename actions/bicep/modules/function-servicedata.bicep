@@ -1,17 +1,21 @@
-param namePrefix string
 param location string
-param hostingPlanId string
 param tags object
+param name string
+param appServicePlanName string
+
+resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' existing = {
+  name: appServicePlanName
+}
 
 resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
-  name: 'spt-weu-af-data-servicedataproc-${namePrefix}-${tags['RUNTIME-ENVIRONMENT']}'
+  name: name
   location: location
   kind: 'functionapp'
   identity: {
     type: 'SystemAssigned'
   }
   properties: {
-    serverFarmId: hostingPlanId
+    serverFarmId: appServicePlan.id
     siteConfig: {
       appSettings: [
         {
@@ -29,8 +33,6 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
     httpsOnly: true
   }
   tags: tags
-  dependsOn: [
-    // hostingPlan
-    // storageAccount
-  ]
 }
+
+output serviceDataPrincipalId string = functionApp.identity.principalId

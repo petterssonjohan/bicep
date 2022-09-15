@@ -1,9 +1,9 @@
-param namePrefix string
 param location string
 param tags object
+param name string
 
 resource redisCache 'Microsoft.Cache/redis@2022-05-01' = {
-  name: 'spt-weu-redis-servicedataproc-${namePrefix}-${tags['RUNTIME-ENVIRONMENT']}'
+  name: name
   location: location
   tags: tags
   properties: {

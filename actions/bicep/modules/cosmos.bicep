@@ -1,6 +1,9 @@
-param namePrefix string
 param location string
 param tags object
+param accountName string
+param databaseName string
+param containerName string
+param containerProperties object
 
 param defaultConsistencyLevel string = 'Eventual'
 
@@ -22,7 +25,7 @@ var locations = [
 
 /* Cosmos Account */
 resource account 'Microsoft.DocumentDB/databaseAccounts@2022-05-15' = {
-  name: 'spt-weu-cosmos-servicedataproc-${namePrefix}-${tags['RUNTIME-ENVIRONMENT']}'
+  name: accountName
   kind: 'GlobalDocumentDB'
   location: location
   properties: {
@@ -37,45 +40,16 @@ output account object = account
 
 resource database 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2022-05-15' = {
   parent: account
-  name: 'servicedata-${namePrefix}'
+  name: databaseName
   properties: {
     resource: {
-      id: 'servicedata-${namePrefix}'
+      id: databaseName
     }
   }
 }
 
 resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2022-05-15' = {
   parent: database
-  name: 'data-${namePrefix}'
-  properties: {
-    options: {
-      autoscaleSettings: {
-        maxThroughput: 4000
-      }
-    }
-    resource: {
-      id: 'data-${namePrefix}'
-      partitionKey: {
-        paths: [
-          '/Serial'
-        ]
-        kind: 'Hash'
-      }
-      indexingPolicy: {
-        indexingMode: 'consistent'
-        includedPaths: [
-          {
-            path: '/*'
-          }
-        ]
-        excludedPaths: [
-          {
-            path: '/_etag/?'
-          }
-        ]
-      }
-      defaultTtl: 2592000
-    }
-  }
+  name: containerName
+  properties: containerProperties
 }

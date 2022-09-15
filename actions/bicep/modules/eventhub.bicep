@@ -1,9 +1,13 @@
 param location string
-param namePrefix string
 param tags object
+param name string
+param namespaceName string
+param authorizationListenRuleName string
+param authorizationSendRuleName string
+param consumerGroupName string
 
 resource ehNamespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' = {
-  name: 'spt-weu-evhns-servicedataproc-${namePrefix}-${tags['RUNTIME-ENVIRONMENT']}'
+  name: namespaceName
   location: location
   sku: {
     name: 'Standard'
@@ -19,7 +23,7 @@ resource ehNamespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' = {
 }
 
 resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-01-01-preview' = {
-  name: 'spt-weu-evh-servicedataproc-${namePrefix}-${tags['RUNTIME-ENVIRONMENT']}'
+  name: name
   parent: ehNamespace
   properties: {
     messageRetentionInDays: 7
@@ -28,7 +32,7 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2022-01-01-preview' =
 }
 
 resource eventHubAccessPolicyListen 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2022-01-01-preview' = {
-  name: 'asa-servicedataproc-listen-${namePrefix}'
+  name: authorizationListenRuleName
   parent: eventHub
   properties: {
     rights: [ 'Listen' ]
@@ -36,7 +40,7 @@ resource eventHubAccessPolicyListen 'Microsoft.EventHub/namespaces/eventhubs/aut
 }
 
 resource eventHubAccessPolicySend 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2022-01-01-preview' = {
-  name: 'af-data-servicedataproc-send-${namePrefix}'
+  name: authorizationSendRuleName
   parent: eventHub
   properties: {
     rights: [ 'Send' ]
@@ -44,8 +48,6 @@ resource eventHubAccessPolicySend 'Microsoft.EventHub/namespaces/eventhubs/autho
 }
 
 resource eventHubConsumerGroup 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2022-01-01-preview' = {
-  name: 'evhcg-asa-customer-fanout-${namePrefix}'
+  name: consumerGroupName
   parent: eventHub
 }
-
-output EVENTHUB_ACCESS_POLICY_KEY string = 'eventHubAccessPolicyListen.listKeys(eventHubAccessPolicyListen.id).keys[0].value'
