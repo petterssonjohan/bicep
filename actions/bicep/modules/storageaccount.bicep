@@ -20,8 +20,8 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
   tags: tags
 }
 
-resource blob 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = [for container in blobContainers: {
-  name: '${storageAccount.name}/default/${container.name}'
+resource blob 'Microsoft.Storage/storageAccounts/blobServices/containers@2022-05-01' = [for container in blobContainers: {
+  name: '${name}/default/${container.name}'
   properties: {
     publicAccess: (container.enablePublicAccess) ? 'Container' : 'None'
     metadata: container.metaData
