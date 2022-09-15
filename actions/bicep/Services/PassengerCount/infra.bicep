@@ -181,7 +181,7 @@ module deviceContextFunction '../../modules/function-devicecontext.bicep' = {
   scope: rg
   params: {
     name: '${businessArea}-${loc}-af-context-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
-    appServicePlanName: 'spt-weu-sp-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
+    appServicePlanId: appService.outputs.appServicePlanId
     location: location
     tags: tags
   }
@@ -192,7 +192,7 @@ module serviceDataFunction '../../modules/function-servicedata.bicep' = {
   scope: rg
   params: {
     name: '${businessArea}-${loc}-af-data-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
-    appServicePlanName: '${businessArea}-${loc}-sp-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
+    appServicePlanId: appService.outputs.appServicePlanId
     location: location
     tags: tags
   }

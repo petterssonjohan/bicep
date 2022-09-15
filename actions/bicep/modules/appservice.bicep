@@ -10,5 +10,6 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
     name: planSku
   }
 }
+output appServicePlanId string = appServicePlan.id
 
 //Describe App Service?
