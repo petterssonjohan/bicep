@@ -111,6 +111,7 @@ module eventGrid '../../modules/eventgrid.bicep' = {
     eventSubscriptionName: '${businessArea}-${loc}-evgs-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
     tags: tags
     location: location
+    storageAccountId: storageAccount.outputs.storageAccountId
     topicEventProperties: {
       destination: {
         endpointType: 'StorageQueue'

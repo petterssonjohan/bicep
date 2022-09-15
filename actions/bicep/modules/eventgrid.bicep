@@ -4,16 +4,17 @@ param tags object
 param systemTopicName string
 param topicEventProperties object
 param eventSubscriptionName string
+param storageAccountId string
 
-resource sa 'Microsoft.Storage/storageAccounts@2022-05-01' existing = {
-  name: 'sptweusa${serviceName}${tags['RUNTIME-ENVIRONMENT']}'
-}
+// resource sa 'Microsoft.Storage/storageAccounts@2022-05-01' existing = {
+//   name: 'sptweusa${serviceName}${tags['RUNTIME-ENVIRONMENT']}'
+// }
 
 resource eventTopic 'Microsoft.EventGrid/systemTopics@2022-06-15' = {
   name: systemTopicName
   location: location
   properties: {
-    source: sa.id
+    source: storageAccountId
     topicType: 'Microsoft.Storage.StorageAccounts'
   }
   tags: tags
