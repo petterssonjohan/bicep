@@ -5,15 +5,12 @@ param namespaceName string
 param authorizationListenRuleName string
 param authorizationSendRuleName string
 param consumerGroupName string
+param sku object
 
 resource ehNamespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' = {
   name: namespaceName
   location: location
-  sku: {
-    name: 'Standard'
-    tier: 'Standard'
-    capacity: 1
-  }
+  sku: sku
   properties: {
     zoneRedundant: true
     isAutoInflateEnabled: true
