@@ -43,13 +43,7 @@ var blobContainers = [
   }
 ]
 
-resource storageBlobdataOwner 'Microsoft.Authorization/roleDefinitions@2018-01-01-preview' existing = {
-  scope: subscription()
-  name: 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
-}
-
-var storageBlobDataOwnerRoleId = storageBlobdataOwner.id
-
+var storageBlobDataContributorRoleId = 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
 var storageAccountName = '${businessArea}${loc}sa${serviceName}${tags['RUNTIME-ENVIRONMENT']}'
 
 module storageAccount '../../modules/storageaccount.bicep' = {
@@ -64,11 +58,11 @@ module storageAccount '../../modules/storageaccount.bicep' = {
     roleAssignments: [
       {
         principalId: deviceContextFunction.outputs.deviceContextPrincipalId
-        roleId: storageBlobDataOwnerRoleId
+        roleId: storageBlobDataContributorRoleId
       }
       {
         principalId: serviceDataFunction.outputs.serviceDataPrincipalId
-        roleId: storageBlobDataOwnerRoleId
+        roleId: storageBlobDataContributorRoleId
       }
     ]
     managementPolicies: {
