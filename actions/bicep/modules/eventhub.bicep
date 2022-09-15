@@ -14,7 +14,7 @@ resource ehNamespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' = {
   properties: {
     zoneRedundant: true
     isAutoInflateEnabled: tags['RUNTIME-ENVIRONMENT'] == 'prod' ? true : false
-    maximumThroughputUnits: 20
+    maximumThroughputUnits: tags['RUNTIME-ENVIRONMENT'] == 'prod' ? 20 : 0
   }
   tags: tags
 }
