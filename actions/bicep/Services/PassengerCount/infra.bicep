@@ -164,17 +164,18 @@ module appService '../../modules/appservice.bicep' = {
   }
 }
 
-module network '../../modules/network.bicep' = {
-  name: 'network-${releaseId}'
-  scope: resourceGroup(subscriptionId, vnetResourceGroup)
-  params: {
-    publicIpAddressName: 'net-publicipaddress-${serviceName}'
-    natGatewayName: 'dms-${loc}-natg-${tags['RUNTIME-ENVIRONMENT']}'
-    vnetName: 'dms-${loc}-vnet-${tags['RUNTIME-ENVIRONMENT']}'
-    vnetSubnetName: '${businessArea}-${loc}-subnet-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
-    location: location
-  }
-}
+/* So Costly.. */
+// module network '../../modules/network.bicep' = {
+//   name: 'network-${releaseId}'
+//   scope: resourceGroup(subscriptionId, vnetResourceGroup)
+//   params: {
+//     publicIpAddressName: 'net-publicipaddress-${serviceName}'
+//     natGatewayName: 'dms-${loc}-natg-${tags['RUNTIME-ENVIRONMENT']}'
+//     vnetName: 'dms-${loc}-vnet-${tags['RUNTIME-ENVIRONMENT']}'
+//     vnetSubnetName: '${businessArea}-${loc}-subnet-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
+//     location: location
+//   }
+// }
 
 module deviceContextFunction '../../modules/function-devicecontext.bicep' = {
   name: 'deviceContext-${releaseId}'

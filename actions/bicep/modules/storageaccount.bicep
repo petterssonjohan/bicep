@@ -20,18 +20,13 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
   tags: tags
 }
 
-//Describe blob service and containers
-resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2022-05-01' = {
-  name: 'default'
-  parent: storageAccount
-  resource containers 'containers' = [for container in blobContainers: {
-    name: container.name
-    properties: {
-      publicAccess: (container.enablePublicAccess) ? 'Container' : 'None'
-      metadata: container.metaData
-    }
-  }]
-}
+resource blob 'Microsoft.Storage/storageAccounts/blobServices/containers@2019-06-01' = [for container in blobContainers: {
+  name: '${storageAccount.name}/default/${container.name}'
+  properties: {
+    publicAccess: (container.enablePublicAccess) ? 'Container' : 'None'
+    metadata: container.metaData
+  }
+}]
 
 //Describe role assignments
 resource storageRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for roleAssignment in roleAssignments: {
