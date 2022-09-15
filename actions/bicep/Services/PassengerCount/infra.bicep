@@ -34,10 +34,12 @@ var blobContainers = [
   {
     name: 'device-context'
     enablePublicAccess: false
+    metadata: {}
   }
   {
     name: serviceDataName
     enablePublicAccess: false
+    metadata: {}
   }
 ]
 

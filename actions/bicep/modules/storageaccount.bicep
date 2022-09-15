@@ -29,7 +29,7 @@ resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2022-05-01'
     name: container.name
     properties: {
       publicAccess: (container.enablePublicAccess) ? 'Container' : 'None'
-      metadata: container.metaData
+      metadata: container.metadata
     }
   }]
 }
