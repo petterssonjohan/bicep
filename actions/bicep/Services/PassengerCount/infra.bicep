@@ -146,6 +146,7 @@ module eventHub '../../modules/eventhub.bicep' = {
     authorizationListenRuleName: 'asa-${serviceName}-listen'
     authorizationSendRuleName: 'af-data-${serviceName}-send'
     consumerGroupName: 'evhcg-asa-customer-fanout-${serviceName}'
+    serviceName: serviceName
     sku: {
       name: 'Standard'
       tier: 'Standard'
@@ -218,6 +219,7 @@ module cosmos '../../modules/cosmos.bicep' = {
     location: location
     containerName: 'data-${serviceName}'
     tags: tags
+    serviceName: serviceName
     containerProperties: {
       options: {
         autoscaleSettings: {
@@ -251,6 +253,11 @@ module cosmos '../../modules/cosmos.bicep' = {
   }
 }
 
+resource kv 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
+  name: 'kv-${serviceName}'
+  scope: rg
+}
+
 module streamAnalytics '../../modules/streamanalytics.bicep' = {
   name: 'streamAnalytics-${releaseId}'
   scope: rg
@@ -260,13 +267,13 @@ module streamAnalytics '../../modules/streamanalytics.bicep' = {
     output: 'output-${cosmos.name}'
     location: location
     tags: tags
-    eventhubAccessPolicyPrimaryKey: eventHub.outputs.eventhubAccessPolicyPrimaryKey
+    eventhubAccessPolicyPrimaryKey: kv.getSecret('asa-${serviceName}-listen-pk')
     eventhubNamespaceName: '${businessArea}-${loc}-evhns-${serviceName}-${env}'
     eventhubAuthorizationListenRuleName: 'asa-${serviceName}-listen'
     eventhubName: '${businessArea}-${loc}-evh-${serviceName}-${env}'
     eventhubConsumerGroupName: 'evhcg-asa-customer-fanout-${serviceName}'
     cosmosAccountName: '${businessArea}-${loc}-cosmos-${serviceName}-${env}'
-    cosmosPrimaryKey: cosmos.outputs.cosmosPrimaryKey
+    cosmosPrimaryKey: kv.getSecret('${businessArea}-${loc}-cosmos-${serviceName}-${env}-pcs')
     cosmosDatabaseName: '${serviceDataName}-${serviceName}'
     cosmosContainerName: 'data-${serviceName}'
     cosmosPartialKey: '/Serial'

@@ -6,11 +6,15 @@ param tags object
 
 param eventhubNamespaceName string
 param eventhubAuthorizationListenRuleName string
+
+@secure()
 param eventhubAccessPolicyPrimaryKey string
 param eventhubName string
 param eventhubConsumerGroupName string
 
 param cosmosAccountName string
+
+@secure()
 param cosmosPrimaryKey string
 param cosmosDatabaseName string
 param cosmosContainerName string
