@@ -35,6 +35,10 @@ resource streamingJob 'Microsoft.StreamAnalytics/streamingjobs@2021-10-01-previe
   tags: tags
 }
 
+resource kv 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
+  name: 'kv-apc'
+}
+
 resource eventhubInput 'Microsoft.StreamAnalytics/streamingjobs/inputs@2021-10-01-preview' = {
   name: input
   parent: streamingJob
@@ -46,7 +50,7 @@ resource eventhubInput 'Microsoft.StreamAnalytics/streamingjobs/inputs@2021-10-0
         authenticationMode: 'ConnectionString'
         serviceBusNamespace: eventhubNamespaceName
         sharedAccessPolicyName: eventhubAuthorizationListenRuleName
-        sharedAccessPolicyKey: eventhubAccessPolicyPrimaryKey
+        sharedAccessPolicyKey: '@Microsoft.KeyVault(VaultName=${kv.name};SecretName=${eventhubAuthorizationListenRuleName})'
         eventHubName: eventhubName
         consumerGroupName: eventhubConsumerGroupName
       }
@@ -69,7 +73,7 @@ resource eventhubOutput 'Microsoft.StreamAnalytics/streamingjobs/outputs@2021-10
       type: 'Microsoft.Storage/DocumentDB'
       properties: {
         accountId: cosmosAccountName
-        accountKey: cosmosPrimaryKey
+        accountKey: '@Microsoft.KeyVault(VaultName=${kv.name};SecretName=${cosmosPrimaryKey})'
         database: cosmosDatabaseName
         collectionNamePattern: cosmosContainerName
         partitionKey: cosmosPartialKey
