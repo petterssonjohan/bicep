@@ -13,7 +13,7 @@ resource keyVaultSecret 'Microsoft.KeyVault/vaults@2022-07-01' = {
       family: 'A'
     }
     tenantId: subscription().tenantId
-    enableRbacAuthorization: true
+    enableRbacAuthorization: false
     accessPolicies: [
       {
         objectId: 'c8419fb8-d4e0-4a28-9600-61dcb1c0bdae' //for my user
