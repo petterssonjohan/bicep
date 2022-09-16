@@ -3,7 +3,7 @@ param location string
 param tags object
 param tenantId string
 
-resource keyVaultSecret 'Microsoft.KeyVault/vaults@2022-07-01' = {
+resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   name: 'kv-${serviceName}'
   location: location
   tags: tags
@@ -13,7 +13,7 @@ resource keyVaultSecret 'Microsoft.KeyVault/vaults@2022-07-01' = {
       family: 'A'
     }
     tenantId: subscription().tenantId
-    enableRbacAuthorization: true
+    enableRbacAuthorization: true //false
     accessPolicies: [
       {
         objectId: 'c8419fb8-d4e0-4a28-9600-61dcb1c0bdae' //for my user
@@ -39,3 +39,5 @@ resource keyVaultSecret 'Microsoft.KeyVault/vaults@2022-07-01' = {
     createMode: 'default'
   }
 }
+
+output keyVaultName string = keyVault.name

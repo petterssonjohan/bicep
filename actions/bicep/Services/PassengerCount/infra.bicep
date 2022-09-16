@@ -162,6 +162,7 @@ module eventHub '../../modules/eventhub.bicep' = {
     authorizationSendRuleName: 'af-data-${serviceName}-send'
     consumerGroupName: 'evhcg-asa-customer-fanout-${serviceName}'
     serviceName: serviceName
+    keyVaultName: keyvault.outputs.keyVaultName
     sku: {
       name: 'Standard'
       tier: 'Standard'
@@ -235,6 +236,7 @@ module cosmos '../../modules/cosmos.bicep' = {
     containerName: 'data-${serviceName}'
     tags: tags
     serviceName: serviceName
+    keyVaultName: keyvault.outputs.keyVaultName
     containerProperties: {
       options: {
         autoscaleSettings: {

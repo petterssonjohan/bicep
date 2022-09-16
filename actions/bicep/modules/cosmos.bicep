@@ -6,6 +6,7 @@ param containerName string
 param containerProperties object
 param serviceName string
 param defaultConsistencyLevel string = 'Eventual'
+param keyVaultName string
 
 var consistencyPolicy = {
   Eventual: {
@@ -57,7 +58,7 @@ resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/container
 module cosmosKeyVaultSecretPrimaryConnectionString '../modules/secret.bicep' = {
   name: 'cosmosKeyVaultSecretPrimaryConnectionString'
   params: {
-    keyVaultName: 'kv-${serviceName}'
+    keyVaultName: keyVaultName
     secretName: '${accountName}-pcs'
     secretValue: listKeys(account.id, account.apiVersion).primaryConnectionString
   }

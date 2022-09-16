@@ -7,6 +7,7 @@ param authorizationSendRuleName string
 param consumerGroupName string
 param sku object
 param serviceName string
+param keyVaultName string
 
 resource ehNamespace 'Microsoft.EventHub/namespaces@2022-01-01-preview' = {
   name: namespaceName
@@ -53,7 +54,7 @@ resource eventHubConsumerGroup 'Microsoft.EventHub/namespaces/eventhubs/consumer
 module eventhubAccessPolicyPrimaryKey '../modules/secret.bicep' = {
   name: 'eventhubAccessPolicyPrimaryKey'
   params: {
-    keyVaultName: 'kv-${serviceName}'
+    keyVaultName: keyVaultName
     secretName: '${authorizationListenRuleName}-pk'
     secretValue: listKeys(eventHubAccessPolicyListen.id, eventHubAccessPolicyListen.apiVersion).primaryConnectionString
   }
