@@ -60,7 +60,7 @@ module cosmosKeyVaultSecretPrimaryConnectionString '../modules/secret.bicep' = {
   params: {
     keyVaultName: keyVaultName
     secretName: '${accountName}-pcs'
-    secretValue: listKeys(account.id, account.apiVersion).primaryConnectionString
+    secretValue: listKeys(account.id, account.apiVersion).primaryMasterKey
   }
 }
 
