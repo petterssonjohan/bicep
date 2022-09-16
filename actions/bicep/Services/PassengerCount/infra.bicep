@@ -31,7 +31,7 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 
 /* Create KeyVault */
 module keyvault '../../modules/keyvault.bicep' = {
-  name: 'keyvault'
+  name: 'kv-${releaseId}'
   scope: rg
   params: {
     tenantId: tenantId
@@ -168,7 +168,6 @@ module eventHub '../../modules/eventhub.bicep' = {
       capacity: 1
     }
   }
-  dependsOn: [ keyvault ]
 }
 
 module redis '../../modules/redis.bicep' = {
@@ -267,7 +266,6 @@ module cosmos '../../modules/cosmos.bicep' = {
       }
     }
   }
-  dependsOn: [ keyvault ]
 }
 
 resource kv 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
