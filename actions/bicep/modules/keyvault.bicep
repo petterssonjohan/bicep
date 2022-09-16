@@ -71,7 +71,7 @@ var roleIdMapping = {
   'Key Vault Secrets User'
   'Full Owner'
 ])
-param roleName string = 'Full Owner'
+param roleName string = 'Key Vault Secrets User'
 
 resource kvRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
   name: guid(roleIdMapping[roleName], objectId, keyVault.id)
