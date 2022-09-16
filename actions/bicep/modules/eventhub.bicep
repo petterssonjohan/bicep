@@ -55,7 +55,7 @@ module eventhubAccessPolicyPrimaryKey '../modules/keyvault.bicep' = {
   params: {
     keyVaultName: 'kv-${serviceName}'
     secretName: '${authorizationListenRuleName}-pk'
-    secretValue: listConnectionStrings(resourceId('Microsoft.EventHub/namespaces/eventhubs/authorizationRules', authorizationListenRuleName), '2022-01-01-preview').connectionStrings[0].connectionString
+    secretValue: listConnectionStrings(resourceId('Microsoft.EventHub/namespaces/eventhubs/authorizationRules', name, authorizationListenRuleName), '2022-01-01-preview').connectionStrings[0].connectionString
   }
 }
 
