@@ -5,6 +5,8 @@ param tenantId string
 
 param objectId string = 'df461188-ee64-43bc-b888-0d2e4f55c9b1' // github-az-bicep-spn
 
+//added github-az-bicep-spn to key vault under IAM as owner. Then it worked..
+
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   name: 'kv-${serviceName}'
   location: location
@@ -55,6 +57,7 @@ var roleIdMapping = {
   'Key Vault Reader': '21090545-7ca7-4776-b22c-e363652d74d2'
   'Key Vault Secrets Officer': 'b86a8fe4-44ce-4948-aee5-eccb2c155cd7'
   'Key Vault Secrets User': '4633458b-17de-408a-b874-0445c86b69e6'
+  'Full Owner': '8e3af657-a8ff-443c-a75c-2fe8c4bcb635'
 }
 @description('Specifies the role the user will get with the secret in the vault. Valid values are: Key Vault Administrator, Key Vault Certificates Officer, Key Vault Crypto Officer, Key Vault Crypto Service Encryption User, Key Vault Crypto User, Key Vault Reader, Key Vault Secrets Officer, Key Vault Secrets User.')
 @allowed([
@@ -66,8 +69,9 @@ var roleIdMapping = {
   'Key Vault Reader'
   'Key Vault Secrets Officer'
   'Key Vault Secrets User'
+  'Full Owner'
 ])
-param roleName string = 'Key Vault Secrets User'
+param roleName string = 'Full Owner'
 
 resource kvRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
   name: guid(roleIdMapping[roleName], objectId, keyVault.id)

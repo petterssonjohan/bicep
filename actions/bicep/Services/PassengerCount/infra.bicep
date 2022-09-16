@@ -32,25 +32,25 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-// module operatorSetup '../../modules/operatorSetup.bicep' = {
-//   name: 'operatorSetup-deployment-${releaseId}'
-//   params: {
-//     operatorPrincipalId: deploymentOperatorId
-//     appName: serviceName
-//   }
-//   scope: rg
-// }
+module operatorSetup '../../modules/operatorSetup.bicep' = {
+  name: 'operatorSetup-deployment-${releaseId}'
+  params: {
+    operatorPrincipalId: deploymentOperatorId
+    appName: serviceName
+  }
+  scope: rg
+}
 
-// // creates an user-assigned managed identity that will used by different azure resources to access each other.
-// module msi '../../modules/msi.bicep' = {
-//   name: 'msi-deployment'
-//   params: {
-//     location: location
-//     managedIdentityName: '${serviceName}Identity'
-//     operatorRoleDefinitionId: operatorSetup.outputs.roleId
-//   }
-//   scope: rg
-// }
+// creates an user-assigned managed identity that will used by different azure resources to access each other.
+module msi '../../modules/msi.bicep' = {
+  name: 'msi-deployment'
+  params: {
+    location: location
+    managedIdentityName: '${serviceName}Identity'
+    operatorRoleDefinitionId: operatorSetup.outputs.roleId
+  }
+  scope: rg
+}
 
 /* Create KeyVault */
 module keyvault '../../modules/keyvault.bicep' = {
