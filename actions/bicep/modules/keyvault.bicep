@@ -14,5 +14,6 @@ resource keyVaultSecret 'Microsoft.KeyVault/vaults@2022-07-01' = {
     }
     enabledForTemplateDeployment: true
     tenantId: tenantId
+
   }
 }
