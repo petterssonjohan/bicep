@@ -23,7 +23,7 @@ param resourceGroupName string
 
 resource kv 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
   name: 'kv-${serviceName}'
-  scope: resourceGroup(subscription().id, resourceGroupName)
+  scope: resourceGroup('bf558742-a412-4a60-88c4-733121e9580f', resourceGroupName)
 }
 
 param eventHubKeyVaultSecretName string
