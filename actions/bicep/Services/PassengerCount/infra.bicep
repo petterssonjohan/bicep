@@ -15,6 +15,9 @@ param tags object
 @description('VNET Target Resource Group')
 param vnetResourceGroup string
 
+@description('TenantId')
+param tenantId string
+
 targetScope = 'subscription'
 var businessArea = 'spt'
 var loc = 'weu'
@@ -24,6 +27,18 @@ var env = tags['RUNTIME-ENVIRONMENT']
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: '${businessArea}-${loc}-rg-${serviceName}-${env}'
   location: location
+}
+
+/* Create KeyVault */
+module keyvault '../../modules/keyvault.bicep' = {
+  name: 'keyvault'
+  scope: rg
+  params: {
+    tenantId: tenantId
+    location: location
+    serviceName: serviceName
+    tags: tags
+  }
 }
 
 var serviceDataName = 'service-data'

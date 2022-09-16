@@ -54,7 +54,7 @@ resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/container
   properties: containerProperties
 }
 
-module cosmosKeyVaultSecretPrimaryConnectionString '../modules/keyvault.bicep' = {
+module cosmosKeyVaultSecretPrimaryConnectionString '../modules/secret.bicep' = {
   name: 'cosmosKeyVaultSecretPrimaryConnectionString'
   params: {
     keyVaultName: 'kv-${serviceName}'

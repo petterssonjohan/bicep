@@ -1,14 +1,18 @@
-param keyVaultName string
-param secretName string
+param serviceName string
+param location string
+param tags object
+param tenantId string
 
-@secure()
-param secretValue string
-
-resource keyVaultSecret 'Microsoft.KeyVault/vaults/secrets@2019-09-01' = {
-  name: '${keyVaultName}/${secretName}'
+resource keyVaultSecret 'Microsoft.KeyVault/vaults@2022-07-01' = {
+  name: 'kv-${serviceName}'
+  location: location
+  tags: tags
   properties: {
-    value: secretValue
+    sku: {
+      name: 'standard'
+      family: 'A'
+    }
+    enabledForTemplateDeployment: true
+    tenantId: tenantId
   }
 }
-
-output keyVaultSecretName string = keyVaultSecret.name

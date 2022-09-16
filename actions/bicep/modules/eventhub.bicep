@@ -50,7 +50,7 @@ resource eventHubConsumerGroup 'Microsoft.EventHub/namespaces/eventhubs/consumer
   parent: eventHub
 }
 
-module eventhubAccessPolicyPrimaryKey '../modules/keyvault.bicep' = {
+module eventhubAccessPolicyPrimaryKey '../modules/secret.bicep' = {
   name: 'eventhubAccessPolicyPrimaryKey'
   params: {
     keyVaultName: 'kv-${serviceName}'

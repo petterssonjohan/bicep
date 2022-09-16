@@ -14,6 +14,9 @@
             "BUSINESS-AREA": "SPT",
             "RUNTIME-ENVIRONMENT": "dev"
           }
+      },
+      "tenantId": {
+        "value": "'6618d4dc-2516-4213-a4f4-029b4d661f09'"
       }
     }
   }
