@@ -170,128 +170,128 @@ module eventHub '../../modules/eventhub.bicep' = {
   }
 }
 
-module redis '../../modules/redis.bicep' = {
-  name: 'redis-${releaseId}'
-  scope: rg
-  params: {
-    location: location
-    name: '${businessArea}-${loc}-redis-${serviceName}-${env}'
-    tags: tags
-  }
-}
-
-module appService '../../modules/appservice.bicep' = {
-  scope: rg
-  name: 'appService-${releaseId}'
-  params: {
-    name: '${businessArea}-${loc}-sp-${serviceName}-${env}'
-    planSku: env == 'prod' ? 'S1' : 'F1'
-    location: location
-  }
-}
-
-/* So Costly.. */
-// module network '../../modules/network.bicep' = {
-//   name: 'network-${releaseId}'
-//   scope: resourceGroup(subscriptionId, vnetResourceGroup)
+// module redis '../../modules/redis.bicep' = {
+//   name: 'redis-${releaseId}'
+//   scope: rg
 //   params: {
-//     publicIpAddressName: 'net-publicipaddress-${serviceName}'
-//     natGatewayName: 'dms-${loc}-natg-${tags['RUNTIME-ENVIRONMENT']}'
-//     vnetName: 'dms-${loc}-vnet-${tags['RUNTIME-ENVIRONMENT']}'
-//     vnetSubnetName: '${businessArea}-${loc}-subnet-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
+//     location: location
+//     name: '${businessArea}-${loc}-redis-${serviceName}-${env}'
+//     tags: tags
+//   }
+// }
+
+// module appService '../../modules/appservice.bicep' = {
+//   scope: rg
+//   name: 'appService-${releaseId}'
+//   params: {
+//     name: '${businessArea}-${loc}-sp-${serviceName}-${env}'
+//     planSku: env == 'prod' ? 'S1' : 'F1'
 //     location: location
 //   }
 // }
 
-module deviceContextFunction '../../modules/function-devicecontext.bicep' = {
-  name: 'deviceContext-${releaseId}'
-  scope: rg
-  params: {
-    name: '${businessArea}-${loc}-af-context-${serviceName}-${env}'
-    appServicePlanId: appService.outputs.appServicePlanId
-    location: location
-    tags: tags
-  }
-}
+// /* So Costly.. */
+// // module network '../../modules/network.bicep' = {
+// //   name: 'network-${releaseId}'
+// //   scope: resourceGroup(subscriptionId, vnetResourceGroup)
+// //   params: {
+// //     publicIpAddressName: 'net-publicipaddress-${serviceName}'
+// //     natGatewayName: 'dms-${loc}-natg-${tags['RUNTIME-ENVIRONMENT']}'
+// //     vnetName: 'dms-${loc}-vnet-${tags['RUNTIME-ENVIRONMENT']}'
+// //     vnetSubnetName: '${businessArea}-${loc}-subnet-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
+// //     location: location
+// //   }
+// // }
 
-module serviceDataFunction '../../modules/function-servicedata.bicep' = {
-  name: 'serviceData-${releaseId}'
-  scope: rg
-  params: {
-    name: '${businessArea}-${loc}-af-data-${serviceName}-${env}'
-    appServicePlanId: appService.outputs.appServicePlanId
-    location: location
-    tags: tags
-  }
-}
+// module deviceContextFunction '../../modules/function-devicecontext.bicep' = {
+//   name: 'deviceContext-${releaseId}'
+//   scope: rg
+//   params: {
+//     name: '${businessArea}-${loc}-af-context-${serviceName}-${env}'
+//     appServicePlanId: appService.outputs.appServicePlanId
+//     location: location
+//     tags: tags
+//   }
+// }
 
-module cosmos '../../modules/cosmos.bicep' = {
-  name: 'cosmos-${releaseId}'
-  scope: rg
-  params: {
-    accountName: '${businessArea}-${loc}-cosmos-${serviceName}-${env}'
-    databaseName: '${serviceDataName}-${serviceName}'
-    location: location
-    containerName: 'data-${serviceName}'
-    tags: tags
-    serviceName: serviceName
-    containerProperties: {
-      options: {
-        autoscaleSettings: {
-          maxThroughput: 4000
-        }
-      }
-      resource: {
-        id: 'data-${serviceName}'
-        partitionKey: {
-          paths: [
-            '/Serial'
-          ]
-          kind: 'Hash'
-        }
-        indexingPolicy: {
-          indexingMode: 'consistent'
-          includedPaths: [
-            {
-              path: '/*'
-            }
-          ]
-          excludedPaths: [
-            {
-              path: '/_etag/?'
-            }
-          ]
-        }
-        defaultTtl: 2592000
-      }
-    }
-  }
-}
+// module serviceDataFunction '../../modules/function-servicedata.bicep' = {
+//   name: 'serviceData-${releaseId}'
+//   scope: rg
+//   params: {
+//     name: '${businessArea}-${loc}-af-data-${serviceName}-${env}'
+//     appServicePlanId: appService.outputs.appServicePlanId
+//     location: location
+//     tags: tags
+//   }
+// }
 
-resource kv 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
-  name: 'kv-${serviceName}'
-  scope: rg
-}
+// module cosmos '../../modules/cosmos.bicep' = {
+//   name: 'cosmos-${releaseId}'
+//   scope: rg
+//   params: {
+//     accountName: '${businessArea}-${loc}-cosmos-${serviceName}-${env}'
+//     databaseName: '${serviceDataName}-${serviceName}'
+//     location: location
+//     containerName: 'data-${serviceName}'
+//     tags: tags
+//     serviceName: serviceName
+//     containerProperties: {
+//       options: {
+//         autoscaleSettings: {
+//           maxThroughput: 4000
+//         }
+//       }
+//       resource: {
+//         id: 'data-${serviceName}'
+//         partitionKey: {
+//           paths: [
+//             '/Serial'
+//           ]
+//           kind: 'Hash'
+//         }
+//         indexingPolicy: {
+//           indexingMode: 'consistent'
+//           includedPaths: [
+//             {
+//               path: '/*'
+//             }
+//           ]
+//           excludedPaths: [
+//             {
+//               path: '/_etag/?'
+//             }
+//           ]
+//         }
+//         defaultTtl: 2592000
+//       }
+//     }
+//   }
+// }
 
-module streamAnalytics '../../modules/streamanalytics.bicep' = {
-  name: 'streamAnalytics-${releaseId}'
-  scope: rg
-  params: {
-    name: '${businessArea}-${loc}-asa-${serviceName}-${env}'
-    input: 'input-${eventHub.name}'
-    output: 'output-${cosmos.name}'
-    location: location
-    tags: tags
-    eventhubAccessPolicyPrimaryKey: kv.getSecret('asa-${serviceName}-listen-pk')
-    eventhubNamespaceName: '${businessArea}-${loc}-evhns-${serviceName}-${env}'
-    eventhubAuthorizationListenRuleName: 'asa-${serviceName}-listen'
-    eventhubName: '${businessArea}-${loc}-evh-${serviceName}-${env}'
-    eventhubConsumerGroupName: 'evhcg-asa-customer-fanout-${serviceName}'
-    cosmosAccountName: '${businessArea}-${loc}-cosmos-${serviceName}-${env}'
-    cosmosPrimaryKey: kv.getSecret('${businessArea}-${loc}-cosmos-${serviceName}-${env}-pcs')
-    cosmosDatabaseName: '${serviceDataName}-${serviceName}'
-    cosmosContainerName: 'data-${serviceName}'
-    cosmosPartialKey: '/Serial'
-    transformationName: 'transformation'
-  }
-}
+// resource kv 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
+//   name: 'kv-${serviceName}'
+//   scope: rg
+// }
+
+// module streamAnalytics '../../modules/streamanalytics.bicep' = {
+//   name: 'streamAnalytics-${releaseId}'
+//   scope: rg
+//   params: {
+//     name: '${businessArea}-${loc}-asa-${serviceName}-${env}'
+//     input: 'input-${eventHub.name}'
+//     output: 'output-${cosmos.name}'
+//     location: location
+//     tags: tags
+//     eventhubAccessPolicyPrimaryKey: kv.getSecret('asa-${serviceName}-listen-pk')
+//     eventhubNamespaceName: '${businessArea}-${loc}-evhns-${serviceName}-${env}'
+//     eventhubAuthorizationListenRuleName: 'asa-${serviceName}-listen'
+//     eventhubName: '${businessArea}-${loc}-evh-${serviceName}-${env}'
+//     eventhubConsumerGroupName: 'evhcg-asa-customer-fanout-${serviceName}'
+//     cosmosAccountName: '${businessArea}-${loc}-cosmos-${serviceName}-${env}'
+//     cosmosPrimaryKey: kv.getSecret('${businessArea}-${loc}-cosmos-${serviceName}-${env}-pcs')
+//     cosmosDatabaseName: '${serviceDataName}-${serviceName}'
+//     cosmosContainerName: 'data-${serviceName}'
+//     cosmosPartialKey: '/Serial'
+//     transformationName: 'transformation'
+//   }
+// }

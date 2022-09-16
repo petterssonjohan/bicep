@@ -55,7 +55,7 @@ module eventhubAccessPolicyPrimaryKey '../modules/secret.bicep' = {
   params: {
     keyVaultName: 'kv-${serviceName}'
     secretName: '${authorizationListenRuleName}-pk'
-    secretValue: listKeys(eventHubAccessPolicyListen.id, eventHubAccessPolicyListen.apiVersion).primaryConnectionString
+    secretValue: 'listKeys(eventHubAccessPolicyListen.id, eventHubAccessPolicyListen.apiVersion).primaryConnectionString'
   }
 }
 
