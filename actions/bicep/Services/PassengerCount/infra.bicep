@@ -44,7 +44,7 @@ module keyvault '../../modules/keyvault.bicep' = {
 var serviceDataName = 'service-data'
 var deviceContextName = 'device-context'
 
-@description('Provide unique identifier for release')
+@description('Provide unique identifier for release.')
 param releaseId string = newGuid()
 
 var blobContainers = [
