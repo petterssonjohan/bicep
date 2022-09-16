@@ -19,8 +19,11 @@ param cosmosPartialKey string
 param transformationName string
 param serviceName string
 
+param resourceGroupName string
+
 resource kv 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
   name: 'kv-${serviceName}'
+  scope: resourceGroup(subscription().id, resourceGroupName)
 }
 
 param eventHubKeyVaultSecretName string
