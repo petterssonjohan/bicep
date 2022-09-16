@@ -270,30 +270,30 @@ module cosmos '../../modules/cosmos.bicep' = {
   }
 }
 
-resource kv 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
-  name: 'kv-${serviceName}'
-  scope: rg
-}
+// resource kv 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
+//   name: 'kv-${serviceName}'
+//   scope: rg
+// }
 
-module streamAnalytics '../../modules/streamanalytics.bicep' = {
-  name: 'streamAnalytics-${releaseId}'
-  scope: rg
-  params: {
-    name: '${businessArea}-${loc}-asa-${serviceName}-${env}'
-    input: 'input-${eventHub.name}'
-    output: 'output-${cosmos.name}'
-    location: location
-    tags: tags
-    eventhubAccessPolicyPrimaryKey: kv.getSecret(eventHub.outputs.keyVaultSecretName)
-    eventhubNamespaceName: '${businessArea}-${loc}-evhns-${serviceName}-${env}'
-    eventhubAuthorizationListenRuleName: 'asa-${serviceName}-listen'
-    eventhubName: '${businessArea}-${loc}-evh-${serviceName}-${env}'
-    eventhubConsumerGroupName: 'evhcg-asa-customer-fanout-${serviceName}'
-    cosmosAccountName: '${businessArea}-${loc}-cosmos-${serviceName}-${env}'
-    cosmosPrimaryKey: kv.getSecret(cosmos.outputs.keyVaultSecretName)
-    cosmosDatabaseName: '${serviceDataName}-${serviceName}'
-    cosmosContainerName: 'data-${serviceName}'
-    cosmosPartialKey: '/Serial'
-    transformationName: 'transformation'
-  }
-}
+// module streamAnalytics '../../modules/streamanalytics.bicep' = {
+//   name: 'streamAnalytics-${releaseId}'
+//   scope: rg
+//   params: {
+//     name: '${businessArea}-${loc}-asa-${serviceName}-${env}'
+//     input: 'input-${eventHub.name}'
+//     output: 'output-${cosmos.name}'
+//     location: location
+//     tags: tags
+//     eventhubAccessPolicyPrimaryKey: kv.getSecret(eventHub.outputs.keyVaultSecretName)
+//     eventhubNamespaceName: '${businessArea}-${loc}-evhns-${serviceName}-${env}'
+//     eventhubAuthorizationListenRuleName: 'asa-${serviceName}-listen'
+//     eventhubName: '${businessArea}-${loc}-evh-${serviceName}-${env}'
+//     eventhubConsumerGroupName: 'evhcg-asa-customer-fanout-${serviceName}'
+//     cosmosAccountName: '${businessArea}-${loc}-cosmos-${serviceName}-${env}'
+//     cosmosPrimaryKey: kv.getSecret(cosmos.outputs.keyVaultSecretName)
+//     cosmosDatabaseName: '${serviceDataName}-${serviceName}'
+//     cosmosContainerName: 'data-${serviceName}'
+//     cosmosPartialKey: '/Serial'
+//     transformationName: 'transformation'
+//   }
+// }
