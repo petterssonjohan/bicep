@@ -267,13 +267,13 @@ module streamAnalytics '../../modules/streamanalytics.bicep' = {
     output: 'output-${cosmos.name}'
     location: location
     tags: tags
-    eventhubAccessPolicyPrimaryKey: kv.getSecret('asa-${serviceName}-listen-pk')
+    eventhubAccessPolicyPrimaryKey: kv.getSecret('asa-${serviceName}-listen-pk', '2022-07-01')
     eventhubNamespaceName: '${businessArea}-${loc}-evhns-${serviceName}-${env}'
     eventhubAuthorizationListenRuleName: 'asa-${serviceName}-listen'
     eventhubName: '${businessArea}-${loc}-evh-${serviceName}-${env}'
     eventhubConsumerGroupName: 'evhcg-asa-customer-fanout-${serviceName}'
     cosmosAccountName: '${businessArea}-${loc}-cosmos-${serviceName}-${env}'
-    cosmosPrimaryKey: kv.getSecret('${businessArea}-${loc}-cosmos-${serviceName}-${env}-pcs')
+    cosmosPrimaryKey: kv.getSecret('${businessArea}-${loc}-cosmos-${serviceName}-${env}-pcs', '2022-07-01')
     cosmosDatabaseName: '${serviceDataName}-${serviceName}'
     cosmosContainerName: 'data-${serviceName}'
     cosmosPartialKey: '/Serial'
