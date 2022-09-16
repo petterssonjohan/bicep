@@ -170,15 +170,15 @@ module eventHub '../../modules/eventhub.bicep' = {
   }
 }
 
-// module redis '../../modules/redis.bicep' = {
-//   name: 'redis-${releaseId}'
-//   scope: rg
-//   params: {
-//     location: location
-//     name: '${businessArea}-${loc}-redis-${serviceName}-${env}'
-//     tags: tags
-//   }
-// }
+module redis '../../modules/redis.bicep' = {
+  name: 'redis-${releaseId}'
+  scope: rg
+  params: {
+    location: location
+    name: '${businessArea}-${loc}-redis-${serviceName}-${env}'
+    tags: tags
+  }
+}
 
 module appService '../../modules/appservice.bicep' = {
   scope: rg
@@ -225,73 +225,73 @@ module serviceDataFunction '../../modules/function-servicedata.bicep' = {
   }
 }
 
-// module cosmos '../../modules/cosmos.bicep' = {
-//   name: 'cosmos-${releaseId}'
-//   scope: rg
-//   params: {
-//     accountName: '${businessArea}-${loc}-cosmos-${serviceName}-${env}'
-//     databaseName: '${serviceDataName}-${serviceName}'
-//     location: location
-//     containerName: 'data-${serviceName}'
-//     tags: tags
-//     serviceName: serviceName
-//     containerProperties: {
-//       options: {
-//         autoscaleSettings: {
-//           maxThroughput: 4000
-//         }
-//       }
-//       resource: {
-//         id: 'data-${serviceName}'
-//         partitionKey: {
-//           paths: [
-//             '/Serial'
-//           ]
-//           kind: 'Hash'
-//         }
-//         indexingPolicy: {
-//           indexingMode: 'consistent'
-//           includedPaths: [
-//             {
-//               path: '/*'
-//             }
-//           ]
-//           excludedPaths: [
-//             {
-//               path: '/_etag/?'
-//             }
-//           ]
-//         }
-//         defaultTtl: 2592000
-//       }
-//     }
-//   }
-// }
+module cosmos '../../modules/cosmos.bicep' = {
+  name: 'cosmos-${releaseId}'
+  scope: rg
+  params: {
+    accountName: '${businessArea}-${loc}-cosmos-${serviceName}-${env}'
+    databaseName: '${serviceDataName}-${serviceName}'
+    location: location
+    containerName: 'data-${serviceName}'
+    tags: tags
+    serviceName: serviceName
+    containerProperties: {
+      options: {
+        autoscaleSettings: {
+          maxThroughput: 4000
+        }
+      }
+      resource: {
+        id: 'data-${serviceName}'
+        partitionKey: {
+          paths: [
+            '/Serial'
+          ]
+          kind: 'Hash'
+        }
+        indexingPolicy: {
+          indexingMode: 'consistent'
+          includedPaths: [
+            {
+              path: '/*'
+            }
+          ]
+          excludedPaths: [
+            {
+              path: '/_etag/?'
+            }
+          ]
+        }
+        defaultTtl: 2592000
+      }
+    }
+  }
+}
 
-// resource kv 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
-//   name: 'kv-${serviceName}'
-//   scope: rg
-// }
+resource kv 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
+  name: 'kv-${serviceName}'
+  scope: rg
+}
 
-// module streamAnalytics '../../modules/streamanalytics.bicep' = {
-//   name: 'streamAnalytics-${releaseId}'
-//   scope: rg
-//   params: {
-//     name: '${businessArea}-${loc}-asa-${serviceName}-${env}'
-//     input: 'input-${eventHub.name}'
-//     output: 'output-${cosmos.name}'
-//     location: location
-//     tags: tags
-//     eventhubAccessPolicyPrimaryKey: kv.getSecret('asa-${serviceName}-listen-pk')
-//     eventhubNamespaceName: '${businessArea}-${loc}-evhns-${serviceName}-${env}'
-//     eventhubAuthorizationListenRuleName: 'asa-${serviceName}-listen'
-//     eventhubName: '${businessArea}-${loc}-evh-${serviceName}-${env}'
-//     eventhubConsumerGroupName: 'evhcg-asa-customer-fanout-${serviceName}'
-//     cosmosAccountName: '${businessArea}-${loc}-cosmos-${serviceName}-${env}'
-//     cosmosPrimaryKey: kv.getSecret('${businessArea}-${loc}-cosmos-${serviceName}-${env}-pcs')
-//     cosmosDatabaseName: '${serviceDataName}-${serviceName}'
-//     cosmosContainerName: 'data-${serviceName}'
-//     cosmosPartialKey: '/Serial'
-//     transformationName: 'transformation'
-//   }
-// }
+module streamAnalytics '../../modules/streamanalytics.bicep' = {
+  name: 'streamAnalytics-${releaseId}'
+  scope: rg
+  params: {
+    name: '${businessArea}-${loc}-asa-${serviceName}-${env}'
+    input: 'input-${eventHub.name}'
+    output: 'output-${cosmos.name}'
+    location: location
+    tags: tags
+    eventhubAccessPolicyPrimaryKey: kv.getSecret('asa-${serviceName}-listen-pk')
+    eventhubNamespaceName: '${businessArea}-${loc}-evhns-${serviceName}-${env}'
+    eventhubAuthorizationListenRuleName: 'asa-${serviceName}-listen'
+    eventhubName: '${businessArea}-${loc}-evh-${serviceName}-${env}'
+    eventhubConsumerGroupName: 'evhcg-asa-customer-fanout-${serviceName}'
+    cosmosAccountName: '${businessArea}-${loc}-cosmos-${serviceName}-${env}'
+    cosmosPrimaryKey: kv.getSecret('${businessArea}-${loc}-cosmos-${serviceName}-${env}-pcs')
+    cosmosDatabaseName: '${serviceDataName}-${serviceName}'
+    cosmosContainerName: 'data-${serviceName}'
+    cosmosPartialKey: '/Serial'
+    transformationName: 'transformation'
+  }
+}
