@@ -180,15 +180,15 @@ module eventHub '../../modules/eventhub.bicep' = {
 //   }
 // }
 
-// module appService '../../modules/appservice.bicep' = {
-//   scope: rg
-//   name: 'appService-${releaseId}'
-//   params: {
-//     name: '${businessArea}-${loc}-sp-${serviceName}-${env}'
-//     planSku: env == 'prod' ? 'S1' : 'F1'
-//     location: location
-//   }
-// }
+module appService '../../modules/appservice.bicep' = {
+  scope: rg
+  name: 'appService-${releaseId}'
+  params: {
+    name: '${businessArea}-${loc}-sp-${serviceName}-${env}'
+    planSku: env == 'prod' ? 'S1' : 'F1'
+    location: location
+  }
+}
 
 // /* So Costly.. */
 // // module network '../../modules/network.bicep' = {
@@ -203,27 +203,27 @@ module eventHub '../../modules/eventhub.bicep' = {
 // //   }
 // // }
 
-// module deviceContextFunction '../../modules/function-devicecontext.bicep' = {
-//   name: 'deviceContext-${releaseId}'
-//   scope: rg
-//   params: {
-//     name: '${businessArea}-${loc}-af-context-${serviceName}-${env}'
-//     appServicePlanId: appService.outputs.appServicePlanId
-//     location: location
-//     tags: tags
-//   }
-// }
+module deviceContextFunction '../../modules/function-devicecontext.bicep' = {
+  name: 'deviceContext-${releaseId}'
+  scope: rg
+  params: {
+    name: '${businessArea}-${loc}-af-context-${serviceName}-${env}'
+    appServicePlanId: appService.outputs.appServicePlanId
+    location: location
+    tags: tags
+  }
+}
 
-// module serviceDataFunction '../../modules/function-servicedata.bicep' = {
-//   name: 'serviceData-${releaseId}'
-//   scope: rg
-//   params: {
-//     name: '${businessArea}-${loc}-af-data-${serviceName}-${env}'
-//     appServicePlanId: appService.outputs.appServicePlanId
-//     location: location
-//     tags: tags
-//   }
-// }
+module serviceDataFunction '../../modules/function-servicedata.bicep' = {
+  name: 'serviceData-${releaseId}'
+  scope: rg
+  params: {
+    name: '${businessArea}-${loc}-af-data-${serviceName}-${env}'
+    appServicePlanId: appService.outputs.appServicePlanId
+    location: location
+    tags: tags
+  }
+}
 
 // module cosmos '../../modules/cosmos.bicep' = {
 //   name: 'cosmos-${releaseId}'
