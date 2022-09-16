@@ -296,5 +296,4 @@ module streamAnalytics '../../modules/streamanalytics.bicep' = {
     cosmosPartialKey: '/Serial'
     transformationName: 'transformation'
   }
-  dependsOn: [ keyvault ]
 }
