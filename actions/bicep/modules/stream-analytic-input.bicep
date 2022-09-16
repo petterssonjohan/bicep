@@ -23,10 +23,6 @@ param keyVaultName string
 param eventHubKeyVaultSecretName string
 param cosmosKeyVaultSecretName string
 
-resource kv 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
-  name: 'kv-apc'
-}
-
 module streamAnalytics './streamanalytics.bicep' = {
   name: 'streamAnalytics'
   params: {
@@ -35,13 +31,13 @@ module streamAnalytics './streamanalytics.bicep' = {
     output: output
     location: location
     tags: tags
-    eventhubAccessPolicyPrimaryKey: kv.getSecret(eventHubKeyVaultSecretName)
+    eventhubAccessPolicyPrimaryKey: eventHubKeyVaultSecretName
     eventhubNamespaceName: eventhubNamespaceName
     eventhubAuthorizationListenRuleName: eventhubAuthorizationListenRuleName
     eventhubName: eventhubName
     eventhubConsumerGroupName: eventhubConsumerGroupName
     cosmosAccountName: cosmosAccountName
-    cosmosPrimaryKey: kv.getSecret(cosmosKeyVaultSecretName)
+    cosmosPrimaryKey: cosmosKeyVaultSecretName
     cosmosDatabaseName: cosmosDatabaseName
     cosmosContainerName: cosmosContainerName
     cosmosPartialKey: cosmosPartialKey

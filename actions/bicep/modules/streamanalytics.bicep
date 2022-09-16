@@ -50,7 +50,7 @@ resource eventhubInput 'Microsoft.StreamAnalytics/streamingjobs/inputs@2021-10-0
         authenticationMode: 'ConnectionString'
         serviceBusNamespace: eventhubNamespaceName
         sharedAccessPolicyName: eventhubAuthorizationListenRuleName
-        sharedAccessPolicyKey: eventhubAccessPolicyPrimaryKey
+        sharedAccessPolicyKey: '@Microsoft.KeyVault(VaultName=${kv.name};SecretName=${eventhubAuthorizationListenRuleName})'
         eventHubName: eventhubName
         consumerGroupName: eventhubConsumerGroupName
       }
@@ -74,7 +74,7 @@ resource eventhubOutput 'Microsoft.StreamAnalytics/streamingjobs/outputs@2021-10
       properties: {
         authenticationMode: 'Msi'
         accountId: cosmosAccountName
-        accountKey: cosmosPrimaryKey
+        accountKey: '@Microsoft.KeyVault(VaultName=${kv.name};SecretName=${cosmosPrimaryKey})'
         database: cosmosDatabaseName
         collectionNamePattern: cosmosContainerName
         partitionKey: cosmosPartialKey
