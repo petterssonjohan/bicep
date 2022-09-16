@@ -59,4 +59,4 @@ module eventhubAccessPolicyPrimaryKey '../modules/secret.bicep' = {
   }
 }
 
-//output eventhubAccessPolicyPrimaryKey string = listKeys(eventHubAccessPolicyListen.id, eventHubAccessPolicyListen.apiVersion).primaryConnectionString
+output keyVaultSecretName string = eventhubAccessPolicyPrimaryKey.outputs.keyVaultSecretName
