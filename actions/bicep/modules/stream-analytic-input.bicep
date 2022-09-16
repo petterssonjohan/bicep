@@ -49,4 +49,5 @@ module streamAnalytics './streamanalytics.bicep' = {
     cosmosPartialKey: cosmosPartialKey
     transformationName: transformationName
   }
+  dependsOn: [ kv ]
 }
