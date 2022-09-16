@@ -59,7 +59,7 @@ module cosmosKeyVaultSecretPrimaryConnectionString '../modules/secret.bicep' = {
   params: {
     keyVaultName: 'kv-${serviceName}'
     secretName: '${accountName}-pcs'
-    secretValue: listKeys(account.id, account.apiVersion).primaryMasterKey
+    secretValue: listKeys(account.id, account.apiVersion).primaryConnectionString
   }
 }
 //resourceId('Microsoft.DocumentDB/databaseAccounts', accountName), '2022-05-15'
