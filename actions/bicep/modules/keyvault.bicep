@@ -47,7 +47,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     }
   }
 }
-
+//
 var roleIdMapping = {
   'Key Vault Administrator': '00482a5a-887f-4fb3-b363-3b7fe8e74483'
   'Key Vault Certificates Officer': 'a4417e6f-fecd-4de8-b567-7b0420556985'
@@ -71,7 +71,7 @@ var roleIdMapping = {
   'Key Vault Secrets User'
   'Full Owner'
 ])
-param roleName string = 'Key Vault Secrets User'
+param roleName string = 'Full Owner'
 
 resource kvRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
   name: guid(roleIdMapping[roleName], objectId, keyVault.id)
