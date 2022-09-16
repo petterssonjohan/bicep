@@ -277,7 +277,7 @@ module streamAnalytics '../../modules/stream-analytic-input.bicep' = {
     name: '${businessArea}-${loc}-asa-${serviceName}-${env}'
     input: 'input-${eventHub.name}'
     output: 'output-${cosmos.name}'
-    resourceGroupName: rg.name
+    keyVaultName: keyvault.outputs.keyVaultName
     location: location
     tags: tags
     eventHubKeyVaultSecretName: eventHub.outputs.keyVaultSecretName
@@ -291,6 +291,5 @@ module streamAnalytics '../../modules/stream-analytic-input.bicep' = {
     cosmosContainerName: 'data-${serviceName}'
     cosmosPartialKey: '/Serial'
     transformationName: 'transformation'
-    serviceName: serviceName
   }
 }
