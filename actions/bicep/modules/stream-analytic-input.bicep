@@ -35,13 +35,13 @@ module streamAnalytics './streamanalytics.bicep' = {
     output: output
     location: location
     tags: tags
-    eventhubAccessPolicyPrimaryKey: kv.getSecret(eventHubKeyVaultSecretName)
+    eventhubAccessPolicyPrimaryKey: kv.getSecret('@Microsoft.KeyVault(VaultName=${kv.name};SecretName=${eventHubKeyVaultSecretName})')
     eventhubNamespaceName: eventhubNamespaceName
     eventhubAuthorizationListenRuleName: eventhubAuthorizationListenRuleName
     eventhubName: eventhubName
     eventhubConsumerGroupName: eventhubConsumerGroupName
     cosmosAccountName: cosmosAccountName
-    cosmosPrimaryKey: kv.getSecret(cosmosKeyVaultSecretName)
+    cosmosPrimaryKey: kv.getSecret('@Microsoft.KeyVault(VaultName=${kv.name};SecretName=${cosmosKeyVaultSecretName})')
     cosmosDatabaseName: cosmosDatabaseName
     cosmosContainerName: cosmosContainerName
     cosmosPartialKey: cosmosPartialKey
