@@ -168,6 +168,7 @@ module eventHub '../../modules/eventhub.bicep' = {
       capacity: 1
     }
   }
+  dependsOn: [ keyvault ]
 }
 
 module redis '../../modules/redis.bicep' = {
@@ -266,6 +267,7 @@ module cosmos '../../modules/cosmos.bicep' = {
       }
     }
   }
+  dependsOn: [ keyvault ]
 }
 
 resource kv 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
