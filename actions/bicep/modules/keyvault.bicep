@@ -16,7 +16,7 @@ resource keyVaultSecret 'Microsoft.KeyVault/vaults@2022-07-01' = {
     enableRbacAuthorization: false
     accessPolicies: [
       {
-        objectId: 'd89101d9-cf97-4b6c-9656-c6da457d8add'
+        objectId: 'c8419fb8-d4e0-4a28-9600-61dcb1c0bdae' //for my user
         tenantId: tenantId
         permissions: {
           secrets: [
