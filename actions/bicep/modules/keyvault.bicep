@@ -3,7 +3,7 @@ param location string
 param tags object
 param tenantId string
 
-param objectId string = 'df461188-ee64-43bc-b888-0d2e4f55c9b1' // github-az-bicep-spn
+param objectId string = 'c8419fb8-d4e0-4a28-9600-61dcb1c0bdae' // github-az-bicep-spn
 
 //added github-az-bicep-spn to key vault under IAM as owner. Then it worked..
 
