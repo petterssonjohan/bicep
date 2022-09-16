@@ -48,3 +48,5 @@ resource eventHubConsumerGroup 'Microsoft.EventHub/namespaces/eventhubs/consumer
   name: consumerGroupName
   parent: eventHub
 }
+
+output eventhubAccessPolicyPrimaryKey string = listKeys(eventHubAccessPolicyListen.id, eventHubAccessPolicyListen.apiVersion).primaryConnectionString

@@ -18,21 +18,23 @@ param vnetResourceGroup string
 targetScope = 'subscription'
 var businessArea = 'spt'
 var loc = 'weu'
+var env = tags['RUNTIME-ENVIRONMENT']
 
 /* Will Create a new Resource Group */
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
-  name: '${businessArea}-${loc}-rg-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
+  name: '${businessArea}-${loc}-rg-${serviceName}-${env}'
   location: location
 }
 
 var serviceDataName = 'service-data'
+var deviceContextName = 'device-context'
 
 @description('Provide unique identifier for release')
 param releaseId string = newGuid()
 
 var blobContainers = [
   {
-    name: 'device-context'
+    name: deviceContextName
     enablePublicAccess: false
     metadata: {}
   }
@@ -44,7 +46,7 @@ var blobContainers = [
 ]
 
 var storageBlobDataContributorRoleId = 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
-var storageAccountName = '${businessArea}${loc}sa${serviceName}${tags['RUNTIME-ENVIRONMENT']}'
+var storageAccountName = '${businessArea}${loc}sa${serviceName}${env}'
 
 module storageAccount '../../modules/storageaccount.bicep' = {
   name: 'sa-${releaseId}'
@@ -107,8 +109,8 @@ module eventGrid '../../modules/eventgrid.bicep' = {
   scope: rg
   params: {
     serviceName: serviceName
-    systemTopicName: '${businessArea}-${loc}-egt-${serviceName}-logs-uploaded-${tags['RUNTIME-ENVIRONMENT']}'
-    eventSubscriptionName: '${businessArea}-${loc}-evgs-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
+    systemTopicName: '${businessArea}-${loc}-egt-${serviceName}-logs-uploaded-${env}'
+    eventSubscriptionName: '${businessArea}-${loc}-evgs-${serviceName}-${env}'
     tags: tags
     location: location
     storageAccountId: storageAccount.outputs.storageAccountId
@@ -138,8 +140,8 @@ module eventHub '../../modules/eventhub.bicep' = {
   scope: rg
   params: {
     location: location
-    name: '${businessArea}-${loc}-evh-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
-    namespaceName: '${businessArea}-${loc}-evhns-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
+    name: '${businessArea}-${loc}-evh-${serviceName}-${env}'
+    namespaceName: '${businessArea}-${loc}-evhns-${serviceName}-${env}'
     tags: tags
     authorizationListenRuleName: 'asa-${serviceName}-listen'
     authorizationSendRuleName: 'af-data-${serviceName}-send'
@@ -157,7 +159,7 @@ module redis '../../modules/redis.bicep' = {
   scope: rg
   params: {
     location: location
-    name: '${businessArea}-${loc}-redis-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
+    name: '${businessArea}-${loc}-redis-${serviceName}-${env}'
     tags: tags
   }
 }
@@ -166,8 +168,8 @@ module appService '../../modules/appservice.bicep' = {
   scope: rg
   name: 'appService-${releaseId}'
   params: {
-    name: '${businessArea}-${loc}-sp-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
-    planSku: tags['RUNTIME-ENVIRONMENT'] == 'prod' ? 'S1' : 'F1'
+    name: '${businessArea}-${loc}-sp-${serviceName}-${env}'
+    planSku: env == 'prod' ? 'S1' : 'F1'
     location: location
   }
 }
@@ -189,7 +191,7 @@ module deviceContextFunction '../../modules/function-devicecontext.bicep' = {
   name: 'deviceContext-${releaseId}'
   scope: rg
   params: {
-    name: '${businessArea}-${loc}-af-context-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
+    name: '${businessArea}-${loc}-af-context-${serviceName}-${env}'
     appServicePlanId: appService.outputs.appServicePlanId
     location: location
     tags: tags
@@ -200,18 +202,18 @@ module serviceDataFunction '../../modules/function-servicedata.bicep' = {
   name: 'serviceData-${releaseId}'
   scope: rg
   params: {
-    name: '${businessArea}-${loc}-af-data-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
+    name: '${businessArea}-${loc}-af-data-${serviceName}-${env}'
     appServicePlanId: appService.outputs.appServicePlanId
     location: location
     tags: tags
   }
 }
 
-module cosmosAccount '../../modules/cosmos.bicep' = {
+module cosmos '../../modules/cosmos.bicep' = {
   name: 'cosmos-${releaseId}'
   scope: rg
   params: {
-    accountName: '${businessArea}-${loc}-cosmos-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
+    accountName: '${businessArea}-${loc}-cosmos-${serviceName}-${env}'
     databaseName: '${serviceDataName}-${serviceName}'
     location: location
     containerName: 'data-${serviceName}'
@@ -246,5 +248,28 @@ module cosmosAccount '../../modules/cosmos.bicep' = {
         defaultTtl: 2592000
       }
     }
+  }
+}
+
+module streamAnalytics '../../modules/streamanalytics.bicep' = {
+  name: 'streamAnalytics-${releaseId}'
+  scope: rg
+  params: {
+    name: '${businessArea}-${loc}-asa-${serviceName}-${env}'
+    input: 'input-${eventHub.name}'
+    output: 'output-${cosmos.name}'
+    location: location
+    tags: tags
+    eventhubAccessPolicyPrimaryKey: eventHub.outputs.eventhubAccessPolicyPrimaryKey
+    eventhubNamespaceName: '${businessArea}-${loc}-evhns-${serviceName}-${env}'
+    eventhubAuthorizationListenRuleName: 'asa-${serviceName}-listen'
+    eventhubName: '${businessArea}-${loc}-evh-${serviceName}-${env}'
+    eventhubConsumerGroupName: 'evhcg-asa-customer-fanout-${serviceName}'
+    cosmosAccountName: '${businessArea}-${loc}-cosmos-${serviceName}-${env}'
+    cosmosPrimaryKey: cosmos.outputs.cosmosPrimaryKey
+    cosmosDatabaseName: '${serviceDataName}-${serviceName}'
+    cosmosContainerName: 'data-${serviceName}'
+    cosmosPartialKey: '/Serial'
+    transformationName: 'transformation'
   }
 }

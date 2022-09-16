@@ -53,3 +53,5 @@ resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/container
   name: containerName
   properties: containerProperties
 }
+
+output cosmosPrimaryKey string = listKeys(database.id, database.apiVersion).primaryMasterKey
