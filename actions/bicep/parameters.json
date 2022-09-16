@@ -20,6 +20,9 @@
     },
     "tenantId": {
       "value": "6618d4dc-2516-4213-a4f4-029b4d661f09"
+    },
+    "deploymentOperatorId": {
+      "value": "c8419fb8-d4e0-4a28-9600-61dcb1c0bdae"
     }
   }
 }

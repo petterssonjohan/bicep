@@ -20,10 +20,6 @@ param transformationName string
 
 param keyVaultName string
 
-resource kv 'Microsoft.KeyVault/vaults@2022-07-01' existing = {
-  name: keyVaultName
-}
-
 param eventHubKeyVaultSecretName string
 param cosmosKeyVaultSecretName string
 
@@ -35,17 +31,16 @@ module streamAnalytics './streamanalytics.bicep' = {
     output: output
     location: location
     tags: tags
-    eventhubAccessPolicyPrimaryKey: kv.getSecret(eventHubKeyVaultSecretName)
+    eventhubAccessPolicyPrimaryKey: eventHubKeyVaultSecretName
     eventhubNamespaceName: eventhubNamespaceName
     eventhubAuthorizationListenRuleName: eventhubAuthorizationListenRuleName
     eventhubName: eventhubName
     eventhubConsumerGroupName: eventhubConsumerGroupName
     cosmosAccountName: cosmosAccountName
-    cosmosPrimaryKey: kv.getSecret(cosmosKeyVaultSecretName)
+    cosmosPrimaryKey: cosmosKeyVaultSecretName
     cosmosDatabaseName: cosmosDatabaseName
     cosmosContainerName: cosmosContainerName
     cosmosPartialKey: cosmosPartialKey
     transformationName: transformationName
   }
-  dependsOn: [ kv ]
 }

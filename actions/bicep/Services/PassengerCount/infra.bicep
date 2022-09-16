@@ -18,6 +18,9 @@ param vnetResourceGroup string
 @description('TenantId')
 param tenantId string
 
+@description('This is the object id of the user who will do the deployment on Azure. Can be your user id on AAD. Discover it running [az ad signed-in-user show] and get the [objectId] property.')
+param deploymentOperatorId string
+
 targetScope = 'subscription'
 var businessArea = 'spt'
 var loc = 'weu'
@@ -27,6 +30,26 @@ var env = tags['RUNTIME-ENVIRONMENT']
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: '${businessArea}-${loc}-rg-${serviceName}-${env}'
   location: location
+}
+
+module operatorSetup '../../modules/operatorSetup.bicep' = {
+  name: 'operatorSetup-deployment-${releaseId}'
+  params: {
+    operatorPrincipalId: deploymentOperatorId
+    appName: serviceName
+  }
+  scope: rg
+}
+
+// creates an user-assigned managed identity that will used by different azure resources to access each other.
+module msi '../../modules/msi.bicep' = {
+  name: 'msi-deployment'
+  params: {
+    location: location
+    managedIdentityName: '${serviceName}Identity'
+    operatorRoleDefinitionId: operatorSetup.outputs.roleId
+  }
+  scope: rg
 }
 
 /* Create KeyVault */

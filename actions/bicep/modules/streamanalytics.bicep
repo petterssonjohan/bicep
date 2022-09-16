@@ -72,6 +72,7 @@ resource eventhubOutput 'Microsoft.StreamAnalytics/streamingjobs/outputs@2021-10
     datasource: {
       type: 'Microsoft.Storage/DocumentDB'
       properties: {
+        authenticationMode: 'Msi'
         accountId: cosmosAccountName
         accountKey: '@Microsoft.KeyVault(VaultName=${kv.name};SecretName=${cosmosPrimaryKey})'
         database: cosmosDatabaseName
