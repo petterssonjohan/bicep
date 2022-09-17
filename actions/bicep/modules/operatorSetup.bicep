@@ -6,7 +6,7 @@ param appName string
 
 // creates a new role definition that will have the permissions needed to manipulate the items in this deployment.
 #disable-next-line BCP081
-resource roledefinition_deploymentOperator 'Microsoft.Authorization/roleDefinitions@2018-07-01' = {
+resource roledefinition_deploymentOperator 'Microsoft.Authorization/roleDefinitions@2022-04-01' = {
   name: guid('deployment-operator', appName)
   properties: {
     roleName: 'Operator role for app ${appName}'
@@ -17,24 +17,15 @@ resource roledefinition_deploymentOperator 'Microsoft.Authorization/roleDefiniti
     permissions: [
       {
         actions: [
-          'Microsoft.Authorization/*/read'
-          'Microsoft.Insights/alertRules/*'
-          'Microsoft.Resources/deployments/*'
-          'Microsoft.Resources/subscriptions/resourceGroups/read'
-          'Microsoft.Support/*'
-          'Microsoft.KeyVault/checkNameAvailability/read'
-          'Microsoft.KeyVault/deletedVaults/read'
-          'Microsoft.KeyVault/locations/*/read'
-          'Microsoft.KeyVault/vaults/*'
-          'Microsoft.KeyVault/operations/read'
-          'Microsoft.Authorization/roleAssignments/write'
-          'Microsoft.Authorization/roleDefinitions'
-          'Microsoft.'
+          '*'
         ]
-        dataActions: [
-          'Microsoft.KeyVault/vaults/*'
+        notActions: [
+          'Microsoft.Authorization/*/Delete'
+          'Microsoft.Authorization/elevateAccess/Action'
+          'Microsoft.Blueprint/blueprintAssignments/write'
+          'Microsoft.Blueprint/blueprintAssignments/delete'
+          'Microsoft.Compute/galleries/share/action'
         ]
-        notActions: []
         notDataActions: []
       }
     ]
@@ -44,7 +35,7 @@ resource roledefinition_deploymentOperator 'Microsoft.Authorization/roleDefiniti
 var roleAssignmentName = guid(resourceGroup().id, roledefinition_deploymentOperator.id, operatorPrincipalId, appName)
 
 // assigns the role definition above to the user who will perform the deployment.
-resource keyvault_roleAssignment_deploymentOperator 'Microsoft.Authorization/roleAssignments@2020-08-01-preview' = {
+resource keyvault_roleAssignment_deploymentOperator 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: roleAssignmentName
   scope: resourceGroup()
   properties: {
