@@ -32,37 +32,37 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module operatorSetup '../../modules/operatorSetup.bicep' = {
-  name: 'operatorSetup-deployment-${releaseId}'
-  params: {
-    operatorPrincipalId: deploymentOperatorId
-    appName: serviceName
-  }
-  scope: rg
-}
+// module operatorSetup '../../modules/operatorSetup.bicep' = {
+//   name: 'operatorSetup-deployment-${releaseId}'
+//   params: {
+//     operatorPrincipalId: deploymentOperatorId
+//     appName: serviceName
+//   }
+//   scope: rg
+// }
 
-// creates an user-assigned managed identity that will used by different azure resources to access each other.
-module msi '../../modules/msi.bicep' = {
-  name: 'msi-deployment'
-  params: {
-    location: location
-    managedIdentityName: '${serviceName}Identity'
-    operatorRoleDefinitionId: operatorSetup.outputs.roleId
-  }
-  scope: rg
-}
+// // creates an user-assigned managed identity that will used by different azure resources to access each other.
+// module msi '../../modules/msi.bicep' = {
+//   name: 'msi-deployment'
+//   params: {
+//     location: location
+//     managedIdentityName: '${serviceName}Identity'
+//     operatorRoleDefinitionId: operatorSetup.outputs.roleId
+//   }
+//   scope: rg
+// }
 
 /* Create KeyVault */
-// module keyvault '../../modules/keyvault.bicep' = {
-//   name: 'kv-${releaseId}'
-//   scope: rg
-//   params: {
-//     tenantId: tenantId
-//     location: location
-//     serviceName: serviceName
-//     tags: tags
-//   }
-// }
+module keyvault '../../modules/keyvault.bicep' = {
+  name: 'kv-${releaseId}'
+  scope: rg
+  params: {
+    tenantId: tenantId
+    location: location
+    serviceName: serviceName
+    tags: tags
+  }
+}
 
 var serviceDataName = 'service-data'
 var deviceContextName = 'device-context'
@@ -173,26 +173,26 @@ module eventGrid '../../modules/eventgrid.bicep' = {
 }
 
 /* Event Hub */
-// module eventHub '../../modules/eventhub.bicep' = {
-//   name: 'eventHub-${releaseId}'
-//   scope: rg
-//   params: {
-//     location: location
-//     name: '${businessArea}-${loc}-evh-${serviceName}-${env}'
-//     namespaceName: '${businessArea}-${loc}-evhns-${serviceName}-${env}'
-//     tags: tags
-//     authorizationListenRuleName: 'asa-${serviceName}-listen'
-//     authorizationSendRuleName: 'af-data-${serviceName}-send'
-//     consumerGroupName: 'evhcg-asa-customer-fanout-${serviceName}'
-//     serviceName: serviceName
-//     keyVaultName: keyvault.outputs.keyVaultName
-//     sku: {
-//       name: 'Standard'
-//       tier: 'Standard'
-//       capacity: 1
-//     }
-//   }
-// }
+module eventHub '../../modules/eventhub.bicep' = {
+  name: 'eventHub-${releaseId}'
+  scope: rg
+  params: {
+    location: location
+    name: '${businessArea}-${loc}-evh-${serviceName}-${env}'
+    namespaceName: '${businessArea}-${loc}-evhns-${serviceName}-${env}'
+    tags: tags
+    authorizationListenRuleName: 'asa-${serviceName}-listen'
+    authorizationSendRuleName: 'af-data-${serviceName}-send'
+    consumerGroupName: 'evhcg-asa-customer-fanout-${serviceName}'
+    serviceName: serviceName
+    keyVaultName: keyvault.outputs.keyVaultName
+    sku: {
+      name: 'Standard'
+      tier: 'Standard'
+      capacity: 1
+    }
+  }
+}
 
 module redis '../../modules/redis.bicep' = {
   name: 'redis-${releaseId}'
@@ -249,70 +249,70 @@ module serviceDataFunction '../../modules/function-servicedata.bicep' = {
   }
 }
 
-// module cosmos '../../modules/cosmos.bicep' = {
-//   name: 'cosmos-${releaseId}'
-//   scope: rg
-//   params: {
-//     accountName: '${businessArea}-${loc}-cosmos-${serviceName}-${env}'
-//     databaseName: '${serviceDataName}-${serviceName}'
-//     location: location
-//     containerName: 'data-${serviceName}'
-//     tags: tags
-//     serviceName: serviceName
-//     keyVaultName: keyvault.outputs.keyVaultName
-//     containerProperties: {
-//       options: {
-//         autoscaleSettings: {
-//           maxThroughput: 4000
-//         }
-//       }
-//       resource: {
-//         id: 'data-${serviceName}'
-//         partitionKey: {
-//           paths: [
-//             '/Serial'
-//           ]
-//           kind: 'Hash'
-//         }
-//         indexingPolicy: {
-//           indexingMode: 'consistent'
-//           includedPaths: [
-//             {
-//               path: '/*'
-//             }
-//           ]
-//           excludedPaths: [
-//             {
-//               path: '/_etag/?'
-//             }
-//           ]
-//         }
-//         defaultTtl: 2592000
-//       }
-//     }
-//   }
-// }
+module cosmos '../../modules/cosmos.bicep' = {
+  name: 'cosmos-${releaseId}'
+  scope: rg
+  params: {
+    accountName: '${businessArea}-${loc}-cosmos-${serviceName}-${env}'
+    databaseName: '${serviceDataName}-${serviceName}'
+    location: location
+    containerName: 'data-${serviceName}'
+    tags: tags
+    serviceName: serviceName
+    keyVaultName: keyvault.outputs.keyVaultName
+    containerProperties: {
+      options: {
+        autoscaleSettings: {
+          maxThroughput: 4000
+        }
+      }
+      resource: {
+        id: 'data-${serviceName}'
+        partitionKey: {
+          paths: [
+            '/Serial'
+          ]
+          kind: 'Hash'
+        }
+        indexingPolicy: {
+          indexingMode: 'consistent'
+          includedPaths: [
+            {
+              path: '/*'
+            }
+          ]
+          excludedPaths: [
+            {
+              path: '/_etag/?'
+            }
+          ]
+        }
+        defaultTtl: 2592000
+      }
+    }
+  }
+}
 
-// module streamAnalytics '../../modules/stream-analytic-input.bicep' = {
-//   name: 'streamAnalytics-${releaseId}'
-//   scope: rg
-//   params: {
-//     name: '${businessArea}-${loc}-asa-${serviceName}-${env}'
-//     input: 'input-${eventHub.name}'
-//     output: 'output-${cosmos.name}'
-//     keyVaultName: keyvault.outputs.keyVaultName
-//     location: location
-//     tags: tags
-//     eventHubKeyVaultSecretName: eventHub.outputs.keyVaultSecretName
-//     eventhubNamespaceName: '${businessArea}-${loc}-evhns-${serviceName}-${env}'
-//     eventhubAuthorizationListenRuleName: 'asa-${serviceName}-listen'
-//     eventhubName: '${businessArea}-${loc}-evh-${serviceName}-${env}'
-//     eventhubConsumerGroupName: 'evhcg-asa-customer-fanout-${serviceName}'
-//     cosmosAccountName: '${businessArea}-${loc}-cosmos-${serviceName}-${env}'
-//     cosmosKeyVaultSecretName: cosmos.outputs.keyVaultSecretName
-//     cosmosDatabaseName: '${serviceDataName}-${serviceName}'
-//     cosmosContainerName: 'data-${serviceName}'
-//     cosmosPartialKey: '/Serial'
-//     transformationName: 'transformation'
-//   }
-// }
+module streamAnalytics '../../modules/stream-analytic-input.bicep' = {
+  name: 'streamAnalytics-${releaseId}'
+  scope: rg
+  params: {
+    name: '${businessArea}-${loc}-asa-${serviceName}-${env}'
+    input: 'input-${eventHub.name}'
+    output: 'output-${cosmos.name}'
+    keyVaultName: keyvault.outputs.keyVaultName
+    location: location
+    tags: tags
+    eventHubKeyVaultSecretName: eventHub.outputs.keyVaultSecretName
+    eventhubNamespaceName: '${businessArea}-${loc}-evhns-${serviceName}-${env}'
+    eventhubAuthorizationListenRuleName: 'asa-${serviceName}-listen'
+    eventhubName: '${businessArea}-${loc}-evh-${serviceName}-${env}'
+    eventhubConsumerGroupName: 'evhcg-asa-customer-fanout-${serviceName}'
+    cosmosAccountName: '${businessArea}-${loc}-cosmos-${serviceName}-${env}'
+    cosmosKeyVaultSecretName: cosmos.outputs.keyVaultSecretName
+    cosmosDatabaseName: '${serviceDataName}-${serviceName}'
+    cosmosContainerName: 'data-${serviceName}'
+    cosmosPartialKey: '/Serial'
+    transformationName: 'transformation'
+  }
+}
