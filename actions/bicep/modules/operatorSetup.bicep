@@ -27,6 +27,8 @@ resource roledefinition_deploymentOperator 'Microsoft.Authorization/roleDefiniti
           'Microsoft.KeyVault/locations/*/read'
           'Microsoft.KeyVault/vaults/*'
           'Microsoft.KeyVault/operations/read'
+          'Microsoft.Authorization/roleAssignments/write'
+          'Microsoft.'
         ]
         dataActions: [
           'Microsoft.KeyVault/vaults/*'
