@@ -78,7 +78,7 @@ resource kvRoleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-pr
   name: guid(roleIdMapping[roleName], objectId, keyVault.id)
   scope: keyVault
   properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleIdMapping[roleName])
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'ec9a1988-988d-48bd-a1cb-76dce9535900')
     principalId: objectId
     principalType: 'ServicePrincipal'
   }
