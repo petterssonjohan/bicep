@@ -53,16 +53,16 @@ module msi '../../modules/msi.bicep' = {
 }
 
 /* Create KeyVault */
-module keyvault '../../modules/keyvault.bicep' = {
-  name: 'kv-${releaseId}'
-  scope: rg
-  params: {
-    tenantId: tenantId
-    location: location
-    serviceName: serviceName
-    tags: tags
-  }
-}
+// module keyvault '../../modules/keyvault.bicep' = {
+//   name: 'kv-${releaseId}'
+//   scope: rg
+//   params: {
+//     tenantId: tenantId
+//     location: location
+//     serviceName: serviceName
+//     tags: tags
+//   }
+// }
 
 var serviceDataName = 'service-data'
 var deviceContextName = 'device-context'
