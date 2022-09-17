@@ -32,6 +32,15 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
+// var roleAssignmentName= guid(principalId, roleDefinitionID, resourceGroup().id)
+// resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = {
+//   name: roleAssignmentName
+//   properties: {
+//     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', roleDefinitionID)
+//     principalId: principalId
+//   }
+// }
+
 // module operatorSetup '../../modules/operatorSetup.bicep' = {
 //   name: 'operatorSetup-deployment-${releaseId}'
 //   params: {
