@@ -3,6 +3,12 @@ trigger:
 
 name: Deploy Bicep files
 
+parameters:
+  - name: DEPLOY_PROD
+    displayName: Deploy to PROD
+    type: boolean
+    default: false
+
 variables:
   vmImageName: "ubuntu-latest"
   resourceGroupName: "dps"
