@@ -26,17 +26,17 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Login to Azure
+      - name: 🔑 Login to Azure
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_SPN_CREDENTIAL }}
 
-      - name: Set Environment Variables
+      - name: 🔧 Set Environment Variables
         uses: tw3lveparsecs/github-actions-setvars@v0.1
         with:
           envFilePath: "${{github.workspace}}/.env"
 
-      - name: "deploy storage account bicep"
+      - name: 🧪 What if
         working-directory: "${{github.workspace}}/actions/bicep"
         run: |
           az deployment sub create --what-if -f ./Services/PassengerCount/infra.bicep --location westeurope --parameters @parameters.json
@@ -53,17 +53,17 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Login to Azure
+      - name: 🔑 Login to Azure
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_SPN_CREDENTIAL }}
 
-      - name: Set Environment Variables
+      - name: 🔧 Set Environment Variables
         uses: tw3lveparsecs/github-actions-setvars@v0.1
         with:
           envFilePath: "${{github.workspace}}/.env"
 
-      - name: "deploy storage account bicep"
+      - name: 🏗 Deploy infrastructure
         working-directory: "${{github.workspace}}/actions/bicep"
         run: |
           az deployment sub create -f ./Services/PassengerCount/infra.bicep --location westeurope --parameters @parameters.json

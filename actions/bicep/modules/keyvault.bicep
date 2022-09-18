@@ -3,10 +3,10 @@ param location string
 param tags object
 param tenantId string
 
-param objectId string = 'df461188-ee64-43bc-b888-0d2e4f55c9b1' // github-az-bicep-spn
-//param objectId string = 'c8419fb8-d4e0-4a28-9600-61dcb1c0bdae' //Should not be used, maybe should create a deploy user in script.
+param deploymentOperatorId string // github-az-bicep-spn, Contrubutor
 
-//added github-az-bicep-spn to key vault under IAM as owner. Then it worked..
+//added github-az-bicep-spn to key vault Azure Active Directory, App Registration, github-az-bicep-spn, API permissions, Azure Key Vault user_impersonation. 
+//Then it worked.., todo: Try to remove and try again
 
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   name: 'kv-${serviceName}'
@@ -21,7 +21,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     enableRbacAuthorization: true //false
     accessPolicies: [
       {
-        objectId: objectId //for my user
+        objectId: deploymentOperatorId
         tenantId: subscription().tenantId
         permissions: {
           secrets: [

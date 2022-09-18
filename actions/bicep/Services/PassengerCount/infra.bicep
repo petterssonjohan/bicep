@@ -3,6 +3,7 @@
 @description('Subscription ID in Azure')
 param subscriptionId string
 
+@maxLength(3)
 @description('Name prefix for resources')
 param serviceName string = 'apc' //apc | ji | voip | nme
 
@@ -70,6 +71,7 @@ module keyvault '../../modules/keyvault.bicep' = {
     location: location
     serviceName: serviceName
     tags: tags
+    deploymentOperatorId: deploymentOperatorId
   }
 }
 
