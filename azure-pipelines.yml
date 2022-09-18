@@ -5,30 +5,18 @@ name: Deploy Bicep files
 
 variables:
   vmImageName: "ubuntu-latest"
-  azureServiceConnection: "scarm"
-  resourceGroupName: "rg-stzmx"
+  resourceGroupName: "dps"
   location: "west europe"
-  templateFile: "main.bicep"
+  templateFile: "infra.bicep"
 pool:
   vmImage: $(vmImageName)
 
 steps:
-  - task: PublishPipelineArtifact@1
-    inputs:
-      targetPath: "$(Pipeline.Workspace)"
-      artifact: "artifact"
-      publishLocation: "pipeline"
-  - task: DownloadBuildArtifacts@0
-    inputs:
-      buildType: "current"
-      downloadType: "single"
-      artifactName: "artifact"
-      downloadPath: "$(System.ArtifactsDirectory)"
   - task: AzureCLI@2
     inputs:
-      azureSubscription: $(azureServiceConnection)
+      azureSubscription: ${{defaultAzureServiceConnection}}
       scriptType: bash
       scriptLocation: inlineScript
       inlineScript: |
         az --version
-        az deployment sub create -f $(System.ArtifactsDirectory)/bicep/actions/bicep/main.bicep --location westeurope --parameters @parameters.json
+        az deployment sub create -f $(System.ArtifactsDirectory)/actions/bicep/Services/PassengerCount/main.bicep --location westeurope --parameters @parameters.json
