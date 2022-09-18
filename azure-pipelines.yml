@@ -11,12 +11,23 @@ variables:
 pool:
   vmImage: $(vmImageName)
 
-steps:
-  - task: AzureCLI@2
-    inputs:
-      azureSubscription: defaultAzureServiceConnection
-      scriptType: bash
-      scriptLocation: inlineScript
-      inlineScript: |
-        az --version
-        az deployment sub create -f $(System.ArtifactsDirectory)/actions/bicep/Services/PassengerCount/main.bicep --location westeurope --parameters @parameters.json
+stages:
+  - stage: Build
+    displayName: Building stage
+
+    jobs:
+      - job: Build
+        displayName: Build
+        pool:
+          vmImage: $(vmImageName)
+
+        steps:
+          - task: AzureCLI@2
+            displayName: 🧪 What if Bicep Deploy
+            inputs:
+              azureSubscription: defaultAzureServiceConnection
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                az --version
+                az deployment sub create --what-if -f $(System.ArtifactsDirectory)/actions/bicep/Services/PassengerCount/main.bicep --location westeurope --parameters @parameters.json
