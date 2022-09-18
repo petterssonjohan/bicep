@@ -9,6 +9,13 @@ parameters:
     type: boolean
     default: false
 
+  - name: serviceName
+    type: string
+    default: apc
+    values:
+      - apc
+      - ji
+
 variables:
   vmImageName: "ubuntu-latest"
   resourceGroupName: "dps"
@@ -18,9 +25,8 @@ pool:
   vmImage: $(vmImageName)
 
 stages:
-  - stage: Build
-    displayName: Building stage
-
+  - stage: Test
+    displayName: Build Test
     jobs:
       - job: Build
         displayName: Build
@@ -29,16 +35,25 @@ stages:
 
         steps:
           - task: AzureCLI@2
-            displayName: 🧪 What if Bicep Deploy
+            displayName: 🧪 Test infrastructure (--what-if)
             inputs:
               azureSubscription: defaultAzureServiceConnection
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |
                 az --version
-                az deployment sub create --what-if -f $(System.ArtifactsDirectory)/actions/bicep/Services/PassengerCount/main.bicep --location westeurope --parameters @parameters.json
-  - stage: Test
-    displayName: Building stage
+                az deployment sub create --what-if -f $(System.ArtifactsDirectory)/actions/bicep/Services/PassengerCount/main.bicep --location westeurope --parameters @parameters.${{parameters.serviceName}}.json
+          - task: AzureCLI@2
+            displayName: 🏗 Deploy infrastructure
+            inputs:
+              azureSubscription: defaultAzureServiceConnection
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                az --version
+                az deployment sub create -f $(System.ArtifactsDirectory)/actions/bicep/Services/PassengerCount/main.bicep --location westeurope --parameters @parameters.json
+  - stage: Prod
+    displayName: Deploy Prod
     condition: |
       and(
         succeeded('Build'), 
@@ -46,10 +61,24 @@ stages:
       )
     jobs:
       - job: Build
-        displayName: Test
+        displayName: 🧪 Test infrastructure
         pool:
           vmImage: $(vmImageName)
 
+        steps:
+          - task: AzureCLI@2
+            displayName: 🧪 Test infrastructure (--what-if)
+            inputs:
+              azureSubscription: defaultAzureServiceConnection
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                az --version
+                az deployment sub create --what-if -f $(System.ArtifactsDirectory)/actions/bicep/Services/PassengerCount/main.bicep --location westeurope --parameters @parameters.json
+      - job: Deploy
+        displayName: 🏗 Deploy infrastructure
+        pool:
+          vmImage: $(vmImageName)
         steps:
           - task: AzureCLI@2
             displayName: 🏗 Deploy infrastructure
