@@ -1,9 +1,8 @@
-param serviceName string
+//param deploymentOperatorId // github-az-bicep-spn, Contrubutor
 param location string
 param tags object
 param keyVaultName string
 param accessPolicies array
-//param deploymentOperatorId // github-az-bicep-spn, Contrubutor
 
 //added github-az-bicep-spn to key vault Azure Active Directory, App Registration, github-az-bicep-spn, API permissions, Azure Key Vault user_impersonation. 
 //Then it worked.., todo: Try to remove and try again

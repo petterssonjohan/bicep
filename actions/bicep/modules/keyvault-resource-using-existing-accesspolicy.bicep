@@ -1,5 +1,5 @@
 param location string
-param deploymentOperatorId string
+param deploymentOperatorId string = 'asdasd'
 param keyVaultName string
 param keyVaultResourceExists bool
 param tags object
