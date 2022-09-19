@@ -18,18 +18,36 @@ var userAssignedIdentity = resourceId(subscription().subscriptionId, resourceGro
 resource resource_exists_script 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   name: 'resourceExistsDeploymentScript_${resourceName}'
   location: location
-  kind: 'AzureCLI'
+  kind: 'AzurePowerShell' //AzureCLI
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
       '${userAssignedIdentity}': {}
     }
   }
+  // properties: {
+  //   forceUpdateTag: utcValue
+  //   azCliVersion: '2.15.0'
+  //   timeout: 'PT10M'
+  //   scriptContent: 'result=$(az resource list --resource-group ${resourceGroupName} --name ${resourceName}); echo $result; echo $result | jq -c \'{Result: map({name: .name})}\' > $AZ_SCRIPTS_OUTPUT_PATH'
+  //   cleanupPreference: 'OnSuccess'
+  //   retentionInterval: 'P1D'
+  // }
   properties: {
     forceUpdateTag: utcValue
-    azCliVersion: '2.15.0'
+    azPowerShellVersion: '8.0'
     timeout: 'PT10M'
-    scriptContent: 'result=$(az resource list --resource-group ${resourceGroupName} --name ${resourceName}); echo $result; echo $result | jq -c \'{Result: map({name: .name})}\' > $AZ_SCRIPTS_OUTPUT_PATH'
+    arguments: '-resourceName ${resourceName} -resourceGroupName ${resourceGroupName}'
+    scriptContent: '''
+     param(
+       [string] $resourceName, 
+       [string] $resourceGroupName
+       )
+     $Resource = Get-AzResource -Name $resourceName -ResourceGroupName $resourceGroupName
+     $ResourceExists = $null -ne $Resource
+     $DeploymentScriptOutputs = @{}
+     $DeploymentScriptOutputs['Result'] = $ResourceExists
+     '''
     cleanupPreference: 'OnSuccess'
     retentionInterval: 'P1D'
   }
