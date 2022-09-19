@@ -6,21 +6,21 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-    
+
   workflow_dispatch:
-    input:
-      service_name:
-        description: 'Name of service, apc or ji for example.'
-        required: true
-        default: 'apc'
-      deploy_prod:
-        description: 'Deploy Shared Infrastructure'
-        required: false
-        default: 'false'
-      deploy_shared: 'Deploy To Production'
-        description: 'Deploy Infrastructure to Production'
-        required: false
-        default: 'false'
+    - input:
+        service_name:
+          description: 'Name of service, apc or ji for example.'
+          required: true
+          default: 'apc'
+        deploy_prod:
+          description: 'Deploy Shared Infrastructure'
+          required: false
+          default: 'false'
+        deploy_shared: 'Deploy To Production'
+          description: 'Deploy Infrastructure to Production'
+          required: false
+          default: 'false'
 
   check_run:
     types:
