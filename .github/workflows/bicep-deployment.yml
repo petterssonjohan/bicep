@@ -2,7 +2,12 @@
 
 name: azure bicep deployment
 on:
-  workflow_call:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    
+  workflow_dispatch:
     input:
       service_name:
         description: 'Name of service, apc or ji for example.'
@@ -16,7 +21,7 @@ on:
         description: 'Deploy Infrastructure to Production'
         required: false
         default: 'false'
-        
+
   check_run:
     types:
       - completed
