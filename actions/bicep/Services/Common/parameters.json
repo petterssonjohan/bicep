@@ -1,0 +1,25 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "serviceName": {
+      "value": "apc"
+    },
+    "tags": {
+      "value": 
+        {
+          "BUSINESS-AREA": "SPT",
+          "RUNTIME-ENVIRONMENT": "dev"
+        }
+    },
+    "subscriptionId": {
+      "value": "bf558742-a412-4a60-88c4-733121e9580f"
+    },
+    "tenantId": {
+      "value": "6618d4dc-2516-4213-a4f4-029b4d661f09"
+    },
+    "deploymentOperatorId": {
+      "value": "df461188-ee64-43bc-b888-0d2e4f55c9b1" //github-az-bicep-spn, Contrubutor
+    }
+  }
+}
