@@ -41,7 +41,7 @@ jobs:
       - name: Deploy Shared Infrastructure
         run: |
           #./.github/workflows/templates/cd-shared-deployment.yaml
-          service_name: "${{ github.event.inputs.service_name }}"
+          service_name: ${{ github.event.inputs.service_name }}
           deploy: true
           subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
           tenantId: "6618d4dc-2516-4213-a4f4-029b4d661f09"
