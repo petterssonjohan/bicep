@@ -4,10 +4,22 @@ name: azure bicep deployment
 on:
   workflow_call:
     input:
-      version:
-        type: string
+      service_name:
+        description: 'Name of service, apc or ji for example.'
         required: true
-        description: Version to bump to
+        default: 'apc'
+      deploy_prod:
+        description: 'Deploy Shared Infrastructure'
+        required: false
+        default: 'false'
+      deploy_shared: 'Deploy To Production'
+        description: 'Deploy Infrastructure to Production'
+        required: false
+        default: 'false'
+        
+  check_run:
+    types:
+      - completed
 
 jobs:
   validate:
