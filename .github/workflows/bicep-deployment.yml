@@ -17,17 +17,15 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     outputs:
-      should_release: ${{ steps.verify-what-if.outputs.result == 'success' }}
+      should_release: "true"
     steps:
       - name: 🔑 Login to Azure
         uses: azure/login@v1
-        id: login-to-azure
         with:
           creds: ${{ secrets.AZURE_SPN_CREDENTIAL }}
 
       - name: 🧪 What if
         id: verify-what-if
-        if: steps.login-to-azure.output.result == 'success'
         working-directory: "${{github.workspace}}/actions/bicep"
         run: |
           az deployment sub create --what-if -f ./Services/Common/infra.bicep --location westeurope --parameters @parameters.json
