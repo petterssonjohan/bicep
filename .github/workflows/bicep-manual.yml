@@ -10,9 +10,9 @@ on:
     inputs:
       service_name:
         # Friendly description to be shown in the UI instead of 'name'
-        description: "Person to greet"
+        description: "Name of service, apc or ji for example."
         # Default value if no value is explicitly provided
-        default: "World"
+        default: "apc"
         # Input has to be provided for the workflow to run
         required: true
 
