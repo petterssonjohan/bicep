@@ -15,8 +15,12 @@ on:
         default: "apc"
         # Input has to be provided for the workflow to run
         required: true
-      deploy_prod:
+      deploy_shared:
         description: "Deploy Shared Infrastructure"
+        required: false
+        default: "false"
+      deploy_prod:
+        description: "Deploy Infrastructure to Production"
         required: false
         default: "false"
 
