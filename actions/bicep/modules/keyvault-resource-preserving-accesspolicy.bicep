@@ -3,7 +3,7 @@ param keyVaultName string
 param tags object
 param deploymentOperatorId string
 
-module resourceExistsModule 'ResourceExists.bicep' = {
+module resourceExistsModule './resourceexists.bicep' = {
   name: 'resourceExists_${uniqueString(keyVaultName)}'
   params: {
     location: location
