@@ -43,7 +43,7 @@ jobs:
       - name: 🏗 Deploy Test infrastructure
         working-directory: "${{github.workspace}}/actions/bicep"
         run: |
-          az deployment sub create -f ./Services/Common/Common.bicep --location westeurope --parameters @parameters.json
+          az deployment sub create -f ./Services/Common/infra.bicep --location westeurope --parameters @parameters.json
 
 # This is a basic workflow to help you get started with Actions
 
