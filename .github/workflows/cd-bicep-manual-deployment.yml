@@ -42,22 +42,22 @@ jobs:
         name: 🧪 Test and 🏗 Deploy Shared Infrastructure
         with:
           template: ./Services/SharedResources/infra.bicep
-          parameters: serviceName=${{service_name}}
-            subscriptionId=${{subscriptionId}}
-            tenantId=${{tenantId}}
-            deploymentOperatorId=${{deploymentOperatorId}}
-            tags=${{tags}}
+          parameters: serviceName=${{github.event.inputs.service_name}}
+            subscriptionId=${{github.event.inputs.subscriptionId}}
+            tenantId=${{github.event.inputs.tenantId}}
+            deploymentOperatorId=${{github.event.inputs.deploymentOperatorId}}
+            tags=${{github.event.inputs.tags}}
           additionalArguments: "--what-if --rollback-on-error --what-if-exclude-change-types Create Ignore"
 
       - uses: azure/arm-deploy@v1
         name: 🧪 Test and 🏗 Deploy Common Infrastructure
         with:
           template: ./Services/Common/infra.bicep
-          parameters: serviceName=${{service_name}}
-            subscriptionId=${{subscriptionId}}
-            tenantId=${{tenantId}}
-            deploymentOperatorId=${{deploymentOperatorId}}
-            tags=${{tags}}
+          parameters: serviceName=${{github.event.inputs.service_name}}
+            subscriptionId=${{github.event.inputs.subscriptionId}}
+            tenantId=${{github.event.inputs.tenantId}}
+            deploymentOperatorId=${{github.event.inputs.deploymentOperatorId}}
+            tags=${{github.event.inputs.tags}}
           additionalArguments: "--what-if --rollback-on-error --what-if-exclude-change-types Create Ignore"
       # # Always Test and Deploy Shared Infrastructure For Test
       # - name: 🧪 Test Shared Infrastructure
