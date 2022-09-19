@@ -24,8 +24,6 @@ on:
         required: false
         default: "false"
 
-variables:
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   test:
