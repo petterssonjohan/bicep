@@ -24,6 +24,8 @@ on:
         required: false
         default: "false"
 
+variables:
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   test:
@@ -42,13 +44,13 @@ jobs:
       - name: 🧪 Test Shared Infrastructure
         working-directory: "${{github.workspace}}/actions/bicep"
         run: |
-          az deployment sub create --what-if -f ./Services/SharedResources/infra.bicep --location westeurope --parameters serviceName=${{github.event.inputs.service_name}} subscriptionId=${{github.event.inputs.subscriptionId}} tenantId=${{github.event.inputs.tenantId}} deploymentOperatorId=${{github.event.inputs.deploymentOperatorId}} tags=${{github.event.inputs.tags}}
+          az deployment sub create --what-if -f ./Services/SharedResources/infra.bicep --location westeurope --parameters subscriptionId=${{github.event.inputs.subscriptionId}} tenantId=${{github.event.inputs.tenantId}} deploymentOperatorId=${{github.event.inputs.deploymentOperatorId}} tags=${{github.event.inputs.tags}}
 
       # # Deploy Shared Infrastructure
       - name: 🏗 Deploy Shared Infrastructure
         working-directory: "${{github.workspace}}/actions/bicep"
         run: |
-          az deployment sub create -f ./Services/SharedResources/infra.bicep --location westeurope --parameters serviceName=${{github.event.inputs.service_name}} subscriptionId=${{github.event.inputs.subscriptionId}} tenantId=${{github.event.inputs.tenantId}} deploymentOperatorId=${{github.event.inputs.deploymentOperatorId}} tags=${{github.event.inputs.tags}}
+          az deployment sub create -f ./Services/SharedResources/infra.bicep --location westeurope --parameters subscriptionId=${{github.event.inputs.subscriptionId}} tenantId=${{github.event.inputs.tenantId}} deploymentOperatorId=${{github.event.inputs.deploymentOperatorId}} tags=${{github.event.inputs.tags}}
 
       # Test and Deploy Infrastructure for specified Service (apc|ji, etc)
       # - name: 🧪 Test ${{github.event.inputs.service_name}} Infrastructure
