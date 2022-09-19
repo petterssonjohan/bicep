@@ -38,32 +38,26 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_SPN_CREDENTIAL }}
 
-      - uses: azure/arm-deploy@v1
-        name: 🧪 Test and 🏗 Deploy Shared Infrastructure
-        with:
-          template: ./Services/SharedResources/infra.bicep
-          parameters: serviceName=${{github.event.inputs.service_name}}
-            subscriptionId=${{github.event.inputs.subscriptionId}}
-            tenantId=${{github.event.inputs.tenantId}}
-            deploymentOperatorId=${{github.event.inputs.deploymentOperatorId}}
-            tags=${{github.event.inputs.tags}}
-          additionalArguments: "--what-if --rollback-on-error --what-if-exclude-change-types Create Ignore"
-
-      - uses: azure/arm-deploy@v1
-        name: 🧪 Test and 🏗 Deploy Common Infrastructure
-        with:
-          template: ./Services/Common/infra.bicep
-          parameters: serviceName=${{github.event.inputs.service_name}}
-            subscriptionId=${{github.event.inputs.subscriptionId}}
-            tenantId=${{github.event.inputs.tenantId}}
-            deploymentOperatorId=${{github.event.inputs.deploymentOperatorId}}
-            tags=${{github.event.inputs.tags}}
-          additionalArguments: "--what-if --rollback-on-error --what-if-exclude-change-types Create Ignore"
       # # Always Test and Deploy Shared Infrastructure For Test
-      # - name: 🧪 Test Shared Infrastructure
+      - name: 🧪 Test Shared Infrastructure
+        working-directory: "${{github.workspace}}/actions/bicep"
+        run: |
+          az deployment sub create --what-if -f ./Services/SharedResources/infra.bicep 
+          --location westeurope \
+          --parameters serviceName=${{github.event.inputs.service_name}} subscriptionId=${{github.event.inputs.subscriptionId}} tenantId=${{github.event.inputs.tenantId}} deploymentOperatorId=${{github.event.inputs.deploymentOperatorId}} tags=${{github.event.inputs.tags}}
+
+      # # Deploy Shared Infrastructure
+      - name: 🏗 Deploy Shared Infrastructure
+        working-directory: "${{github.workspace}}/actions/bicep"
+        run: |
+          az deployment sub create -f ./Services/SharedResources/infra.bicep --location westeurope
+          --parameters serviceName=${{github.event.inputs.service_name}} subscriptionId=${{github.event.inputs.subscriptionId}} tenantId=${{github.event.inputs.tenantId}} deploymentOperatorId=${{github.event.inputs.deploymentOperatorId}} tags=${{github.event.inputs.tags}}
+
+      # Test and Deploy Infrastructure for specified Service (apc|ji, etc)
+      # - name: 🧪 Test ${{github.event.inputs.service_name}} Infrastructure
       #   working-directory: "${{github.workspace}}/actions/bicep"
       #   run: |
-      #     az deployment sub create --what-if -f ./Services/SharedResources/infra.bicep --location westeurope
+      #     az deployment sub create --what-if -f ./Services/Common/infra.bicep --location westeurope
       #     --parameters
       #       serviceName=${{github.event.inputs.service_name}}
       #       subscriptionId=${{github.event.inputs.subscriptionId}}
@@ -72,40 +66,16 @@ jobs:
       #       tags=${{github.event.inputs.tags}}
 
       # # Deploy Shared Infrastructure
-      # - name: 🏗 Deploy Shared Infrastructure
+      # - name: 🏗 Deploy ${{github.event.inputs.service_name}} Infrastructure
       #   working-directory: "${{github.workspace}}/actions/bicep"
       #   run: |
-      #     az deployment sub create -f ./Services/SharedResources/infra.bicep --location westeurope
+      #     az deployment sub create -f ./Services/Common/infra.bicep --location westeurope
       #     --parameters
       #       serviceName=${{github.event.inputs.service_name}}
       #       subscriptionId=${{github.event.inputs.subscriptionId}}
       #       tenantId=${{github.event.inputs.tenantId}}
       #       deploymentOperatorId=${{github.event.inputs.deploymentOperatorId}}
       #       tags=${{github.event.inputs.tags}}
-
-      # Test and Deploy Infrastructure for specified Service (apc|ji, etc)
-      - name: 🧪 Test ${{github.event.inputs.service_name}} Infrastructure
-        working-directory: "${{github.workspace}}/actions/bicep"
-        run: |
-          az deployment sub create --what-if -f ./Services/Common/infra.bicep --location westeurope 
-          --parameters 
-            serviceName=${{github.event.inputs.service_name}}
-            subscriptionId=${{github.event.inputs.subscriptionId}}
-            tenantId=${{github.event.inputs.tenantId}}
-            deploymentOperatorId=${{github.event.inputs.deploymentOperatorId}}
-            tags=${{github.event.inputs.tags}}
-
-      # Deploy Shared Infrastructure
-      - name: 🏗 Deploy ${{github.event.inputs.service_name}} Infrastructure
-        working-directory: "${{github.workspace}}/actions/bicep"
-        run: |
-          az deployment sub create -f ./Services/Common/infra.bicep --location westeurope
-          --parameters 
-            serviceName=${{github.event.inputs.service_name}}
-            subscriptionId=${{github.event.inputs.subscriptionId}}
-            tenantId=${{github.event.inputs.tenantId}}
-            deploymentOperatorId=${{github.event.inputs.deploymentOperatorId}}
-            tags=${{github.event.inputs.tags}}
 
       # - name: Test Common Infrastructure
       #   uses: "./.github/workflows/templates/cd-common-deployment"
