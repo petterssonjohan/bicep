@@ -31,7 +31,7 @@ runs:
       id: verify-what-if
       working-directory: "${{github.workspace}}/actions/bicep"
       run: |
-        az deployment sub create --what-if -f ./Services/Common/infra.bicep --location westeurope 
+        az deployment sub create --what-if -f ./Services/Shared/infra.bicep --location westeurope 
         --parameters 
           serviceName=${{service_name}}
           subscriptionId=${{subscriptionId}}
@@ -43,7 +43,7 @@ runs:
     - name: 🏗 Deploy Shared Infrastructure
       working-directory: "${{github.workspace}}/actions/bicep"
       run: |
-        az deployment sub create -f ./Services/Common/infra.bicep --location westeurope
+        az deployment sub create -f ./Services/Shared/infra.bicep --location westeurope
         --parameters 
           serviceName=${{service_name}}
           subscriptionId=${{subscriptionId}}
