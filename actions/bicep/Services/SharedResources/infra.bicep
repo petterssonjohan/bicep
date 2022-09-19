@@ -19,7 +19,10 @@ targetScope = 'subscription'
 var businessArea = 'spt'
 var loc = 'weu'
 var env = tags['RUNTIME-ENVIRONMENT']
-var serviceName = 'shared'
+
+@maxLength(3)
+@description('Name prefix for resources')
+param serviceName string = 'shared' //apc | ji | voip | nme
 
 @description('VNET Target Resource Group')
 param vnetResourceGroup string

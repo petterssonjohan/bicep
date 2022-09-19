@@ -65,16 +65,16 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 // }
 
 /* Create KeyVault */
-module keyvault '../../modules/keyvault.bicep' = {
-  name: 'kv-${releaseId}'
-  scope: rg
+var kvName = 'kv-${serviceName}'
+module keyVaultModule '../../modules/keyvault-resource-preserving-accesspolicy.bicep' = {
+  name: 'keyVaultResourcePreservingAccessPolicies_${uniqueString(kvName)}'
   params: {
-    tenantId: tenantId
     location: location
-    serviceName: serviceName
+    keyVaultName: kvName
     tags: tags
     deploymentOperatorId: deploymentOperatorId
   }
+  scope: rg
 }
 
 var serviceDataName = 'service-data'
