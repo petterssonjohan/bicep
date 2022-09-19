@@ -20,9 +20,9 @@ on:
         required: false
         default: "false"
       deploy_shared: "Deploy To Production"
-          description: "Deploy Infrastructure to Production"
-          required: false
-          default: "false"
+        description: "Deploy Infrastructure to Production"
+        required: false
+        default: "false"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
