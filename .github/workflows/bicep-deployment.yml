@@ -14,7 +14,7 @@ on:
           required: true
           default: "apc"
         deploy_prod:
-          description: 'Deploy Shared Infrastructure'
+          description: "Deploy Shared Infrastructure"
           required: false
           default: "false"
         deploy_shared: "Deploy To Production"

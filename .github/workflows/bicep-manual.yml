@@ -15,6 +15,10 @@ on:
         default: "apc"
         # Input has to be provided for the workflow to run
         required: true
+      deploy_prod:
+        description: "Deploy Shared Infrastructure"
+        required: false
+        default: "false"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
