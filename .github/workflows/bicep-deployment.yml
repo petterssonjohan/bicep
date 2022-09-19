@@ -4,7 +4,7 @@ name: azure bicep deployment
 on:
   workflow_dispatch:
     inputs:
-      serviceName:
+      service_name:
         description: 'Name of service, apc or ji for example.'
         required: true
         default: 'apc'
