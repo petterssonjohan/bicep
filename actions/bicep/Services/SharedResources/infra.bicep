@@ -20,7 +20,6 @@ var businessArea = 'spt'
 var loc = 'weu'
 var env = tags['RUNTIME-ENVIRONMENT']
 
-@maxLength(3)
 @description('Name prefix for resources')
 param serviceName string = 'shared' //apc | ji | voip | nme
 
