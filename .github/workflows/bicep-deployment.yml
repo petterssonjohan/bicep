@@ -9,6 +9,19 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      serviceName:
+        description: 'Name of service, apc or ji for example.'
+        required: true
+        default: 'apc'
+      deploy_prod:
+        description: 'Deploy Shared Infrastructure'
+        required: false
+        default: 'false'
+      deploy_shared: 'Deploy To Production'
+        description: 'Deploy Infrastructure to Production'
+        required: false
+        default: 'false'
   check_run:
     types:
       - completed
@@ -17,21 +30,17 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     outputs:
-      should_release: ${{ steps.verify-ci-status.outputs.result == 'success' && steps.interesting-categories.outputs.interesting == 'true' }}
+      should_release: ${{ steps.verify-what-if.outputs.result == 'success' }}
     steps:
-      - uses: actions/checkout@v2
-
       - name: 🔑 Login to Azure
         uses: azure/login@v1
+        id: login-to-azure
         with:
           creds: ${{ secrets.AZURE_SPN_CREDENTIAL }}
 
-      - name: 🔧 Set Environment Variables
-        uses: tw3lveparsecs/github-actions-setvars@v0.1
-        with:
-          envFilePath: "${{github.workspace}}/.env"
-
       - name: 🧪 What if
+        id: verify-what-if
+        if: steps.login-to-azure.output.result == 'success'
         working-directory: "${{github.workspace}}/actions/bicep"
         run: |
           az deployment sub create --what-if -f ./Services/Common/infra.bicep --location westeurope --parameters @parameters.json
@@ -39,10 +48,8 @@ jobs:
   release:
     runs-on: ubuntu-latest
     needs: [validate]
-    if: needs.validate.outputs.should_release == 'true'
+    if: needs.validate.should_release == 'true' && github.event.input.deploy_prod == 'true'
     steps:
-      - uses: actions/checkout@v2
-
       - name: 🔑 Login to Azure
         uses: azure/login@v1
         with:
