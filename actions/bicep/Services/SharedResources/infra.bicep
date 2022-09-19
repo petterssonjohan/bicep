@@ -32,11 +32,12 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
+var kvName = 'kv-${serviceName}'
 module keyVaultModule '../../modules/keyvault-resource-preserving-accesspolicy.bicep' = {
-  name: 'keyVaultResourcePreservingAccessPolicies_${uniqueString('kv-shared')}'
+  name: 'keyVaultResourcePreservingAccessPolicies_${uniqueString(kvName)}'
   params: {
     location: location
-    keyVaultName: 'kv-shared'
+    keyVaultName: kvName
     tags: tags
     deploymentOperatorId: deploymentOperatorId
   }
