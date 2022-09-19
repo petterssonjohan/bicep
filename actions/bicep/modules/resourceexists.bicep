@@ -12,7 +12,7 @@ param utcValue string = utcNow()
 var userAssignedIdentity = resourceId(subscription().subscriptionId, resourceGroup().name, 'Microsoft.ManagedIdentity/userAssignedIdentities', '${identityPrincipalId}')
 
 // The script below performs an 'az resource list' command to determine whether a resource exists
-resource resource_exists_script 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
+resource resource_exists_script 'Microsoft.Resources/deploymentScripts@2019-10-01-preview' = {
   name: 'resourceExistsDeploymentScript_${resourceName}'
   location: location
   kind: 'AzureCLI'
