@@ -1,5 +1,3 @@
-# Note: additional setup is required, see https://www.jenkins.io/redirect/continuous-delivery-of-plugins
-
 name: CI Bicep Deployment Test
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
@@ -31,20 +29,21 @@ jobs:
         run: |
           az deployment sub create --what-if -f ./Services/Common/infra.bicep --location westeurope --parameters @parameters.json
 
-  release:
-    runs-on: ubuntu-latest
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+  # release:
+  #   runs-on: ubuntu-latest
+  #   needs: validate
+  #   steps:
+  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+  #     - uses: actions/checkout@v2
 
-      # Login to Azure with Secret set in github
-      - name: 🔑 Login to Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_SPN_CREDENTIAL }}
+  #     # Login to Azure with Secret set in github
+  #     - name: 🔑 Login to Azure
+  #       uses: azure/login@v1
+  #       with:
+  #         creds: ${{ secrets.AZURE_SPN_CREDENTIAL }}
 
-      # Deploy Infrastructure to Test with predefined variables
-      - name: 🏗 Deploy Test infrastructure
-        working-directory: "${{github.workspace}}/actions/bicep"
-        run: |
-          az deployment sub create -f ./Services/Common/infra.bicep --location westeurope --parameters @parameters.json
+  #     # Deploy Infrastructure to Test with predefined variables
+  #     - name: 🏗 Deploy Test infrastructure
+  #       working-directory: "${{github.workspace}}/actions/bicep"
+  #       run: |
+  #         az deployment sub create -f ./Services/Common/infra.bicep --location westeurope --parameters @parameters.json

@@ -9,7 +9,7 @@
       "value": 
         {
           "BUSINESS-AREA": "SPT",
-          "RUNTIME-ENVIRONMENT": "dev"
+          "RUNTIME-ENVIRONMENT": "test"
         }
     },
     "subscriptionId": {

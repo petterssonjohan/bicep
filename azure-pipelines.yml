@@ -17,7 +17,7 @@ parameters:
     default: false
 
   - name: deploy_shared
-    displayName: Deploy Shared Resources
+    displayName: Deploy Shared Resources (always true for test)
     type: boolean
     default: false
 
@@ -42,7 +42,7 @@ stages:
           - ${{ if eq(parameters.deploy_shared, true) }}:
               - template: azure-pipelines-shared.yml
                 parameters:
-                  name: Build
+                  name: Deploy Shared Infrastructure
                   vmImage: $(vmImageName)
                   serviceName: $(serviceName)
                   deploy: true
@@ -54,7 +54,7 @@ stages:
 
               - template: azure-pipelines-common.yml
                 parameters:
-                  name: Deploy Common Resources
+                  name: Deploy Common Infrastructure
                   vmImage: $(vmImageName)
                   serviceName: $(serviceName)
                   deploy: true
