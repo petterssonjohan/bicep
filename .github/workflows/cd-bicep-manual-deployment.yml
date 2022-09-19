@@ -43,14 +43,14 @@ jobs:
         working-directory: "${{github.workspace}}/actions/bicep"
         run: |
           tags='{"BUSINESS-AREA":"SPT","RUNTIME-ENVIRONMENT":"test"}'
-          az deployment sub create --what-if -f ./Services/SharedResources/infra.bicep --location westeurope --parameters subscriptionId=${{github.event.inputs.subscriptionId}} tenantId=${{github.event.inputs.tenantId}} deploymentOperatorId=${{github.event.inputs.deploymentOperatorId}} tags=$tags
+          az deployment sub create --what-if -f ./Services/SharedResources/infra.bicep --location westeurope --parameters subscriptionId=${{github.event.inputs.subscriptionId}} tenantId=${{github.event.inputs.tenantId}} deploymentOperatorId=${{github.event.inputs.deploymentOperatorId}} tags=$tags vnetResourceGroup=dmsResourceGroup
 
       # # Deploy Shared Infrastructure
       - name: 🏗 Deploy Shared Infrastructure
         working-directory: "${{github.workspace}}/actions/bicep"
         run: |
           tags='{"BUSINESS-AREA":"SPT","RUNTIME-ENVIRONMENT":"test"}'
-          az deployment sub create -f ./Services/SharedResources/infra.bicep --location westeurope --parameters subscriptionId=${{github.event.inputs.subscriptionId}} tenantId=${{github.event.inputs.tenantId}} deploymentOperatorId=${{github.event.inputs.deploymentOperatorId}} tags=$tags
+          az deployment sub create -f ./Services/SharedResources/infra.bicep --location westeurope --parameters subscriptionId=${{github.event.inputs.subscriptionId}} tenantId=${{github.event.inputs.tenantId}} deploymentOperatorId=${{github.event.inputs.deploymentOperatorId}} tags=$tags vnetResourceGroup=dmsResourceGroup
 
       # Test and Deploy Infrastructure for specified Service (apc|ji, etc)
       # - name: 🧪 Test ${{github.event.inputs.service_name}} Infrastructure
