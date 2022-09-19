@@ -34,7 +34,7 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-var kvName = 'kv-${serviceName}'
+var kvName = '${businessArea}-${loc}-kv-${serviceName}-${env}'
 module keyVaultModule '../../modules/keyvault-resource-preserving-accesspolicy.bicep' = {
   name: 'keyVaultResourcePreservingAccessPolicies_${uniqueString(kvName)}'
   params: {
