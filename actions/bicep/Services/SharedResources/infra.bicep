@@ -32,16 +32,15 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
-module keyvault '../../modules/keyvault.bicep' = {
-  name: 'kv-${releaseId}'
-  scope: rg
+module keyVaultModule '../../modules/keyvault-resource-preserving-accesspolicy.bicep' = {
+  name: 'keyVaultResourcePreservingAccessPolicies_${uniqueString('kv-${serviceName}')}'
   params: {
-    tenantId: tenantId
     location: location
-    serviceName: serviceName
+    keyVaultName: 'kv-${serviceName}'
     tags: tags
     deploymentOperatorId: deploymentOperatorId
   }
+  scope: rg
 }
 
 /* So Costly.. */

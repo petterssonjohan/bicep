@@ -1,15 +1,15 @@
 param serviceName string
 param location string
 param tags object
-param tenantId string
-
-param deploymentOperatorId string // github-az-bicep-spn, Contrubutor
+param keyVaultName string
+param accessPolicies array
+//param deploymentOperatorId // github-az-bicep-spn, Contrubutor
 
 //added github-az-bicep-spn to key vault Azure Active Directory, App Registration, github-az-bicep-spn, API permissions, Azure Key Vault user_impersonation. 
 //Then it worked.., todo: Try to remove and try again
 
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
-  name: 'kv-${serviceName}'
+  name: keyVaultName
   location: location
   tags: tags
   properties: {
@@ -19,23 +19,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     }
     tenantId: subscription().tenantId
     enableRbacAuthorization: true //false
-    accessPolicies: [
-      {
-        objectId: deploymentOperatorId
-        tenantId: subscription().tenantId
-        permissions: {
-          secrets: [
-            'all'
-          ]
-          certificates: [
-            'all'
-          ]
-          keys: [
-            'all'
-          ]
-        }
-      }
-    ]
+    accessPolicies: accessPolicies
     enabledForDeployment: true // VMs can retrieve certificates
     enabledForTemplateDeployment: true // ARM can retrieve values
     enablePurgeProtection: true // Not allowing to purge key vault or its objects after deletion
@@ -48,6 +32,25 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     }
   }
 }
+
+//access policies
+// [
+//   {
+//     objectId: deploymentOperatorId
+//     tenantId: subscription().tenantId
+//     permissions: {
+//       secrets: [
+//         'all'
+//       ]
+//       certificates: [
+//         'all'
+//       ]
+//       keys: [
+//         'all'
+//       ]
+//     }
+//   }
+// ]
 //
 // var roleIdMapping = {
 //   'Key Vault Administrator': '00482a5a-887f-4fb3-b363-3b7fe8e74483'
