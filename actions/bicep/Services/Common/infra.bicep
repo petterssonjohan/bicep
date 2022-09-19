@@ -13,9 +13,6 @@ param location string = 'west europe'
 @description('Tags for resources')
 param tags object
 
-@description('VNET Target Resource Group')
-param vnetResourceGroup string
-
 @description('TenantId')
 param tenantId string
 
@@ -28,6 +25,9 @@ targetScope = 'subscription'
 var businessArea = 'spt'
 var loc = 'weu'
 var env = tags['RUNTIME-ENVIRONMENT']
+
+@description('Provide unique identifier for release.')
+param releaseId string = newGuid()
 
 /* Will Create a new Resource Group */
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
@@ -79,9 +79,6 @@ module keyvault '../../modules/keyvault.bicep' = {
 
 var serviceDataName = 'service-data'
 var deviceContextName = 'device-context'
-
-@description('Provide unique identifier for release.')
-param releaseId string = newGuid()
 
 var blobContainers = [
   {
@@ -226,19 +223,6 @@ module appService '../../modules/appservice.bicep' = {
     location: location
   }
 }
-
-// /* So Costly.. */
-// // module network '../../modules/network.bicep' = {
-// //   name: 'network-${releaseId}'
-// //   scope: resourceGroup(subscriptionId, vnetResourceGroup)
-// //   params: {
-// //     publicIpAddressName: 'net-publicipaddress-${serviceName}'
-// //     natGatewayName: 'dms-${loc}-natg-${tags['RUNTIME-ENVIRONMENT']}'
-// //     vnetName: 'dms-${loc}-vnet-${tags['RUNTIME-ENVIRONMENT']}'
-// //     vnetSubnetName: '${businessArea}-${loc}-subnet-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
-// //     location: location
-// //   }
-// // }
 
 module deviceContextFunction '../../modules/function-devicecontext.bicep' = {
   name: 'deviceContext-${releaseId}'

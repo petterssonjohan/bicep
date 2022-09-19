@@ -4,17 +4,22 @@ trigger:
 name: Deploy Bicep files
 
 parameters:
-  - name: DEPLOY_PROD
-    displayName: Deploy to PROD
-    type: boolean
-    default: false
-
   - name: serviceName
     type: string
     default: apc
     values:
       - apc
       - ji
+
+  - name: deploy_prod
+    displayName: Deploy to PROD
+    type: boolean
+    default: false
+
+  - name: deploy_shared
+    displayName: Deploy Shared Resources
+    type: boolean
+    default: false
 
 variables:
   vmImageName: "ubuntu-latest"
@@ -26,7 +31,7 @@ pool:
 
 stages:
   - stage: Test
-    displayName: Build Test
+    displayName: Deploy Test
     jobs:
       - job: Build
         displayName: Build
@@ -34,58 +39,60 @@ stages:
           vmImage: $(vmImageName)
 
         steps:
-          - task: AzureCLI@2
-            displayName: 🧪 Test infrastructure (--what-if)
-            inputs:
-              azureSubscription: defaultAzureServiceConnection
-              scriptType: bash
-              scriptLocation: inlineScript
-              inlineScript: |
-                az --version
-                az deployment sub create --what-if -f $(System.ArtifactsDirectory)/actions/bicep/Services/PassengerCount/main.bicep --location westeurope --parameters @parameters.${{parameters.serviceName}}.json
-          - task: AzureCLI@2
-            displayName: 🏗 Deploy infrastructure
-            inputs:
-              azureSubscription: defaultAzureServiceConnection
-              scriptType: bash
-              scriptLocation: inlineScript
-              inlineScript: |
-                az --version
-                az deployment sub create -f $(System.ArtifactsDirectory)/actions/bicep/Services/PassengerCount/main.bicep --location westeurope --parameters @parameters.json
+          - ${{ if eq(parameters.deploy_shared, true) }}:
+              - template: azure-pipelines-shared.yml
+                parameters:
+                  name: Build
+                  vmImage: $(vmImageName)
+                  serviceName: $(serviceName)
+                  deploy: true
+                  vnetResourceGroup: "dmsResourceGroup"
+                  subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
+                  tenantId: "6618d4dc-2516-4213-a4f4-029b4d661f09"
+                  deploymentOperatorId: "df461188-ee64-43bc-b888-0d2e4f55c9b1"
+                  tags: "{ 'BUSINESS-AREA': $(serviceName), 'RUNTIME-ENVIRONMENT': 'test' }"
+
+          - template: azure-pipelines-common.yml
+            parameters:
+              name: Deploy Common Resources
+              vmImage: $(vmImageName)
+              serviceName: $(serviceName)
+              deploy: true
+              vnetResourceGroup: "dmsResourceGroup"
+              subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
+              tenantId: "6618d4dc-2516-4213-a4f4-029b4d661f09"
+              deploymentOperatorId: "df461188-ee64-43bc-b888-0d2e4f55c9b1"
+              tags: "{ 'BUSINESS-AREA': $(serviceName), 'RUNTIME-ENVIRONMENT': 'test' }"
+
   - stage: Prod
     displayName: Deploy Prod
-    condition: |
-      and(
-        succeeded('Build'), 
-        eq(${{ parameters.DEPLOY_PROD }}, true)
-      )
     jobs:
       - job: Build
-        displayName: 🧪 Test infrastructure
+        displayName: Build
         pool:
           vmImage: $(vmImageName)
 
         steps:
-          - task: AzureCLI@2
-            displayName: 🧪 Test infrastructure (--what-if)
-            inputs:
-              azureSubscription: defaultAzureServiceConnection
-              scriptType: bash
-              scriptLocation: inlineScript
-              inlineScript: |
-                az --version
-                az deployment sub create --what-if -f $(System.ArtifactsDirectory)/actions/bicep/Services/PassengerCount/main.bicep --location westeurope --parameters @parameters.json
-      - job: Deploy
-        displayName: 🏗 Deploy infrastructure
-        pool:
-          vmImage: $(vmImageName)
-        steps:
-          - task: AzureCLI@2
-            displayName: 🏗 Deploy infrastructure
-            inputs:
-              azureSubscription: defaultAzureServiceConnection
-              scriptType: bash
-              scriptLocation: inlineScript
-              inlineScript: |
-                az --version
-                az deployment sub create -f $(System.ArtifactsDirectory)/actions/bicep/Services/PassengerCount/main.bicep --location westeurope --parameters @parameters.json
+          - ${{ if eq(parameters.Deploy_Shared, true) }}:
+              - template: azure-pipelines-shared.yml
+                parameters:
+                  name: Build
+                  vmImage: $(vmImageName)
+                  serviceName: $(serviceName)
+                  deploy: $(deploy_shared)
+                  vnetResourceGroup: "dmsResourceGroup"
+                  subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
+                  tenantId: "6618d4dc-2516-4213-a4f4-029b4d661f09"
+                  deploymentOperatorId: "df461188-ee64-43bc-b888-0d2e4f55c9b1"
+                  tags: "{ 'BUSINESS-AREA': $(serviceName), 'RUNTIME-ENVIRONMENT': 'prod' }"
+
+          - template: azure-pipelines-common.yml
+            name: Deploy Common Resources
+            vmImage: $(vmImageName)
+            serviceName: $(serviceName)
+            deploy: $(deploy_prod)
+            vnetResourceGroup: "dmsResourceGroup"
+            subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
+            tenantId: "6618d4dc-2516-4213-a4f4-029b4d661f09"
+            deploymentOperatorId: "df461188-ee64-43bc-b888-0d2e4f55c9b1"
+            tags: "{ 'BUSINESS-AREA': $(serviceName), 'RUNTIME-ENVIRONMENT': 'prod' }"

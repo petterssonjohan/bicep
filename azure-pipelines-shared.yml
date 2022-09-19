@@ -1,0 +1,53 @@
+parameters:
+  - name: name # defaults for any parameters that aren't specified
+    default: ""
+  - name: vmImage
+    default: ""
+  - name: serviceName
+    default: "spt"
+  - name: deploy
+    displayName: Deploy
+    type: boolean
+    default: false
+  - name: vnetResourceGroup
+    default: "dmsResourceGroup"
+  - name: subscriptionId
+    default: ""
+  - name: tenantId
+    default: ""
+  - name: deploymentOperatorId
+    default: "df461188-ee64-43bc-b888-0d2e4f55c9b1"
+  - name: tags
+    type: object
+    default:
+      BUSINESS-AREA: "spt"
+      RUNTIME-ENVIRONMENT: "test"
+
+jobs:
+  - job: ${{ parameters.name }}
+    pool:
+      vmImage: ${{ parameters.vmImage }}
+    steps:
+      - task: AzureCLI@2
+        displayName: 🧪 Test Shared infrastructure
+        inputs:
+          azureSubscription: defaultAzureServiceConnection
+          scriptType: bash
+          scriptLocation: inlineScript
+          inlineScript: |
+            az --version
+            az deployment sub create --what-if -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope --parameters @parameters.shared.json
+      - task: AzureCLI@2
+        displayName: 🏗 Deploy Shared infrastructure
+        condition: |
+          and(
+            succeeded('Build'), 
+            eq(${{ parameters.deploy }}, true)
+          )
+        inputs:
+          azureSubscription: defaultAzureServiceConnection
+          scriptType: bash
+          scriptLocation: inlineScript
+          inlineScript: |
+            az --version
+            az deployment sub create -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope --parameters @parameters.shared.json
