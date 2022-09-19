@@ -106,10 +106,10 @@ module storageAccount '../../modules/storageaccount.bicep' = {
     tags: tags
     blobContainers: blobContainers
     roleAssignments: [
-      {
-        principalId: deviceContextFunction.outputs.deviceContextPrincipalId
-        roleId: storageBlobDataContributorRoleId
-      }
+      // {
+      //   principalId: deviceContextFunction.outputs.deviceContextPrincipalId
+      //   roleId: storageBlobDataContributorRoleId
+      // }
       {
         principalId: serviceDataFunction.outputs.serviceDataPrincipalId
         roleId: storageBlobDataContributorRoleId
