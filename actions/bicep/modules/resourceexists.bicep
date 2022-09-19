@@ -26,7 +26,10 @@ resource resource_exists_script 'Microsoft.Resources/deploymentScripts@2020-10-0
     forceUpdateTag: utcValue
     azCliVersion: '2.15.0'
     timeout: 'PT10M'
-    scriptContent: 'result=$(az resource list --resource-group ${resourceGroup().name} --name ${resourceName}); echo $result; echo $result | jq -c \'{Result: map({name: .name})}\' > $AZ_SCRIPTS_OUTPUT_PATH;'
+    scriptContent: '''
+    result=$(az resource list --resource-group ${resourceGroup().name} --name ${resourceName}); 
+    echo $result | jq -c \'{result: map({name: .name})}\' > $AZ_SCRIPTS_OUTPUT_PATH;'
+    '''
     cleanupPreference: 'OnSuccess'
     retentionInterval: 'P1D'
   }
