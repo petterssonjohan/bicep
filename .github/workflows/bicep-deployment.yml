@@ -19,11 +19,16 @@ jobs:
     outputs:
       should_release: "true"
     steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Login to Azure with Secret set in github
       - name: 🔑 Login to Azure
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_SPN_CREDENTIAL }}
 
+      # Check what a deployment would look lite to test
       - name: 🧪 What if
         id: verify-what-if
         working-directory: "${{github.workspace}}/actions/bicep"
@@ -35,11 +40,16 @@ jobs:
     needs: [validate]
     if: needs.validate.should_release == 'true'
     steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Login to Azure with Secret set in github
       - name: 🔑 Login to Azure
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_SPN_CREDENTIAL }}
 
+      # Deploy Infrastructure to Test with predefined variables
       - name: 🏗 Deploy Test infrastructure
         working-directory: "${{github.workspace}}/actions/bicep"
         run: |
