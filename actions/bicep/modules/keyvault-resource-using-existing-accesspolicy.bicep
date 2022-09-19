@@ -4,7 +4,7 @@ param keyVaultName string
 param keyVaultResourceExists bool
 param tags object
 
-resource existingKeyVaultResource 'Microsoft.KeyVault/vaults@2021-11-01-preview' existing = if (keyVaultResourceExists) {
+resource existingKeyVaultResource 'Microsoft.KeyVault/vaults@2022-07-01' existing = if (keyVaultResourceExists) {
   name: keyVaultName
 }
 
