@@ -13,57 +13,63 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  # This workflow contains a single job called "build"
-  bicep_build:
-    name: bicep build
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+stages:
+  - test
+  - prod
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+test:
+  stage: test
+  # A workflow run is made up of one or more jobs that can run sequentially or in parallel
+  jobs:
+    # This workflow contains a single job called "build"
+    bicep_build:
+      name: bicep build
+      # The type of runner that the job will run on
+      runs-on: ubuntu-latest
 
-      - name: 🔑 Login to Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_SPN_CREDENTIAL }}
+      # Steps represent a sequence of tasks that will be executed as part of the job
+      steps:
+        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+        - uses: actions/checkout@v2
 
-      - name: 🔧 Set Environment Variables
-        uses: tw3lveparsecs/github-actions-setvars@v0.1
-        with:
-          envFilePath: "${{github.workspace}}/.env"
+        - name: 🔑 Login to Azure
+          uses: azure/login@v1
+          with:
+            creds: ${{ secrets.AZURE_SPN_CREDENTIAL }}
 
-      - name: 🧪 What if
-        working-directory: "${{github.workspace}}/actions/bicep"
-        run: |
-          az deployment sub create --what-if -f ./Services/PassengerCount/infra.bicep --location westeurope --parameters @parameters.json
+        - name: 🔧 Set Environment Variables
+          uses: tw3lveparsecs/github-actions-setvars@v0.1
+          with:
+            envFilePath: "${{github.workspace}}/.env"
 
-  # bicep_deployment:
-  #   name: bicep deployment
-  #   # The type of runner that the job will run on
-  #   runs-on: ubuntu-latest
-  #   needs: [bicep_build]
-  #   environment: production
+        - name: 🧪 What if
+          working-directory: "${{github.workspace}}/actions/bicep"
+          run: |
+            az deployment sub create --what-if -f ./Services/Common/infra.bicep --location westeurope --parameters @parameters.json
 
-  #   # Steps represent a sequence of tasks that will be executed as part of the job
-  #   steps:
-  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-  #     - uses: actions/checkout@v2
+    bicep_deployment:
+      name: bicep deployment
+      # The type of runner that the job will run on
+      runs-on: ubuntu-latest
+      needs: [bicep_build]
+      environment: production
 
-  #     - name: 🔑 Login to Azure
-  #       uses: azure/login@v1
-  #       with:
-  #         creds: ${{ secrets.AZURE_SPN_CREDENTIAL }}
+      # Steps represent a sequence of tasks that will be executed as part of the job
+      steps:
+        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+        - uses: actions/checkout@v2
 
-  #     - name: 🔧 Set Environment Variables
-  #       uses: tw3lveparsecs/github-actions-setvars@v0.1
-  #       with:
-  #         envFilePath: "${{github.workspace}}/.env"
+        - name: 🔑 Login to Azure
+          uses: azure/login@v1
+          with:
+            creds: ${{ secrets.AZURE_SPN_CREDENTIAL }}
 
-  #     - name: 🏗 Deploy infrastructure
-  #       working-directory: "${{github.workspace}}/actions/bicep"
-  #       run: |
-  #         az deployment sub create -f ./Services/PassengerCount/infra.bicep --location westeurope --parameters @parameters.json
+        - name: 🔧 Set Environment Variables
+          uses: tw3lveparsecs/github-actions-setvars@v0.1
+          with:
+            envFilePath: "${{github.workspace}}/.env"
+
+        - name: 🏗 Deploy infrastructure
+          working-directory: "${{github.workspace}}/actions/bicep"
+          run: |
+            az deployment sub create -f ./Services/PassengerCount/Common.bicep --location westeurope --parameters @parameters.json

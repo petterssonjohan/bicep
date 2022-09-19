@@ -204,16 +204,6 @@ module eventHub '../../modules/eventhub.bicep' = {
   }
 }
 
-module redis '../../modules/redis.bicep' = {
-  name: 'redis-${releaseId}'
-  scope: rg
-  params: {
-    location: location
-    name: '${businessArea}-${loc}-redis-${serviceName}-${env}'
-    tags: tags
-  }
-}
-
 module appService '../../modules/appservice.bicep' = {
   scope: rg
   name: 'appService-${releaseId}'
@@ -224,16 +214,16 @@ module appService '../../modules/appservice.bicep' = {
   }
 }
 
-module deviceContextFunction '../../modules/function-devicecontext.bicep' = {
-  name: 'deviceContext-${releaseId}'
-  scope: rg
-  params: {
-    name: '${businessArea}-${loc}-af-context-${serviceName}-${env}'
-    appServicePlanId: appService.outputs.appServicePlanId
-    location: location
-    tags: tags
-  }
-}
+// module deviceContextFunction '../../modules/function-devicecontext.bicep' = {
+//   name: 'deviceContext-${releaseId}'
+//   scope: rg
+//   params: {
+//     name: '${businessArea}-${loc}-af-context-${serviceName}-${env}'
+//     appServicePlanId: appService.outputs.appServicePlanId
+//     location: location
+//     tags: tags
+//   }
+// }
 
 module serviceDataFunction '../../modules/function-servicedata.bicep' = {
   name: 'serviceData-${releaseId}'

@@ -56,3 +56,33 @@ module network '../../modules/network.bicep' = {
     location: location
   }
 }
+
+module appService '../../modules/appservice.bicep' = {
+  scope: rg
+  name: 'appService-${releaseId}'
+  params: {
+    name: '${businessArea}-${loc}-sp-${serviceName}-${env}'
+    planSku: env == 'prod' ? 'S1' : 'F1'
+    location: location
+  }
+}
+module deviceContextFunction '../../modules/function-devicecontext.bicep' = {
+  name: 'deviceContext-${releaseId}'
+  scope: rg
+  params: {
+    name: '${businessArea}-${loc}-af-context-${serviceName}-${env}'
+    appServicePlanId: appService.outputs.appServicePlanId
+    location: location
+    tags: tags
+  }
+}
+
+module redis '../../modules/redis.bicep' = {
+  name: 'redis-${releaseId}'
+  scope: rg
+  params: {
+    location: location
+    name: '${businessArea}-${loc}-redis-${serviceName}-${env}'
+    tags: tags
+  }
+}
