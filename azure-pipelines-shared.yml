@@ -1,77 +1,77 @@
-parameters:
-  - name: name # defaults for any parameters that aren't specified
-    default: ""
-  - name: vmImage
-    default: ""
-  - name: serviceName
-    default: "spt"
-  - name: deploy
-    displayName: Deploy
-    type: boolean
-    default: false
-  - name: vnetResourceGroup
-    default: "dmsResourceGroup"
-  - name: subscriptionId
-    default: ""
-  - name: tags
-    type: object
-    default:
-      BUSINESS-AREA: "spt"
-      RUNTIME-ENVIRONMENT: "test"
+# parameters:
+#   - name: name # defaults for any parameters that aren't specified
+#     default: ""
+#   - name: vmImage
+#     default: ""
+#   - name: serviceName
+#     default: "spt"
+#   - name: deploy
+#     displayName: Deploy
+#     type: boolean
+#     default: false
+#   - name: vnetResourceGroup
+#     default: "dmsResourceGroup"
+#   - name: subscriptionId
+#     default: ""
+#   - name: tags
+#     type: object
+#     default:
+#       BUSINESS-AREA: "spt"
+#       RUNTIME-ENVIRONMENT: "test"
 
-stages:
-  - stage: "shared_infrastructure"
-    jobs:
-      - job: Build
-        pool:
-          vmImage: ${{parameters.vmImage}}
-          steps:
-            - task: AzureCLI@2
-              displayName: 🧪 Test Shared infrastructure
-              inputs:
-                azureSubscription: defaultAzureServiceConnection
-                scriptType: bash
-                scriptLocation: inlineScript
-                inlineScript: |
-                  az --version
-                  az deployment sub create --what-if -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope 
-                  --parameters serviceName=${{ parameters.serviceName }} subscriptionId=${{parameters.subscriptionId}} tags=${{parameters.tags}} vnetResourceGroup=dmsResourceGroup
-            - task: AzureCLI@2
-              displayName: 🏗 Deploy Shared infrastructure
-              inputs:
-                azureSubscription: defaultAzureServiceConnection
-                scriptType: bash
-                scriptLocation: inlineScript
-                inlineScript: |
-                  az --version
-                  az deployment sub create -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope 
-                  --parameters serviceName=${{parameters.serviceName}} subscriptionId=${{parameters.subscriptionId}} tags=${{parameters.tags}} vnetResourceGroup=dmsResourceGroup
-          # - job: Deploy
-          #   pool:
-          #     vmImage: ${{parameters.vmImage}}
-          #     steps:
-          #       - task: AzureCLI@2
-          #         displayName: 🧪 Test Shared infrastructure
-          #         inputs:
-          #           azureSubscription: defaultAzureServiceConnection
-          #           scriptType: bash
-          #           scriptLocation: inlineScript
-          #           inlineScript: |
-          #             az --version
-          #             az deployment sub create --what-if -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope
-          #             --parameters serviceName=${{ parameters.serviceName }} subscriptionId=${{parameters.subscriptionId}} tags=${{parameters.tags}} vnetResourceGroup=dmsResourceGroup
-          #       - task: AzureCLI@2
-          #         displayName: 🏗 Deploy Shared infrastructure
-          #         # condition: |
-          #         #   and(
-          #         #     succeeded('Build'),
-          #         #     eq(${{ parameters.deploy }}, true)
-          #         #   )
-          #         inputs:
-          #           azureSubscription: defaultAzureServiceConnection
-          #           scriptType: bash
-          #           scriptLocation: inlineScript
-          #           inlineScript: |
-          #             az --version
-          #             az deployment sub create -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope
-          #             --parameters serviceName=${{parameters.serviceName}} subscriptionId=${{parameters.subscriptionId}} tags=${{parameters.tags}} vnetResourceGroup=dmsResourceGroup
+# stages:
+#   - stage: "shared_infrastructure"
+#     jobs:
+#       - job: Build
+#         pool:
+#           vmImage: ${{parameters.vmImage}}
+#           steps:
+#             - task: AzureCLI@2
+#               displayName: 🧪 Test Shared infrastructure
+#               inputs:
+#                 azureSubscription: defaultAzureServiceConnection
+#                 scriptType: bash
+#                 scriptLocation: inlineScript
+#                 inlineScript: |
+#                   az --version
+#                   az deployment sub create --what-if -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope
+#                   --parameters serviceName=${{ parameters.serviceName }} subscriptionId=${{parameters.subscriptionId}} tags=${{parameters.tags}} vnetResourceGroup=dmsResourceGroup
+#             - task: AzureCLI@2
+#               displayName: 🏗 Deploy Shared infrastructure
+#               inputs:
+#                 azureSubscription: defaultAzureServiceConnection
+#                 scriptType: bash
+#                 scriptLocation: inlineScript
+#                 inlineScript: |
+#                   az --version
+#                   az deployment sub create -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope
+#                   --parameters serviceName=${{parameters.serviceName}} subscriptionId=${{parameters.subscriptionId}} tags=${{parameters.tags}} vnetResourceGroup=dmsResourceGroup
+#           # - job: Deploy
+#           #   pool:
+#           #     vmImage: ${{parameters.vmImage}}
+#           #     steps:
+#           #       - task: AzureCLI@2
+#           #         displayName: 🧪 Test Shared infrastructure
+#           #         inputs:
+#           #           azureSubscription: defaultAzureServiceConnection
+#           #           scriptType: bash
+#           #           scriptLocation: inlineScript
+#           #           inlineScript: |
+#           #             az --version
+#           #             az deployment sub create --what-if -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope
+#           #             --parameters serviceName=${{ parameters.serviceName }} subscriptionId=${{parameters.subscriptionId}} tags=${{parameters.tags}} vnetResourceGroup=dmsResourceGroup
+#           #       - task: AzureCLI@2
+#           #         displayName: 🏗 Deploy Shared infrastructure
+#           #         # condition: |
+#           #         #   and(
+#           #         #     succeeded('Build'),
+#           #         #     eq(${{ parameters.deploy }}, true)
+#           #         #   )
+#           #         inputs:
+#           #           azureSubscription: defaultAzureServiceConnection
+#           #           scriptType: bash
+#           #           scriptLocation: inlineScript
+#           #           inlineScript: |
+#           #             az --version
+#           #             az deployment sub create -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope
+#           #             --parameters serviceName=${{parameters.serviceName}} subscriptionId=${{parameters.subscriptionId}} tags=${{parameters.tags}} vnetResourceGroup=dmsResourceGroup

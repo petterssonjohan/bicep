@@ -1,48 +1,48 @@
-parameters:
-  - name: name # defaults for any parameters that aren't specified
-    default: ""
-  - name: vmImage
-    default: ""
-  - name: serviceName
-    type: string
-    default: apc
-    values:
-      - apc
-      - ji
-  - name: deploy
-    displayName: Deploy
-    type: boolean
-    default: false
-  - name: subscriptionId
-    default: ""
-  - name: tags
-    type: object
-    default:
-      BUSINESS-AREA: "spt"
-      RUNTIME-ENVIRONMENT: "test"
-#   steps:
-#   - task: AzureCLI@2
-#     displayName: 🧪 Test Common infrastructure
-#     inputs:
-#       azureSubscription: defaultAzureServiceConnection
-#       scriptType: bash
-#       scriptLocation: inlineScript
-#       inlineScript: |
-#         az --version
-#         az deployment sub create --what-if -f $(System.ArtifactsDirectory)/actions/bicep/Services/Common/infra.bicep --location westeurope
-#         --parameters serviceName=${{serviceName}} subscriptionId=${{subscriptionId}} tags=${{tags}}
-#   - task: AzureCLI@2
-#     displayName: 🏗 Deploy Common infrastructure
-#     condition: |
-#       and(
-#         succeeded('Build'),
-#         eq(${{ parameters.deploy }}, true)
-#       )
-#     inputs:
-#       azureSubscription: defaultAzureServiceConnection
-#       scriptType: bash
-#       scriptLocation: inlineScript
-#       inlineScript: |
-#         az --version
-#         az deployment sub create -f $(System.ArtifactsDirectory)/actions/bicep/Services/Common/infra.bicep --location westeurope
-#         --parameters serviceName=${{serviceName}} subscriptionId=${{subscriptionId}} tags=${{tags}}
+# parameters:
+#   - name: name # defaults for any parameters that aren't specified
+#     default: ""
+#   - name: vmImage
+#     default: ""
+#   - name: serviceName
+#     type: string
+#     default: apc
+#     values:
+#       - apc
+#       - ji
+#   - name: deploy
+#     displayName: Deploy
+#     type: boolean
+#     default: false
+#   - name: subscriptionId
+#     default: ""
+#   - name: tags
+#     type: object
+#     default:
+#       BUSINESS-AREA: "spt"
+#       RUNTIME-ENVIRONMENT: "test"
+# #   steps:
+# #   - task: AzureCLI@2
+# #     displayName: 🧪 Test Common infrastructure
+# #     inputs:
+# #       azureSubscription: defaultAzureServiceConnection
+# #       scriptType: bash
+# #       scriptLocation: inlineScript
+# #       inlineScript: |
+# #         az --version
+# #         az deployment sub create --what-if -f $(System.ArtifactsDirectory)/actions/bicep/Services/Common/infra.bicep --location westeurope
+# #         --parameters serviceName=${{serviceName}} subscriptionId=${{subscriptionId}} tags=${{tags}}
+# #   - task: AzureCLI@2
+# #     displayName: 🏗 Deploy Common infrastructure
+# #     condition: |
+# #       and(
+# #         succeeded('Build'),
+# #         eq(${{ parameters.deploy }}, true)
+# #       )
+# #     inputs:
+# #       azureSubscription: defaultAzureServiceConnection
+# #       scriptType: bash
+# #       scriptLocation: inlineScript
+# #       inlineScript: |
+# #         az --version
+# #         az deployment sub create -f $(System.ArtifactsDirectory)/actions/bicep/Services/Common/infra.bicep --location westeurope
+# #         --parameters serviceName=${{serviceName}} subscriptionId=${{subscriptionId}} tags=${{tags}}
