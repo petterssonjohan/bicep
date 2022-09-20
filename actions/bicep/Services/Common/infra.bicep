@@ -14,10 +14,10 @@ param location string = 'west europe'
 param tags object
 
 @description('TenantId')
-param tenantId string
+param tenantId string = ''
 
 @description('This is the object id of the user who will do the deployment on Azure. Can be your user id on AAD. Discover it running [az ad signed-in-user show] and get the [objectId] property.')
-param deploymentOperatorId string
+param deploymentOperatorId string = ''
 
 //param sku?
 
@@ -75,7 +75,8 @@ module userAssigned '../../modules/userassignedidentity.bicep' = {
 // }
 
 /* Create KeyVault */
-var kvName = '${businessArea}-${loc}-kv-${serviceName}-${env}'
+var kvName = env == 'prod' ? '${businessArea}-${loc}-kv-${serviceName}-${env}' : '${uniqueString('${businessArea}-${loc}-kv-${serviceName}-${env})}-${serviceName}-${env}')}'
+
 module keyvault '../../modules/keyvault-resource-preserving-accesspolicy.bicep' = {
   name: 'kv-preserving_${releaseId}'
   params: {

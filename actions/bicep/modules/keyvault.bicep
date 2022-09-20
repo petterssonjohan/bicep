@@ -4,13 +4,11 @@ param tags object
 param keyVaultName string
 param accessPolicies array
 
-var env = tags['RUNTIME-ENVIRONMENT']
-
 //added github-az-bicep-spn to key vault Azure Active Directory, App Registration, github-az-bicep-spn, API permissions, Azure Key Vault user_impersonation. 
 //Then it worked.., todo: Try to remove and try again
 
 resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
-  name: env == 'prod' ? keyVaultName : uniqueString(keyVaultName) //keyVaultName todo: check below (1) 
+  name: keyVaultName //keyVaultName todo: check below (1) 
   location: location
   tags: tags
   properties: {

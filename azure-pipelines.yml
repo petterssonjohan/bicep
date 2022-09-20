@@ -47,8 +47,6 @@ stages:
               deploy: true
               vnetResourceGroup: "dmsResourceGroup"
               subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
-              tenantId: "6618d4dc-2516-4213-a4f4-029b4d661f09"
-              deploymentOperatorId: "df461188-ee64-43bc-b888-0d2e4f55c9b1"
               tags: "{ 'BUSINESS-AREA': $(serviceName), 'RUNTIME-ENVIRONMENT': 'test' }"
 
           - template: azure-pipelines-common.yml
@@ -57,10 +55,7 @@ stages:
               vmImage: $(vmImageName)
               serviceName: $(serviceName)
               deploy: true
-              vnetResourceGroup: "dmsResourceGroup"
               subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
-              tenantId: "6618d4dc-2516-4213-a4f4-029b4d661f09"
-              deploymentOperatorId: "df461188-ee64-43bc-b888-0d2e4f55c9b1"
               tags: "{ 'BUSINESS-AREA': $(serviceName), 'RUNTIME-ENVIRONMENT': 'test' }"
 
   - stage: Prod
@@ -81,8 +76,6 @@ stages:
                   deploy: $(deploy_shared)
                   vnetResourceGroup: "dmsResourceGroup"
                   subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
-                  tenantId: "6618d4dc-2516-4213-a4f4-029b4d661f09"
-                  deploymentOperatorId: "df461188-ee64-43bc-b888-0d2e4f55c9b1"
                   tags: "{ 'BUSINESS-AREA': $(serviceName), 'RUNTIME-ENVIRONMENT': 'prod' }"
 
           - ${{ if eq(parameters.deploy_prod, true) }}:
@@ -92,8 +85,5 @@ stages:
                   vmImage: $(vmImageName)
                   serviceName: $(serviceName)
                   deploy: $(deploy_prod)
-                  vnetResourceGroup: "dmsResourceGroup"
                   subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
-                  tenantId: "6618d4dc-2516-4213-a4f4-029b4d661f09"
-                  deploymentOperatorId: "df461188-ee64-43bc-b888-0d2e4f55c9b1"
                   tags: "{ 'BUSINESS-AREA': $(serviceName), 'RUNTIME-ENVIRONMENT': 'prod' }"

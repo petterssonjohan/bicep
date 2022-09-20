@@ -13,10 +13,6 @@ parameters:
     default: "dmsResourceGroup"
   - name: subscriptionId
     default: ""
-  - name: tenantId
-    default: ""
-  - name: deploymentOperatorId
-    default: "df461188-ee64-43bc-b888-0d2e4f55c9b1"
   - name: tags
     type: object
     default:
@@ -32,7 +28,8 @@ parameters:
           scriptLocation: inlineScript
           inlineScript: |
             az --version
-            az deployment sub create --what-if -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope --parameters @parameters.shared.json
+            az deployment sub create --what-if -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope 
+            --parameters serviceName=misc subscriptionId=${{subscriptionId}} tags=${{tags}} vnetResourceGroup=dmsResourceGroup
       - task: AzureCLI@2
         displayName: 🏗 Deploy Shared infrastructure
         condition: |
@@ -46,4 +43,5 @@ parameters:
           scriptLocation: inlineScript
           inlineScript: |
             az --version
-            az deployment sub create -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope --parameters @parameters.shared.json
+            az deployment sub create -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope 
+            --parameters serviceName=misc subscriptionId=${{subscriptionId}} tags=${{tags}} vnetResourceGroup=dmsResourceGroup

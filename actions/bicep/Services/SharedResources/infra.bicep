@@ -44,7 +44,8 @@ module userAssigned '../../modules/userassignedidentity.bicep' = {
   }
 }
 
-var kvName = '${businessArea}-${loc}-kv-${serviceName}-${env}'
+var kvName = env == 'prod' ? '${businessArea}-${loc}-kv-${serviceName}-${env}' : '${uniqueString('${businessArea}-${loc}-kv-${serviceName}-${env})}-${serviceName}-${env}')}'
+
 module keyVaultModule '../../modules/keyvault-resource-preserving-accesspolicy.bicep' = {
   name: 'kv-preserving-${releaseId}'
   params: {
