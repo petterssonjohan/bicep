@@ -23,27 +23,27 @@ parameters:
       BUSINESS-AREA: "spt"
       RUNTIME-ENVIRONMENT: "test"
 
-  steps: 
-  - task: AzureCLI@2
-    displayName: 🧪 Test Shared infrastructure
-    inputs:
-      azureSubscription: defaultAzureServiceConnection
-      scriptType: bash
-      scriptLocation: inlineScript
-      inlineScript: |
-        az --version
-        az deployment sub create --what-if -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope --parameters @parameters.shared.json
-  - task: AzureCLI@2
-    displayName: 🏗 Deploy Shared infrastructure
-    condition: |
-      and(
-        succeeded('Build'), 
-        eq(${{ parameters.deploy }}, true)
-      )
-    inputs:
-      azureSubscription: defaultAzureServiceConnection
-      scriptType: bash
-      scriptLocation: inlineScript
-      inlineScript: |
-        az --version
-        az deployment sub create -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope --parameters @parameters.shared.json
+    steps:
+      - task: AzureCLI@2
+        displayName: 🧪 Test Shared infrastructure
+        inputs:
+          azureSubscription: defaultAzureServiceConnection
+          scriptType: bash
+          scriptLocation: inlineScript
+          inlineScript: |
+            az --version
+            az deployment sub create --what-if -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope --parameters @parameters.shared.json
+      - task: AzureCLI@2
+        displayName: 🏗 Deploy Shared infrastructure
+        condition: |
+          and(
+            succeeded('Build'), 
+            eq(${{ parameters.deploy }}, true)
+          )
+        inputs:
+          azureSubscription: defaultAzureServiceConnection
+          scriptType: bash
+          scriptLocation: inlineScript
+          inlineScript: |
+            az --version
+            az deployment sub create -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope --parameters @parameters.shared.json
