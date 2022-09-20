@@ -29,16 +29,16 @@ variables:
 pool:
   vmImage: $(vmImageName)
 
-  stages:
-    - stage: Install
-      jobs:
-        - job: npminstall
-          steps:
-            - task: Npm@1
-              inputs:
-                command: "install"
-    - template: azure-pipelines-test.yml
-    - template: azure-pipelines-prod.yml
+stages:
+  - stage: Install
+    jobs:
+      - job: npminstall
+        steps:
+          - task: Npm@1
+            inputs:
+              command: "install"
+  - template: azure-pipelines-test.yml
+  - template: azure-pipelines-prod.yml
 
   # extends:
   #   - template: azure-pipelines-test.yml
