@@ -39,13 +39,6 @@ stages:
         pool:
           vmImage: $(vmImageName)
         steps:
-          - task: PublishBuildArtifacts@1
-            name: PublishArtifactStep
-            displayName: "Publish build artifacts"
-            inputs:
-              pathToPublish: $(Build.ArtifactStagingDirectory)
-              artifactName: bicep-$(Build.Repository.Name)
-
           - task: AzureCLI@2
             displayName: 🧪 Test Shared infrastructure
             inputs:
@@ -54,7 +47,7 @@ stages:
               scriptLocation: inlineScript
               inlineScript: |
                 az --version
-                az deployment sub create --what-if -f $(System.ArtifactStagingDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope 
+                az deployment sub create --what-if -f ./actions/bicep/Services/SharedResources/infra.bicep --location westeurope 
                 --parameters serviceName=${{ parameters.serviceName }} subscriptionId=$(subscriptionId) tags={ 'BUSINESS-AREA': 'shared', 'RUNTIME-ENVIRONMENT': 'test' } vnetResourceGroup=dmsResourceGroup
           - task: AzureCLI@2
             displayName: 🏗 Deploy Shared infrastructure
@@ -64,7 +57,7 @@ stages:
               scriptLocation: inlineScript
               inlineScript: |
                 az --version
-                az deployment sub create -f $(System.ArtifactStagingDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope 
+                az deployment sub create -f ./actions/bicep/Services/SharedResources/infra.bicep --location westeurope 
                 --parameters serviceName=${{parameters.serviceName}} subscriptionId=$(subscriptionId) tags={ 'BUSINESS-AREA': 'shared', 'RUNTIME-ENVIRONMENT': 'test' } vnetResourceGroup=dmsResourceGroup
   # extends:
   #   - template: azure-pipelines-test.yml
