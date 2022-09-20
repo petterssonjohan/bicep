@@ -13,14 +13,6 @@ param location string = 'west europe'
 @description('Tags for resources')
 param tags object
 
-@description('TenantId')
-param tenantId string = ''
-
-@description('This is the object id of the user who will do the deployment on Azure. Can be your user id on AAD. Discover it running [az ad signed-in-user show] and get the [objectId] property.')
-param deploymentOperatorId string = ''
-
-//param sku?
-
 targetScope = 'subscription'
 var businessArea = 'spt'
 var loc = 'weu'
