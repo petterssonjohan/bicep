@@ -113,3 +113,65 @@ module redis '../../modules/redis.bicep' = {
     tags: tags
   }
 }
+
+var deviceContextName = 'device-context'
+
+var blobContainers = [
+  {
+    name: deviceContextName
+    enablePublicAccess: false
+    metadata: {}
+  }
+]
+var buildInRoleStorageBlobDataOwner = 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
+var storageAccountName = '${businessArea}${loc}sa${serviceName}${env}'
+module storageAccount '../../modules/storageaccount.bicep' = {
+  name: 'sa-${releaseId}'
+  scope: rg
+  params: {
+    name: storageAccountName
+    location: location
+    serviceName: serviceName
+    tags: tags
+    blobContainers: blobContainers
+    roleAssignments: [
+      {
+        principalId: deviceContextFunction.outputs.principalId
+        roleId: buildInRoleStorageBlobDataOwner
+      }
+    ]
+    managementPolicies: {
+      policy: {
+        rules: [
+          {
+            enabled: true
+            name: 'delete-after-14-days'
+            type: 'Lifecycle'
+            definition: {
+              actions: {
+                baseBlob: {
+                  delete: {
+                    daysAfterModificationGreaterThan: 14
+                  }
+                }
+                snapshot: {
+                  delete: {
+                    daysAfterCreationGreaterThan: 14
+                  }
+                }
+              }
+              filters: {
+                blobTypes: [
+                  'blockBlob', 'appendBlob'
+                ]
+                prefixMatch: [
+                  '${deviceContextName}/'
+                ]
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

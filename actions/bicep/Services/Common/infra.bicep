@@ -90,24 +90,15 @@ module keyvault '../../modules/keyvault-resource-preserving-accesspolicy.bicep' 
 }
 
 var serviceDataName = 'service-data'
-var deviceContextName = 'device-context'
-
 var blobContainers = [
-  {
-    name: deviceContextName
-    enablePublicAccess: false
-    metadata: {}
-  }
   {
     name: serviceDataName
     enablePublicAccess: false
     metadata: {}
   }
 ]
-
-var storageBlobDataContributorRoleId = 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
+var buildInRoleStorageBlobDataOwner = 'b7e6dc6d-f1e8-4753-8033-0f276bb0955b'
 var storageAccountName = '${businessArea}${loc}sa${serviceName}${env}'
-
 module storageAccount '../../modules/storageaccount.bicep' = {
   name: 'sa-${releaseId}'
   scope: rg
@@ -118,13 +109,9 @@ module storageAccount '../../modules/storageaccount.bicep' = {
     tags: tags
     blobContainers: blobContainers
     roleAssignments: [
-      // {
-      //   principalId: deviceContextFunction.outputs.deviceContextPrincipalId
-      //   roleId: storageBlobDataContributorRoleId
-      // }
       {
         principalId: serviceDataFunction.outputs.principalId
-        roleId: storageBlobDataContributorRoleId
+        roleId: buildInRoleStorageBlobDataOwner
       }
     ]
     managementPolicies: {
