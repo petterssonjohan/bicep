@@ -34,6 +34,16 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
+module userAssigned '../../modules/userassignedidentity.bicep' = {
+  name: 'userAssignedIdentity-${releaseId}'
+  scope: rg
+  params: {
+    name: '${businessArea}-${loc}-identity-${serviceName}-${env}'
+    location: location
+    tags: tags
+  }
+}
+
 var kvName = '${businessArea}-${loc}-kv-${serviceName}-${env}'
 module keyVaultModule '../../modules/keyvault-resource-preserving-accesspolicy.bicep' = {
   name: 'keyVaultResourcePreservingAccessPolicies_${uniqueString(kvName)}'
@@ -42,6 +52,7 @@ module keyVaultModule '../../modules/keyvault-resource-preserving-accesspolicy.b
     keyVaultName: kvName
     tags: tags
     deploymentOperatorId: deploymentOperatorId
+    identityPrincipalId: '${businessArea}-${loc}-identity-${serviceName}-${env}'
   }
   scope: rg
 }
