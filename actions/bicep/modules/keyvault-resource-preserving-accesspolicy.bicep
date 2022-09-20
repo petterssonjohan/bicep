@@ -3,6 +3,7 @@ param keyVaultName string
 param tags object
 param tenantId string
 param identityPrincipalId string
+param deploymentOperatorId string
 
 module resourceExistsModule './resourceexists.bicep' = {
   name: 'resourceExists_${uniqueString(keyVaultName)}'
@@ -24,7 +25,7 @@ module keyVaultModule './keyvault-resource-using-existing-accesspolicy.bicep' = 
     keyVaultResourceExists: resourceExistsModule.outputs.exists
     tags: tags
     tenantId: tenantId
-    deploymentOperatorId: resourceExistsModule.outputs.userAssignedIdentity //deploymentOperatorId
+    deploymentOperatorId: deploymentOperatorId //deploymentOperatorId
   }
 }
 

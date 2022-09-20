@@ -83,7 +83,8 @@ module keyvault '../../modules/keyvault-resource-preserving-accesspolicy.bicep' 
     keyVaultName: kvName
     tags: tags
     tenantId: userAssigned.outputs.tenantId
-    identityPrincipalId: userAssigned.outputs.identityPrincipalId
+    identityPrincipalId: '${businessArea}${serviceName}${env}'
+    deploymentOperatorId: userAssigned.outputs.identityPrincipalId
   }
   scope: rg
 }
