@@ -56,6 +56,7 @@ stages:
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |
+                az upgrade
                 az --version
                 tags='{"BUSINESS-AREA":"SPT","RUNTIME-ENVIRONMENT":"test"}'
                 az deployment sub create -f ./actions/bicep/Services/SharedResources/infra.bicep --location westeurope --parameters serviceName=${{parameters.serviceName}} subscriptionId=$(subscriptionId) tags=$tags vnetResourceGroup=dmsResourceGroup
