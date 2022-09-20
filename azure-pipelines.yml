@@ -30,31 +30,25 @@ pool:
   vmImage: $(vmImageName)
 
 stages:
-  - stage: Test
-    displayName: Deploy Test
-    jobs:
-      strategy:
-        runOnce:
-          deploy:
-            steps:
-              - template: azure-pipelines-shared.yml
-                parameters:
-                  name: Deploy Shared Infrastructure
-                  vmImage: $(vmImageName)
-                  serviceName: $(serviceName)
-                  deploy: true
-                  vnetResourceGroup: "dmsResourceGroup"
-                  subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
-                  tags: "{ 'BUSINESS-AREA': $(serviceName), 'RUNTIME-ENVIRONMENT': 'test' }"
+  - template: azure-pipelines-shared.yml
+    parameters:
+      name: Deploy Shared Infrastructure
+      vmImage: $(vmImageName)
+      serviceName: $(serviceName)
+      deploy: true
+      vnetResourceGroup: "dmsResourceGroup"
+      subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
+      tags:
+        "{ 'BUSINESS-AREA': $(serviceName), 'RUNTIME-ENVIRONMENT': 'test' }"
 
-              - template: azure-pipelines-common.yml
-                parameters:
-                  name: Deploy Common Infrastructure
-                  vmImage: $(vmImageName)
-                  serviceName: $(serviceName)
-                  deploy: true
-                  subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
-                  tags: "{ 'BUSINESS-AREA': $(serviceName), 'RUNTIME-ENVIRONMENT': 'test' }"
+        # - template: azure-pipelines-common.yml
+        #   parameters:
+        #     name: Deploy Common Infrastructure
+        #     vmImage: $(vmImageName)
+        #     serviceName: $(serviceName)
+        #     deploy: true
+        #     subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
+        #     tags: "{ 'BUSINESS-AREA': $(serviceName), 'RUNTIME-ENVIRONMENT': 'test' }"
 
   # - stage: Prod
   #   displayName: Deploy Prod
