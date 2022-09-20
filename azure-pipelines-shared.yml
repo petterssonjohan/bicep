@@ -22,7 +22,7 @@ parameters:
 stages:
   - stage: "Shared Infrastructure"
     jobs:
-      job: "job"
+      sharing:
       pool:
         vmImage: ${{vmImage}}
         steps:
