@@ -39,7 +39,7 @@ module userAssigned '../../modules/userassignedidentity.bicep' = {
   name: 'userAssignedIdentity-${releaseId}'
   scope: rg
   params: {
-    name: '${businessArea}-${loc}-identity-${serviceName}-${env}'
+    name: '${businessArea}${serviceName}${env}'
     location: location
     tags: tags
   }
