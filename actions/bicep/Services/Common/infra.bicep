@@ -66,8 +66,8 @@ module userAssigned '../../modules/userassignedidentity.bicep' = {
 //   scope: rg
 // }
 
-/* Create KeyVault */
-var kvName = env == 'prod' ? '${businessArea}-${loc}-kv-${serviceName}-${env}' : '${uniqueString('${businessArea}-${loc}-kv-${serviceName}-${env})}-${serviceName}-${env}')}'
+//for dev and test, random names so its easy to remove it and recreate
+var kvName = env == 'prod' ? '${businessArea}-${loc}-kv-${serviceName}-${env}' : 'a${skip(uniqueString('${businessArea}-${loc}-kv-${serviceName}-${env}'), 8)}-${serviceName}-${env}'
 
 module keyvault '../../modules/keyvault-resource-preserving-accesspolicy.bicep' = {
   name: 'kv-preserving_${releaseId}'
