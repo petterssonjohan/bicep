@@ -3,6 +3,7 @@ param deploymentOperatorId string
 param keyVaultName string
 param keyVaultResourceExists bool
 param tags object
+param tenantId string
 
 resource existingKeyVaultResource 'Microsoft.KeyVault/vaults@2022-07-01' existing = if (keyVaultResourceExists) {
   name: keyVaultName
@@ -17,7 +18,7 @@ module keyVaultModule './keyvault.bicep' = {
     accessPolicies: keyVaultResourceExists ? existingKeyVaultResource.properties.accessPolicies : [
       {
         objectId: deploymentOperatorId
-        tenantId: subscription().tenantId
+        tenantId: tenantId
         permissions: {
           secrets: [
             'all'

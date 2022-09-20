@@ -51,7 +51,7 @@ module keyVaultModule '../../modules/keyvault-resource-preserving-accesspolicy.b
     location: location
     keyVaultName: kvName
     tags: tags
-    deploymentOperatorId: deploymentOperatorId
+    tenantId: userAssigned.outputs.tenantId
     identityPrincipalId: userAssigned.outputs.identityPrincipalId
   }
   scope: rg
