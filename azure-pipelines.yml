@@ -30,17 +30,17 @@ pool:
   vmImage: $(vmImageName)
 
 stages:
-  - stage: A 
-    - template: azure-pipelines-shared.yml
-      parameters:
-        name: Deploy Shared Infrastructure
-        vmImage: $(vmImageName)
-        serviceName: misc
-        deploy: true
-        vnetResourceGroup: "dmsResourceGroup"
-        subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
-        tags:
-          "{ 'BUSINESS-AREA': misc, 'RUNTIME-ENVIRONMENT': 'test' }"
+- stage: A 
+- template: azure-pipelines-shared.yml
+  parameters:
+    name: Deploy Shared Infrastructure
+    vmImage: $(vmImageName)
+    serviceName: misc
+    deploy: true
+    vnetResourceGroup: "dmsResourceGroup"
+    subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
+      tags:
+        "{ 'BUSINESS-AREA': misc, 'RUNTIME-ENVIRONMENT': 'test' }"
 
         # - template: azure-pipelines-common.yml
         #   parameters:
