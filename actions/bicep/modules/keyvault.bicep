@@ -21,7 +21,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
     accessPolicies: accessPolicies
     enabledForDeployment: true // VMs can retrieve certificates
     enabledForTemplateDeployment: true // ARM can retrieve values
-    enablePurgeProtection: tags['RUNTIME-ENVIRONMENT'] == 'prod' ? true : false // Not allowing to purge key vault or its objects after deletion
+    enablePurgeProtection: true // Not allowing to purge key vault or its objects after deletion
     enableSoftDelete: true
     softDeleteRetentionInDays: 7
     createMode: 'default'
