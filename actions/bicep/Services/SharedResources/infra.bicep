@@ -80,7 +80,7 @@ module appService '../../modules/appservice.bicep' = {
     location: location
   }
 }
-module deviceContextFunction '../../modules/function-devicecontext.bicep' = {
+module deviceContextFunction '../../modules/azure-function.bicep' = {
   name: 'deviceContext-${releaseId}'
   scope: rg
   params: {
@@ -88,6 +88,19 @@ module deviceContextFunction '../../modules/function-devicecontext.bicep' = {
     appServicePlanId: appService.outputs.appServicePlanId
     location: location
     tags: tags
+    storageAccountRequired: true
+  }
+}
+
+module tokenIssuerFunction '../../modules/azure-function.bicep' = {
+  name: 'tokenIssuer-${releaseId}'
+  scope: rg
+  params: {
+    name: '${businessArea}-${loc}-af-tokenissuer-${serviceName}-${env}'
+    appServicePlanId: appService.outputs.appServicePlanId
+    location: location
+    tags: tags
+    storageAccountRequired: true
   }
 }
 

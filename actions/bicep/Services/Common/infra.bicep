@@ -123,7 +123,7 @@ module storageAccount '../../modules/storageaccount.bicep' = {
       //   roleId: storageBlobDataContributorRoleId
       // }
       {
-        principalId: serviceDataFunction.outputs.serviceDataPrincipalId
+        principalId: serviceDataFunction.outputs.principalId
         roleId: storageBlobDataContributorRoleId
       }
     ]
@@ -237,7 +237,7 @@ module appService '../../modules/appservice.bicep' = {
 //   }
 // }
 
-module serviceDataFunction '../../modules/function-servicedata.bicep' = {
+module serviceDataFunction '../../modules/azure-function.bicep' = {
   name: 'serviceData-${releaseId}'
   scope: rg
   params: {
@@ -245,6 +245,7 @@ module serviceDataFunction '../../modules/function-servicedata.bicep' = {
     appServicePlanId: appService.outputs.appServicePlanId
     location: location
     tags: tags
+    storageAccountRequired: true
   }
 }
 

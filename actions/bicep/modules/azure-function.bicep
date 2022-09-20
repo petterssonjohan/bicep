@@ -2,7 +2,7 @@ param location string
 param tags object
 param name string
 param appServicePlanId string
-
+param storageAccountRequired bool
 resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
   name: name
   location: location
@@ -11,7 +11,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
     type: 'SystemAssigned'
   }
   properties: {
-    storageAccountRequired: true
+    storageAccountRequired: storageAccountRequired
     serverFarmId: appServicePlanId
     siteConfig: {
       appSettings: [
@@ -32,4 +32,4 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
   tags: tags
 }
 
-output deviceContextPrincipalId string = functionApp.identity.principalId
+output principalId string = functionApp.identity.principalId
