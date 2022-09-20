@@ -75,7 +75,7 @@ module userAssigned '../../modules/userassignedidentity.bicep' = {
 // }
 
 /* Create KeyVault */
-var kvName = 'kv-${serviceName}'
+var kvName = '${businessArea}-${loc}-kv-${serviceName}-${env}'
 module keyvault '../../modules/keyvault-resource-preserving-accesspolicy.bicep' = {
   name: 'keyVaultResourcePreservingAccessPolicies_${uniqueString(kvName)}'
   params: {
