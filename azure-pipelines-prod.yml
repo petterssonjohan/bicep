@@ -1,0 +1,129 @@
+trigger: none
+
+name: Deploy Bicep files
+
+parameters:
+  - name: serviceName
+    type: string
+    default: apc
+    values:
+      - apc
+      - ji
+
+  - name: deploy_prod
+    displayName: Deploy to PROD
+    type: boolean
+    default: false
+
+  - name: deploy_shared
+    displayName: Deploy Shared Resources (always true for test)
+    type: boolean
+    default: false
+
+variables:
+  vmImageName: "ubuntu-latest"
+  resourceGroupName: "dps"
+  location: "west europe"
+  templateFile: "infra.bicep"
+  subscriptionId: $(subscriptionId)
+
+pool:
+  vmImage: $(vmImageName)
+
+stages:
+  - stage: Build
+    displayName: Build and push Test
+    jobs:
+      - job: Build
+        displayName: Build
+        pool:
+          vmImage: $(vmImageName)
+        steps:
+          # - task: AzureCLI@2
+          #   displayName: 🧪 Test Shared infrastructure
+          #   inputs:
+          #     azureSubscription: defaultAzureServiceConnection
+          #     scriptType: bash
+          #     scriptLocation: inlineScript
+          #     inlineScript: |
+          #       az --version
+          #       tags='{"BUSINESS-AREA":"SPT","RUNTIME-ENVIRONMENT":"test"}'
+          #       az deployment sub create --what-if -f ./actions/bicep/Services/SharedResources/infra.bicep --location westeurope --parameters serviceName=${{ parameters.serviceName }} subscriptionId=$(subscriptionId) tags=$tags vnetResourceGroup=dmsResourceGroup
+          - task: AzureCLI@2
+            displayName: 🏗 Deploy Shared infrastructure
+            inputs:
+              azureSubscription: defaultAzureServiceConnection
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                az upgrade
+                az --version
+                tags='{"BUSINESS-AREA":"SPT","RUNTIME-ENVIRONMENT":"test"}'
+                az deployment sub create -f ./actions/bicep/Services/SharedResources/infra.bicep --location westeurope --parameters serviceName=${{parameters.serviceName}} subscriptionId=$(subscriptionId) tags=$tags vnetResourceGroup=dmsResourceGroup
+  # extends:
+  #   - template: azure-pipelines-test.yml
+  #     parameters:
+  #       name: Deploy Shared Infrastructure
+  #       vmImage: $(vmImageName)
+  #       serviceName: misc
+  #       deploy: true
+  #       vnetResourceGroup: "dmsResourceGroup"
+  #       subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
+  #       tags: "{ 'BUSINESS-AREA': misc, 'RUNTIME-ENVIRONMENT': 'test' }"
+  #   - template: azure-pipelines-prod.yml
+  #     parameters:
+  #       name: Deploy Shared Infrastructure
+  #       vmImage: $(vmImageName)
+  #       serviceName: misc
+  #       deploy: true
+  #       vnetResourceGroup: "dmsResourceGroup"
+  #       subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
+  #       tags: "{ 'BUSINESS-AREA': misc, 'RUNTIME-ENVIRONMENT': 'test' }"
+  # - template: azure-pipelines-shared.yml
+  #   parameters:
+  #     name: Deploy Shared Infrastructure
+  #     vmImage: $(vmImageName)
+  #     serviceName: misc
+  #     deploy: true
+  #     vnetResourceGroup: "dmsResourceGroup"
+  #     subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
+  #     tags: "{ 'BUSINESS-AREA': misc, 'RUNTIME-ENVIRONMENT': 'test' }"
+
+  # - template: azure-pipelines-common.yml
+  #   parameters:
+  #     name: Deploy Common Infrastructure
+  #     vmImage: $(vmImageName)
+  #     serviceName: ${{ parameters.serviceName }}
+  #     deploy: true
+  #     subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
+  #     tags:
+  #       "{ 'BUSINESS-AREA': ${{ parameters.serviceName }}, 'RUNTIME-ENVIRONMENT': 'test' }"
+
+  # - stage: Prod
+  #   displayName: Deploy Prod
+  #   jobs:
+  #     - job: Build
+  #       displayName: Build
+  #       pool:
+  #         vmImage: $(vmImageName)
+
+  #         - ${{ if eq(parameters.deploy_shared, true) }}:
+  #             - template: azure-pipelines-shared.yml
+  #               parameters:
+  #                 name: Build
+  #                 vmImage: $(vmImageName)
+  #                 serviceName: $(serviceName)
+  #                 deploy: $(deploy_shared)
+  #                 vnetResourceGroup: "dmsResourceGroup"
+  #                 subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
+  #                 tags: "{ 'BUSINESS-AREA': $(serviceName), 'RUNTIME-ENVIRONMENT': 'prod' }"
+
+  #         - ${{ if eq(parameters.deploy_prod, true) }}:
+  #             - template: azure-pipelines-common.yml
+  #               parameters:
+  #                 name: Deploy Common Resources
+  #                 vmImage: $(vmImageName)
+  #                 serviceName: $(serviceName)
+  #                 deploy: $(deploy_prod)
+  #                 subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
+  #                 tags: "{ 'BUSINESS-AREA': $(serviceName), 'RUNTIME-ENVIRONMENT': 'prod' }"
