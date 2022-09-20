@@ -25,3 +25,5 @@ module keyVaultModule './keyvault-resource-using-existing-accesspolicy.bicep' = 
     deploymentOperatorId: deploymentOperatorId
   }
 }
+
+output keyVaultName string = keyVaultModule.outputs.keyVaultName

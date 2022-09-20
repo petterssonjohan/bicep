@@ -36,3 +36,5 @@ module keyVaultModule './keyvault.bicep' = {
     existingKeyVaultResource
   ]
 }
+
+output keyVaultName string = keyVaultModule.outputs.keyVaultName
