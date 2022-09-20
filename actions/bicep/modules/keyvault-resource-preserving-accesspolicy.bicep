@@ -23,7 +23,7 @@ module keyVaultModule './keyvault-resource-using-existing-accesspolicy.bicep' = 
     keyVaultName: keyVaultName
     keyVaultResourceExists: resourceExistsModule.outputs.exists
     tags: tags
-    deploymentOperatorId: deploymentOperatorId
+    deploymentOperatorId: resourceExistsModule.outputs.userAssignedIdentity //deploymentOperatorId
   }
 }
 

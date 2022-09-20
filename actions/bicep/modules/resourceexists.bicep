@@ -55,3 +55,4 @@ resource resource_exists_script 'Microsoft.Resources/deploymentScripts@2020-10-0
 
 //Script returns something like: //[{"name":"MyKeyVault"}]
 output exists bool = resource_exists_script.properties.outputs.result
+output userAssignedIdentity string = userAssignedIdentity
