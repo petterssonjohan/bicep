@@ -25,6 +25,7 @@ variables:
   resourceGroupName: "dps"
   location: "west europe"
   templateFile: "infra.bicep"
+  subscriptionId: $(subscriptionId)
 
 pool:
   vmImage: $(vmImageName)
@@ -47,7 +48,7 @@ stages:
               inlineScript: |
                 az --version
                 az deployment sub create --what-if -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope 
-                --parameters serviceName=${{ parameters.serviceName }} subscriptionId=${{parameters.subscriptionId}} tags=${{parameters.tags}} vnetResourceGroup=dmsResourceGroup
+                --parameters serviceName=${{ parameters.serviceName }} subscriptionId=$(subscriptionId) tags=${{parameters.tags}} vnetResourceGroup=dmsResourceGroup
           - task: AzureCLI@2
             displayName: 🏗 Deploy Shared infrastructure
             inputs:
