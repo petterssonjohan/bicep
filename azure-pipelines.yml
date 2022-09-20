@@ -39,30 +39,29 @@ stages:
           vmImage: $(vmImageName)
 
         steps:
-          - ${{ if eq(parameters.deploy_shared, true) }}:
-              - template: azure-pipelines-shared.yml
-                parameters:
-                  name: Deploy Shared Infrastructure
-                  vmImage: $(vmImageName)
-                  serviceName: $(serviceName)
-                  deploy: true
-                  vnetResourceGroup: "dmsResourceGroup"
-                  subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
-                  tenantId: "6618d4dc-2516-4213-a4f4-029b4d661f09"
-                  deploymentOperatorId: "df461188-ee64-43bc-b888-0d2e4f55c9b1"
-                  tags: "{ 'BUSINESS-AREA': $(serviceName), 'RUNTIME-ENVIRONMENT': 'test' }"
+          - template: azure-pipelines-shared.yml
+            parameters:
+              name: Deploy Shared Infrastructure
+              vmImage: $(vmImageName)
+              serviceName: $(serviceName)
+              deploy: true
+              vnetResourceGroup: "dmsResourceGroup"
+              subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
+              tenantId: "6618d4dc-2516-4213-a4f4-029b4d661f09"
+              deploymentOperatorId: "df461188-ee64-43bc-b888-0d2e4f55c9b1"
+              tags: "{ 'BUSINESS-AREA': $(serviceName), 'RUNTIME-ENVIRONMENT': 'test' }"
 
-              - template: azure-pipelines-common.yml
-                parameters:
-                  name: Deploy Common Infrastructure
-                  vmImage: $(vmImageName)
-                  serviceName: $(serviceName)
-                  deploy: true
-                  vnetResourceGroup: "dmsResourceGroup"
-                  subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
-                  tenantId: "6618d4dc-2516-4213-a4f4-029b4d661f09"
-                  deploymentOperatorId: "df461188-ee64-43bc-b888-0d2e4f55c9b1"
-                  tags: "{ 'BUSINESS-AREA': $(serviceName), 'RUNTIME-ENVIRONMENT': 'test' }"
+          - template: azure-pipelines-common.yml
+            parameters:
+              name: Deploy Common Infrastructure
+              vmImage: $(vmImageName)
+              serviceName: $(serviceName)
+              deploy: true
+              vnetResourceGroup: "dmsResourceGroup"
+              subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
+              tenantId: "6618d4dc-2516-4213-a4f4-029b4d661f09"
+              deploymentOperatorId: "df461188-ee64-43bc-b888-0d2e4f55c9b1"
+              tags: "{ 'BUSINESS-AREA': $(serviceName), 'RUNTIME-ENVIRONMENT': 'test' }"
 
   - stage: Prod
     displayName: Deploy Prod
@@ -73,7 +72,7 @@ stages:
           vmImage: $(vmImageName)
 
         steps:
-          - ${{ if eq(parameters.Deploy_Shared, true) }}:
+          - ${{ if eq(parameters.deploy_shared, true) }}:
               - template: azure-pipelines-shared.yml
                 parameters:
                   name: Build
@@ -86,6 +85,7 @@ stages:
                   deploymentOperatorId: "df461188-ee64-43bc-b888-0d2e4f55c9b1"
                   tags: "{ 'BUSINESS-AREA': $(serviceName), 'RUNTIME-ENVIRONMENT': 'prod' }"
 
+          - ${{ if eq(parameters.deploy_prod, true) }}:
               - template: azure-pipelines-common.yml
                 parameters:
                   name: Deploy Common Resources
