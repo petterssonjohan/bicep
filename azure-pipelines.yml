@@ -38,17 +38,17 @@ stages:
       deploy: true
       vnetResourceGroup: "dmsResourceGroup"
       subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
-      tags:
-        "{ 'BUSINESS-AREA': misc, 'RUNTIME-ENVIRONMENT': 'test' }"
+      tags: "{ 'BUSINESS-AREA': misc, 'RUNTIME-ENVIRONMENT': 'test' }"
 
-        # - template: azure-pipelines-common.yml
-        #   parameters:
-        #     name: Deploy Common Infrastructure
-        #     vmImage: $(vmImageName)
-        #     serviceName: $(serviceName)
-        #     deploy: true
-        #     subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
-        #     tags: "{ 'BUSINESS-AREA': ${{ parameters.serviceName }}, 'RUNTIME-ENVIRONMENT': 'test' }"
+  - template: azure-pipelines-common.yml
+    parameters:
+      name: Deploy Common Infrastructure
+      vmImage: $(vmImageName)
+      serviceName: ${{ parameters.serviceName }}
+      deploy: true
+      subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
+      tags:
+        "{ 'BUSINESS-AREA': ${{ parameters.serviceName }}, 'RUNTIME-ENVIRONMENT': 'test' }"
 
         # - stage: Prod
         #   displayName: Deploy Prod
