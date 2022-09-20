@@ -27,7 +27,7 @@ jobs:
         working-directory: "${{github.workspace}}/actions/bicep"
         run: |
           tags='{"BUSINESS-AREA":"SPT","RUNTIME-ENVIRONMENT":"test"}'
-          az deployment sub create --what-if -f ./Services/Shared/infra.bicep --location westeurope --parameters serviceName=shared subscriptionId=${{secrets.AZURE_SUBSCRIPTION}} tenantId=${{secrets.TENANTID}} deploymentOperatorId=${{secrets.DEPLOYMENTOPERATORID}} tags=$tags vnetResourceGroup=dmsResourceGroup
+          az deployment sub create --what-if -f ./Services/SharedResources/infra.bicep --location westeurope --parameters serviceName=shared subscriptionId=${{secrets.AZURE_SUBSCRIPTION}} tenantId=${{secrets.TENANTID}} deploymentOperatorId=${{secrets.DEPLOYMENTOPERATORID}} tags=$tags vnetResourceGroup=dmsResourceGroup
 
       # Check what a common infrastructure deployment would look like to test
       - name: 🧪 Test Common Infrastructure (apc)
