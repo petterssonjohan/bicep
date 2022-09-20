@@ -30,16 +30,34 @@ pool:
   vmImage: $(vmImageName)
 
 stages:
-  - stage: Install
+  - stage: Build
+    displayName: Build and push Test
     jobs:
-      - job: npminstall
+      - job: Build
+        displayName: Build
+        pool:
+          vmImage: $(vmImageName)
         steps:
-          - task: Npm@1
+          - task: AzureCLI@2
+            displayName: 🧪 Test Shared infrastructure
             inputs:
-              command: "install"
-  - template: azure-pipelines-test.yml
-  - template: azure-pipelines-prod.yml
-
+              azureSubscription: defaultAzureServiceConnection
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                az --version
+                az deployment sub create --what-if -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope 
+                --parameters serviceName=${{ parameters.serviceName }} subscriptionId=${{parameters.subscriptionId}} tags=${{parameters.tags}} vnetResourceGroup=dmsResourceGroup
+          - task: AzureCLI@2
+            displayName: 🏗 Deploy Shared infrastructure
+            inputs:
+              azureSubscription: defaultAzureServiceConnection
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                az --version
+                az deployment sub create -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope 
+                --parameters serviceName=${{parameters.serviceName}} subscriptionId=${{parameters.subscriptionId}} tags=${{parameters.tags}} vnetResourceGroup=dmsResourceGroup
   # extends:
   #   - template: azure-pipelines-test.yml
   #     parameters:
