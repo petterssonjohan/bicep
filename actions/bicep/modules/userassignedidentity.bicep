@@ -1,7 +1,7 @@
 param name string
 param location string
 param tags object
-resource uami 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' = {
+resource uami 'Microsoft.ManagedIdentity/userAssignedIdentities@2022-01-31-preview' = {
   name: name
   location: location
   tags: tags
