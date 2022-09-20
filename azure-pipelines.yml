@@ -34,12 +34,12 @@ stages:
     parameters:
       name: Deploy Shared Infrastructure
       vmImage: $(vmImageName)
-      serviceName: $(serviceName)
+      serviceName: misc
       deploy: true
       vnetResourceGroup: "dmsResourceGroup"
       subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
       tags:
-        "{ 'BUSINESS-AREA': $(serviceName), 'RUNTIME-ENVIRONMENT': 'test' }"
+        "{ 'BUSINESS-AREA': misc, 'RUNTIME-ENVIRONMENT': 'test' }"
 
         # - template: azure-pipelines-common.yml
         #   parameters:
@@ -48,7 +48,7 @@ stages:
         #     serviceName: $(serviceName)
         #     deploy: true
         #     subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
-        #     tags: "{ 'BUSINESS-AREA': $(serviceName), 'RUNTIME-ENVIRONMENT': 'test' }"
+        #     tags: "{ 'BUSINESS-AREA': ${{ parameters.serviceName }}, 'RUNTIME-ENVIRONMENT': 'test' }"
 
   # - stage: Prod
   #   displayName: Deploy Prod

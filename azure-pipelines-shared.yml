@@ -35,7 +35,7 @@ stages:
                 inlineScript: |
                   az --version
                   az deployment sub create --what-if -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope 
-                  --parameters serviceName=misc subscriptionId=${{subscriptionId}} tags=${{tags}} vnetResourceGroup=dmsResourceGroup
+                  --parameters serviceName=${{ parameters.serviceName }} subscriptionId=${{parameters.subscriptionId}} tags=${{parameters.tags}} vnetResourceGroup=dmsResourceGroup
             - task: AzureCLI@2
               displayName: 🏗 Deploy Shared infrastructure
               condition: |
@@ -50,4 +50,4 @@ stages:
                 inlineScript: |
                   az --version
                   az deployment sub create -f $(System.ArtifactsDirectory)/actions/bicep/Services/SharedResources/infra.bicep --location westeurope 
-                  --parameters serviceName=misc subscriptionId=${{subscriptionId}} tags=${{tags}} vnetResourceGroup=dmsResourceGroup
+                  --parameters serviceName=${{parameters.serviceName}} subscriptionId=${{parameters.subscriptionId}} tags=${{parameters.tags}} vnetResourceGroup=dmsResourceGroup
