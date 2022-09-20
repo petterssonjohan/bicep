@@ -2,6 +2,7 @@ param location string
 param keyVaultName string
 param tags object
 param deploymentOperatorId string
+param identityPrincipalId string
 
 module resourceExistsModule './resourceexists.bicep' = {
   name: 'resourceExists_${uniqueString(keyVaultName)}'
@@ -11,7 +12,7 @@ module resourceExistsModule './resourceexists.bicep' = {
     // User assigned managed identity that is used to execute the deployment script on the resource group
     // User assigned Managed Identity info: https://docs.microsoft.com/en-us/azure/active-directory/managed-identities-azure-resources/overview
     // User assigned Managed Identity needs reader role on the resource group of the resource (See Access Policies of the resource group)
-    identityPrincipalId: 'MyUserAssignedManagedIdentity'
+    identityPrincipalId: identityPrincipalId //'MyUserAssignedManagedIdentity'
   }
 }
 

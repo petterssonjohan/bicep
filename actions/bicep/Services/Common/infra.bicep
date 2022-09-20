@@ -35,6 +35,16 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   location: location
 }
 
+module userAssigned '../../modules/userassignedidentity.bicep' = {
+  name: 'userAssignedIdentity-${releaseId}'
+  scope: rg
+  params: {
+    name: '${businessArea}-${loc}-identity-${serviceName}-${env}'
+    location: location
+    tags: tags
+  }
+}
+
 // var roleAssignmentName= guid(principalId, roleDefinitionID, resourceGroup().id)
 // resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = {
 //   name: roleAssignmentName
@@ -73,6 +83,7 @@ module keyvault '../../modules/keyvault-resource-preserving-accesspolicy.bicep' 
     keyVaultName: kvName
     tags: tags
     deploymentOperatorId: deploymentOperatorId
+    identityPrincipalId: '${businessArea}-${loc}-identity-${serviceName}-${env}'
   }
   scope: rg
 }
