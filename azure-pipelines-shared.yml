@@ -38,11 +38,11 @@ stages:
                   --parameters serviceName=${{ parameters.serviceName }} subscriptionId=${{parameters.subscriptionId}} tags=${{parameters.tags}} vnetResourceGroup=dmsResourceGroup
             - task: AzureCLI@2
               displayName: 🏗 Deploy Shared infrastructure
-              condition: |
-                and(
-                  succeeded('Build'), 
-                  eq(${{ parameters.deploy }}, true)
-                )
+              # condition: |
+              #   and(
+              #     succeeded('Build'),
+              #     eq(${{ parameters.deploy }}, true)
+              #   )
               inputs:
                 azureSubscription: defaultAzureServiceConnection
                 scriptType: bash
