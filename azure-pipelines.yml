@@ -39,11 +39,12 @@ stages:
         pool:
           vmImage: $(vmImageName)
         steps:
-          - task: PublishPipelineArtifact@0
-            displayName: "Publish pipeline artifact"
+          - task: PublishBuildArtifacts@1
+            name: PublishArtifactStep
+            displayName: "Publish build artifacts"
             inputs:
-              artifactName: "drop"
-              targetPath: "$(Build.ArtifactStagingDirectory)"
+              pathToPublish: $(Build.ArtifactStagingDirectory)
+              artifactName: bicep-$(Build.Repository.Name)
 
           - task: AzureCLI@2
             displayName: 🧪 Test Shared infrastructure
