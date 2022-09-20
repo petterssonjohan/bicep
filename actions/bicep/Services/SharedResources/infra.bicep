@@ -46,7 +46,7 @@ module userAssigned '../../modules/userassignedidentity.bicep' = {
 
 var kvName = '${businessArea}-${loc}-kv-${serviceName}-${env}'
 module keyVaultModule '../../modules/keyvault-resource-preserving-accesspolicy.bicep' = {
-  name: 'keyVaultResourcePreservingAccessPolicies_${uniqueString(kvName)}'
+  name: 'kv-preserving-${releaseId}'
   params: {
     location: location
     keyVaultName: kvName
@@ -64,9 +64,9 @@ module network '../../modules/network.bicep' = {
   scope: resourceGroup(subscriptionId, vnetResourceGroup)
   params: {
     publicIpAddressName: 'net-publicipaddress-${serviceName}'
-    natGatewayName: 'dms-${loc}-natg-${tags['RUNTIME-ENVIRONMENT']}'
-    vnetName: 'dms-${loc}-vnet-${tags['RUNTIME-ENVIRONMENT']}'
-    vnetSubnetName: '${businessArea}-${loc}-subnet-${serviceName}-${tags['RUNTIME-ENVIRONMENT']}'
+    natGatewayName: 'dms-${loc}-natg-${env}'
+    vnetName: 'dms-${loc}-vnet-${env}'
+    vnetSubnetName: '${businessArea}-${loc}-subnet-${serviceName}-${env}'
     location: location
   }
 }
