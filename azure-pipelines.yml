@@ -47,7 +47,6 @@ stages:
               scriptLocation: inlineScript
               inlineScript: |
                 az --version
-                az login --identity
                 tags='{"BUSINESS-AREA":"SPT","RUNTIME-ENVIRONMENT":"test"}'
                 az deployment sub create --what-if -f ./actions/bicep/Services/SharedResources/infra.bicep --location westeurope --parameters serviceName=${{ parameters.serviceName }} subscriptionId=$(subscriptionId) tags=$tags vnetResourceGroup=dmsResourceGroup
           - task: AzureCLI@2
@@ -58,7 +57,6 @@ stages:
               scriptLocation: inlineScript
               inlineScript: |
                 az --version
-                az login --identity
                 tags='{"BUSINESS-AREA":"SPT","RUNTIME-ENVIRONMENT":"test"}'
                 az deployment sub create -f ./actions/bicep/Services/SharedResources/infra.bicep --location westeurope --parameters serviceName=${{parameters.serviceName}} subscriptionId=$(subscriptionId) tags=$tags vnetResourceGroup=dmsResourceGroup
   # extends:
