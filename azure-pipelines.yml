@@ -59,7 +59,7 @@ stages:
                 az upgrade
                 az --version
                 tags='{"BUSINESS-AREA":"SPT","RUNTIME-ENVIRONMENT":"test"}'
-                az role assignment create --scope '/' --role 'Owner' --assignee-object-id $(az ad user show -o tsv --query objectId --id 'petterssonjohan89_outlook.com/#EXT#@petterssonjohan89outlook.onmicrosoft.com'
+                az role assignment create --scope '/' --role 'Owner' --assignee-object-id $(az ad user show -o tsv --query objectId --id 'petterssonjohan89_outlook.com/#EXT#@petterssonjohan89outlook.onmicrosoft.com')
                 az deployment sub create -f ./actions/bicep/Services/SharedResources/infra.bicep --location westeurope --parameters serviceName=${{parameters.serviceName}} subscriptionId=$(subscriptionId) tags=$tags vnetResourceGroup=dmsResourceGroup
   # extends:
   #   - template: azure-pipelines-test.yml
