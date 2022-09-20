@@ -42,7 +42,7 @@ stages:
           - task: AzureCLI@2
             displayName: 🧪 Test Shared infrastructure
             inputs:
-              azureSubscription: defaultAzureServiceConnection
+              azureSubscription: azureServiceConnection
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |
@@ -52,7 +52,7 @@ stages:
           - task: AzureCLI@2
             displayName: 🏗 Deploy Shared infrastructure
             inputs:
-              azureSubscription: defaultAzureServiceConnection
+              azureSubscription: azureServiceConnection
               scriptType: bash
               scriptLocation: inlineScript
               inlineScript: |
