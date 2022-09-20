@@ -1,5 +1,4 @@
-trigger:
-  - main
+trigger: none
 
 name: Deploy Bicep files
 
@@ -38,7 +37,7 @@ stages:
         pool:
           vmImage: $(vmImageName)
 
-        steps:
+        
           - template: azure-pipelines-shared.yml
             parameters:
               name: Deploy Shared Infrastructure
@@ -66,7 +65,7 @@ stages:
         pool:
           vmImage: $(vmImageName)
 
-        steps:
+        
           - ${{ if eq(parameters.deploy_shared, true) }}:
               - template: azure-pipelines-shared.yml
                 parameters:
