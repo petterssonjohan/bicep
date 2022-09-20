@@ -29,25 +29,25 @@ variables:
 pool:
   vmImage: $(vmImageName)
 
-stages:
-  - template: azure-pipelines-test.yml
-    parameters:
-      name: Deploy Shared Infrastructure
-      vmImage: $(vmImageName)
-      serviceName: misc
-      deploy: true
-      vnetResourceGroup: "dmsResourceGroup"
-      subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
-      tags: "{ 'BUSINESS-AREA': misc, 'RUNTIME-ENVIRONMENT': 'test' }"
-  - template: azure-pipelines-prod.yml
-    parameters:
-      name: Deploy Shared Infrastructure
-      vmImage: $(vmImageName)
-      serviceName: misc
-      deploy: true
-      vnetResourceGroup: "dmsResourceGroup"
-      subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
-      tags: "{ 'BUSINESS-AREA': misc, 'RUNTIME-ENVIRONMENT': 'test' }"
+  extends:
+    - template: azure-pipelines-test.yml
+      parameters:
+        name: Deploy Shared Infrastructure
+        vmImage: $(vmImageName)
+        serviceName: misc
+        deploy: true
+        vnetResourceGroup: "dmsResourceGroup"
+        subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
+        tags: "{ 'BUSINESS-AREA': misc, 'RUNTIME-ENVIRONMENT': 'test' }"
+    - template: azure-pipelines-prod.yml
+      parameters:
+        name: Deploy Shared Infrastructure
+        vmImage: $(vmImageName)
+        serviceName: misc
+        deploy: true
+        vnetResourceGroup: "dmsResourceGroup"
+        subscriptionId: "bf558742-a412-4a60-88c4-733121e9580f"
+        tags: "{ 'BUSINESS-AREA': misc, 'RUNTIME-ENVIRONMENT': 'test' }"
   # - template: azure-pipelines-shared.yml
   #   parameters:
   #     name: Deploy Shared Infrastructure
