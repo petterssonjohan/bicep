@@ -24,7 +24,7 @@ stages:
     jobs:
       - job: Build
         pool:
-          vmImage: ${{vmImage}}
+          vmImage: ${{parameters.vmImage}}
           steps:
             - task: AzureCLI@2
               displayName: 🧪 Test Shared infrastructure
