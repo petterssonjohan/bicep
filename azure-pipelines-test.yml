@@ -20,7 +20,7 @@ parameters:
       RUNTIME-ENVIRONMENT: "test"
 
 stages:
-  - stage: "shared_infrastructure"
+  - stage: "shared_infrastructure_test"
     jobs:
       - job: Build
         pool:
